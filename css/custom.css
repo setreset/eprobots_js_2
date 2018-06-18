@@ -1,0 +1,23 @@
+/*canvas:-webkit-full-screen {
+    display: block;
+}
+
+canvas:-moz-full-screen {
+    display: block;
+}*/
+
+canvas:-webkit-full-screen {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    margin: auto;
+    width: 100%;
+    height: 100% !important;
+}
+
+canvas:-moz-full-screen {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    margin: auto;
+    width: 100%;
+    height: 100% !important;
+}
