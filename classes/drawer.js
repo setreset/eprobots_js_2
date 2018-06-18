@@ -15,7 +15,7 @@ class Drawer {
     init_canvas(){
         console.log("init_canvas");
         let rect = this.canvas.getBoundingClientRect();
-        console.log(rect);
+        //console.log(rect);
         let c_w = rect.width;
         let c_h = rect.height;
 
@@ -27,34 +27,52 @@ class Drawer {
 
         this.x_step = c_w / this.s.settings.world_width;
         this.y_step = c_h / this.s.settings.world_height;
-        console.log(this.x_step);
+        //console.log(this.x_step);
     }
 
-    paint_fast(){
-        //this.canvas_ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    paint(full){
+        if (full){
+            this.paint_full(this.canvas_ctx);
+        }else{
+            this.paint_fast(this.canvas_ctx);
+        }
 
-        this.s.world.paintlist.forEach(function(el) {
-            this.canvas_ctx.fillStyle = el.color;
-            this.canvas_ctx.fillRect(el.x_pos * this.x_step, el.y_pos * this.y_step, this.x_step, this.y_step);
-        }, this);
+        //this.paint_full(this.canvas2_ctx);
 
+        this.s.world.paintobj = {};
         this.s.world.paintlist = [];
-
-        this.paint();
     }
 
-    paint(){
+    paint_fast(ctx){
+        for (var key in this.s.world.paintobj){
+            // skip loop if the property is from prototype
+            //if (!this.s.world.paintobj.hasOwnProperty(key)) continue;
+            let el = this.s.world.paintobj[key];
+            ctx.fillStyle = el.color;
+            ctx.fillRect(el.x_pos * this.x_step, el.y_pos * this.y_step, this.x_step, this.y_step);
+        }
+
+        //this.s.world.paintlist.forEach(function(el) {
+        //    ctx.fillStyle = el.color;
+        //    ctx.fillRect(el.x_pos * this.x_step, el.y_pos * this.y_step, this.x_step, this.y_step);
+        //}, this);
+        //
+    }
+
+
+
+    paint_full(ctx){
         //this.canvas_ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        this.canvas2_ctx.clearRect(0, 0, this.canvas2.width, this.canvas2.height);
+        ctx.clearRect(0, 0, this.canvas2.width, this.canvas2.height);
 
         for (var x=0;x<this.s.settings.world_width;x++) {
             for (var y = 0; y < this.s.settings.world_height; y++) {
                 var t = this.s.world.get_terrain(x, y);
                 var o = t.get_slot_object();
                 if (o!=null){
-                    this.canvas2_ctx.fillStyle = o.get_color();
-                    this.canvas2_ctx.fillRect(x * this.x_step, y * this.y_step, this.x_step, this.y_step);
+                    ctx.fillStyle = o.get_color();
+                    ctx.fillRect(x * this.x_step, y * this.y_step, this.x_step, this.y_step);
                 }
 
             }

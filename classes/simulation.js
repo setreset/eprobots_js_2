@@ -29,9 +29,9 @@ class Simulation {
 
         let active_objects_next = [];
 
-        //this.drawer.paint_fast();
+        //this.drawer.paint();
         this.active_objects.forEach(function(el) {
-            if (el.lifetime <= 25){
+            if (el.lifetime <= this.settings.plants_lifetime){
                 let new_plant = el.step();
                 if (new_plant != null){
                     active_objects_next.push(new_plant);
@@ -48,7 +48,7 @@ class Simulation {
         let t_end = new Date().getTime();
         let frame_time = t_end-t_start;
 
-        this.drawer.paint_fast();
+        this.drawer.paint();
 
         if (this.running) {
             let st = this.settings.sleeptime - frame_time;

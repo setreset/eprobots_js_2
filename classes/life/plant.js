@@ -22,7 +22,7 @@ class Plant {
     step(){
         let new_plant = null;
         //console.log(this.s.world.counter_plant);
-        if (this.s.world.counter_plant<150){
+        if (this.s.world.counter_plant<this.s.settings.plants_max){
             let spreadval = tools_random(8);
             let vec = DIRECTIONS[spreadval];
             let spreadpos_x = this.s.correct_pos_width(this.x_pos + vec.x);
