@@ -48,14 +48,14 @@ $(document).ready(function() {
     function on_fullscreen_change() {
         console.log("fullscreen change");
         simulation.drawer.init_canvas();
-        simulation.drawer.paint(true);
+        simulation.drawer.paint_full();
     }
 
     var simulation_canvas = document.getElementById('canvas');
     var simulation_canvas2 = document.getElementById('canvas2');
     var simulation = new Simulation(simulation_canvas, simulation_canvas2);
     s = simulation;
-    simulation.drawer.paint();
+    simulation.drawer.paint_fast();
 
     function getMousePos(canvas_rect, evt) {
         return {
@@ -77,7 +77,7 @@ $(document).ready(function() {
         if (t.slot_object == null){
             let p = new Plant(simulation, world_x, world_y);
             simulation.active_objects.push(p);
-            simulation.drawer.paint();
+            simulation.drawer.paint_fast();
         }else{
             console.log("besetzt");
         }

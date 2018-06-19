@@ -41,7 +41,7 @@ class Simulation {
 
         let active_objects_next = [];
 
-        //this.drawer.paint();
+        //this.drawer.paint_fast();
         this.active_objects.forEach(function(el) {
             if (el.is_dead) return;
             if (el.lifetime < el.get_lifetime()){
@@ -60,7 +60,7 @@ class Simulation {
         let t_end = new Date().getTime();
         let frame_time = t_end-t_start;
 
-        this.drawer.paint();
+        this.drawer.paint_fast();
 
         if (this.running) {
             let st = this.settings.sleeptime - frame_time;

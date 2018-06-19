@@ -30,22 +30,19 @@ class Drawer {
         //console.log(this.x_step);
     }
 
-    paint(full){
-        // fast
-        if (full){
-            this.paint_full(this.canvas_ctx);
-        }else{
-            this.paint_fast(this.canvas_ctx);
-        }
-        //this.paint_full(this.canvas_ctx);
+    paint_full(){
+        this._paint_full(this.canvas_ctx);
+    }
 
-        //this.paint_full(this.canvas2_ctx);
+    paint_fast(){
+        this._paint_fast(this.canvas_ctx);
+        //this._paint_full(this.canvas_ctx);
 
         this.s.world.paintobj = {};
         this.s.world.paintlist = [];
     }
 
-    paint_fast(ctx){
+    _paint_fast(ctx){
         for (var key in this.s.world.paintobj){
             // skip loop if the property is from prototype
             //if (!this.s.world.paintobj.hasOwnProperty(key)) continue;
@@ -63,7 +60,7 @@ class Drawer {
 
 
 
-    paint_full(ctx){
+    _paint_full(ctx){
         //this.canvas_ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         ctx.clearRect(0, 0, this.canvas2.width, this.canvas2.height);
