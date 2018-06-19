@@ -6,6 +6,7 @@ class Plant {
 
         this.s = s;
         this.lifetime = 0;
+        this.is_dead = false;
 
         this.s.world.world_set(this);
         this.s.world.counter_plant++;
@@ -17,6 +18,16 @@ class Plant {
 
     get_color(){
         return "rgb(0, 255, 0)";
+    }
+
+    get_lifetime(){
+        return this.s.settings.plants_lifetime;
+    }
+
+    kill(){
+        this.s.world.world_unset(this.x_pos, this.y_pos);
+        this.s.world.counter_plant--;
+        this.is_dead = true;
     }
 
     step(){

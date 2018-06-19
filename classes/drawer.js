@@ -31,11 +31,13 @@ class Drawer {
     }
 
     paint(full){
+        // fast
         if (full){
             this.paint_full(this.canvas_ctx);
         }else{
             this.paint_fast(this.canvas_ctx);
         }
+        //this.paint_full(this.canvas_ctx);
 
         //this.paint_full(this.canvas2_ctx);
 

@@ -7,8 +7,20 @@ class Simulation {
         this.active_objects = [];
         this.drawer = new Drawer(this, canvas, canvas2);
 
-        //let ep = new Eprobot(this, 0, 0);
-        //this.active_objects.push(ep);
+        var program = [];
+        for (var pi = 0; pi < this.settings.PROGRAM_LENGTH; pi++) {
+            var val = tools_random(this.settings.PROGRAM_LENGTH * 10) - this.settings.PROGRAM_LENGTH;
+            program.push(val);
+        }
+
+        var init_data = [];
+        for (var di = 0; di < this.settings.DATA_LENGTH; di++) {
+            var val = tools_random2(-720, 720);
+            init_data.push(val);
+        }
+
+        let ep = new Eprobot(this, 10, 10, program, init_data);
+        this.active_objects.push(ep);
     }
 
     startSimulation(){
@@ -31,15 +43,15 @@ class Simulation {
 
         //this.drawer.paint();
         this.active_objects.forEach(function(el) {
-            if (el.lifetime <= this.settings.plants_lifetime){
-                let new_plant = el.step();
-                if (new_plant != null){
-                    active_objects_next.push(new_plant);
+            if (el.is_dead) return;
+            if (el.lifetime < el.get_lifetime()){
+                let new_life = el.step();
+                if (new_life != null){
+                    active_objects_next.push(new_life);
                 }
                 active_objects_next.push(el);
             }else{
-                this.world.world_unset(el.x_pos, el.y_pos);
-                this.world.counter_plant--;
+                el.kill();
             }
         }, this);
 

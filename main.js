@@ -1,3 +1,5 @@
+var s = null;
+
 $(document).ready(function() {
     console.log("ready");
 
@@ -52,6 +54,7 @@ $(document).ready(function() {
     var simulation_canvas = document.getElementById('canvas');
     var simulation_canvas2 = document.getElementById('canvas2');
     var simulation = new Simulation(simulation_canvas, simulation_canvas2);
+    s = simulation;
     simulation.drawer.paint();
 
     function getMousePos(canvas_rect, evt) {
