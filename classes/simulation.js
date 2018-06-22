@@ -42,16 +42,16 @@ class Simulation {
         let active_objects_next = [];
 
         //this.drawer.paint_fast();
-        this.active_objects.forEach(function(el) {
-            if (el.is_dead) return;
-            if (el.lifetime < el.get_lifetime()){
-                let new_life = el.step();
+        this.active_objects.forEach(function(o) {
+            if (o.is_dead) return;
+            if (o.tick < o.get_lifetime()){
+                let new_life = o.step();
                 if (new_life != null){
                     active_objects_next.push(new_life);
                 }
-                active_objects_next.push(el);
+                active_objects_next.push(o);
             }else{
-                el.kill();
+                o.kill();
             }
         }, this);
 

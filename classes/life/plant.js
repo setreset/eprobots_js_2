@@ -5,7 +5,7 @@ class Plant {
         this.y_pos = y_pos;
 
         this.s = s;
-        this.lifetime = 0;
+        this.tick = 0;
         this.is_dead = false;
 
         this.s.world.world_set(this);
@@ -45,7 +45,7 @@ class Plant {
         }
 
 
-        this.lifetime++;
+        this.tick++;
         return new_plant;
     }
 }

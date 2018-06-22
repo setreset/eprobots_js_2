@@ -1,13 +1,14 @@
 class Settings {
 
     constructor() {
-        this.world_width = 720;
-        this.world_height = 450;
+        this.world_width = 960;
+        this.world_height = 540;
         this.sleeptime = 0;
         this.plants_max = 500;
         this.plants_lifetime = 250;
         this.eprobots_max = 2000;
         this.eprobots_lifetime = 400;
+        this.eprobots_fossiltime = 400;
         this.PROGRAM_LENGTH = 1000;
         this.DATA_LENGTH = 10;
         this.PROGRAM_STEPS = 1000;

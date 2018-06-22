@@ -5,7 +5,7 @@ class Eprobot {
         this.y_pos = y_pos;
 
         this.s = s;
-        this.lifetime = 0;
+        this.tick = 0;
         this.is_dead = false;
         this.energy = 0;
 
@@ -91,7 +91,7 @@ class Eprobot {
             }
         }
 
-        this.lifetime++;
+        this.tick++;
         return new_eprobot;
     }
 }
