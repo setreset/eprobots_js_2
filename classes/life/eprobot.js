@@ -79,8 +79,10 @@ class Eprobot {
                 // new eprobot
                 let spreadval = tools_random(8);
                 let vec = DIRECTIONS[spreadval];
-                let spreadpos_x = this.s.correct_pos_width(this.x_pos + vec.x);
-                let spreadpos_y = this.s.correct_pos_height(this.y_pos + vec.y);
+                //let spreadpos_x = this.s.correct_pos_width(this.x_pos + vec.x);
+                //let spreadpos_y = this.s.correct_pos_height(this.y_pos + vec.y);
+                let spreadpos_x = this.s.settings.nest_x+tools_random2(-20,20);
+                let spreadpos_y = this.s.settings.nest_y+tools_random2(-20,20);
                 let spreadterrain = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
                 if (spreadterrain.slot_object == null){
                     var new_program = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program);

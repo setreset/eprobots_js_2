@@ -6,21 +6,6 @@ class Simulation {
         this.world = new World(this.settings.world_width,this.settings.world_height);
         this.active_objects = [];
         this.drawer = new Drawer(this, canvas, canvas2);
-
-        var program = [];
-        for (var pi = 0; pi < this.settings.PROGRAM_LENGTH; pi++) {
-            var val = tools_random(this.settings.PROGRAM_LENGTH * 10) - this.settings.PROGRAM_LENGTH;
-            program.push(val);
-        }
-
-        var init_data = [];
-        for (var di = 0; di < this.settings.DATA_LENGTH; di++) {
-            var val = tools_random2(-720, 720);
-            init_data.push(val);
-        }
-
-        let ep = new Eprobot(this, 10, 10, program, init_data);
-        this.active_objects.push(ep);
     }
 
     startSimulation(){
@@ -38,6 +23,25 @@ class Simulation {
 
     simulation_step(){
         let t_start = new Date().getTime();
+
+        if (this.world.counter_eprobot == 0){
+            for (let i = 0; i<50;i++){
+                var program = [];
+                for (var pi = 0; pi < this.settings.PROGRAM_LENGTH; pi++) {
+                    var val = tools_random(this.settings.PROGRAM_LENGTH * 10) - this.settings.PROGRAM_LENGTH;
+                    program.push(val);
+                }
+
+                var init_data = [];
+                for (var di = 0; di < this.settings.DATA_LENGTH; di++) {
+                    var val = tools_random2(-720, 720);
+                    init_data.push(val);
+                }
+                let ep = new Eprobot(this, this.settings.nest_x+tools_random2(-20,20), this.settings.nest_y+tools_random2(-20,20), program, init_data);
+                this.active_objects.push(ep);
+            }
+
+        }
 
         let active_objects_next = [];
 
