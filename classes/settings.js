@@ -1,12 +1,17 @@
 class Settings {
 
+    // raspi: 800x480 | 400x240
+    // kleiner monitor: 1440x900 | 360x225
+    // großer monitor: 1920x1080
     constructor() {
-        this.world_width = 360;
-        this.world_height = 225;
-        this.sleeptime = 0;
+        this.background_color = "#000000";
+        this.beam_at_borders = false;
+        this.world_width = 400;
+        this.world_height = 240;
+        this.sleeptime = 10;
         this.plants_max = 500;
         this.plants_lifetime = 250;
-        this.eprobots_max = 1000;
+        this.eprobots_max = 250;
         this.eprobots_lifetime = 400;
         this.eprobots_fossiltime = 400;
         this.PROGRAM_LENGTH = 1000;

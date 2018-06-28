@@ -5,10 +5,9 @@ class Plant {
         this.y_pos = y_pos;
 
         this.s = s;
-        this.tick = 0;
-        this.is_dead = false;
+        this.energy_count = 130000; //1000;
 
-        this.s.world.world_set(this);
+        this.s.world.world_set_energy(this);
         this.s.world.counter_plant++;
     }
 

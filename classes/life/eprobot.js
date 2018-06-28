@@ -64,11 +64,16 @@ class Eprobot {
         let movepos_y = this.s.correct_pos_height(this.y_pos + vec.y);
 
         let t = this.s.world.get_terrain(movepos_x, movepos_y);
-        let slot_object = t.slot_object;
-        if (slot_object == null || (slot_object && slot_object.get_id() == OBJECTTYPES.PLANT)){
-            if (slot_object && slot_object.get_id() == OBJECTTYPES.PLANT){
-                slot_object.kill();
+        let slot_object = t.get_slot_object();
+        let energy_object = t.get_energy_object();
+        if (slot_object == null){
+            if (energy_object){
+                //slot_object.kill();
                 this.energy++;
+                energy_object.energy_count--;
+                if (energy_object.energy_count==0){
+                    this.s.world.world_unset_energy(movepos_x, movepos_y);
+                }
             }
             this.s.world.world_unset(this.x_pos, this.y_pos);
             this.x_pos = movepos_x;
@@ -79,10 +84,10 @@ class Eprobot {
                 // new eprobot
                 let spreadval = tools_random(8);
                 let vec = DIRECTIONS[spreadval];
-                //let spreadpos_x = this.s.correct_pos_width(this.x_pos + vec.x);
-                //let spreadpos_y = this.s.correct_pos_height(this.y_pos + vec.y);
-                let spreadpos_x = this.s.settings.nest_x+tools_random2(-20,20);
-                let spreadpos_y = this.s.settings.nest_y+tools_random2(-20,20);
+                let spreadpos_x = this.s.correct_pos_width(this.x_pos + vec.x);
+                let spreadpos_y = this.s.correct_pos_height(this.y_pos + vec.y);
+                //let spreadpos_x = this.s.settings.nest_x+tools_random2(-20,20);
+                //let spreadpos_y = this.s.settings.nest_y+tools_random2(-20,20);
                 let spreadterrain = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
                 if (spreadterrain.slot_object == null){
                     var new_program = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program);

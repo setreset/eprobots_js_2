@@ -1,12 +1,14 @@
 class World {
 
-    constructor(width, height) {
+    constructor(s, width, height) {
+        this.s = s;
+
         // init
         this.worldarr = new Array(width);
         for (var x=0;x<this.worldarr.length;x++){
             this.worldarr[x] = new Array(height);
             for (var y=0;y<height;y++){
-                this.worldarr[x][y] = new Terrain();
+                this.worldarr[x][y] = new Terrain(s);
             }
         }
 
@@ -21,22 +23,38 @@ class World {
         return this.worldarr[x][y];
     }
 
+    refresh_paintobj(t, x_pos, y_pos){
+        let coord = x_pos.toString() + ":" + y_pos.toString();
+        this.paintobj[coord] = {color: t.get_color(), x_pos: x_pos, y_pos: y_pos};
+        //this.paintlist.push({color: o.get_color(), x_pos: o.x_pos, y_pos: o.y_pos});
+    }
+
     world_set(o){
         var t = this.get_terrain(o.x_pos, o.y_pos);
         t.set_slot_object(o);
 
-        let coord = o.x_pos.toString() + ":" + o.y_pos.toString();
-        this.paintobj[coord] = {color: o.get_color(), x_pos: o.x_pos, y_pos: o.y_pos};
-        //this.paintlist.push({color: o.get_color(), x_pos: o.x_pos, y_pos: o.y_pos});
+        this.refresh_paintobj(t, o.x_pos, o.y_pos);
+    }
+
+    world_set_energy(o){
+        var t = this.get_terrain(o.x_pos, o.y_pos);
+        t.set_energy_object(o);
+
+        this.refresh_paintobj(t, o.x_pos, o.y_pos);
     }
 
     world_unset(x,y){
         var t = this.get_terrain(x, y);
         t.set_slot_object(null);
 
-        let coord = x.toString() + ":" + y.toString();
-        this.paintobj[coord] = {color: "rgb(255, 255, 255)", x_pos: x, y_pos: y};
-        //this.paintlist.push({color: "rgb(255, 255, 255)", x_pos: x, y_pos: y});
+        this.refresh_paintobj(t, x, y);
+    }
+
+    world_unset_energy(x,y){
+        var t = this.get_terrain(x, y);
+        t.set_energy_object(null);
+
+        this.refresh_paintobj(t, x, y);
     }
 
 }

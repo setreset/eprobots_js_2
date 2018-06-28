@@ -28,6 +28,9 @@ class Drawer {
         this.x_step = c_w / this.s.settings.world_width;
         this.y_step = c_h / this.s.settings.world_height;
         //console.log(this.x_step);
+
+        this.canvas_ctx.fillStyle = this.s.settings.background_color;
+        this.canvas_ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
     paint_full(){
@@ -68,11 +71,8 @@ class Drawer {
         for (var x=0;x<this.s.settings.world_width;x++) {
             for (var y = 0; y < this.s.settings.world_height; y++) {
                 var t = this.s.world.get_terrain(x, y);
-                var o = t.get_slot_object();
-                if (o!=null){
-                    ctx.fillStyle = o.get_color();
-                    ctx.fillRect(x * this.x_step, y * this.y_step, this.x_step, this.y_step);
-                }
+                ctx.fillStyle = t.get_color();
+                ctx.fillRect(x * this.x_step, y * this.y_step, this.x_step, this.y_step);
 
             }
         }

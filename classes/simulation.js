@@ -3,9 +3,12 @@ class Simulation {
     constructor(canvas, canvas2) {
         this.running = false;
         this.settings = new Settings();
-        this.world = new World(this.settings.world_width,this.settings.world_height);
+        this.world = new World(this, this.settings.world_width,this.settings.world_height);
         this.active_objects = [];
         this.drawer = new Drawer(this, canvas, canvas2);
+        this.draw_mode = 0;
+
+        this.init_eprobots();
     }
 
     startSimulation(){
@@ -21,27 +24,34 @@ class Simulation {
         return this.running;
     }
 
+    set_draw_mode(dm){
+        this.draw_mode = dm;
+    }
+
+    init_eprobots(){
+        for (let i = 0; i<50;i++){
+            var program = [];
+            for (var pi = 0; pi < this.settings.PROGRAM_LENGTH; pi++) {
+                var val = tools_random(this.settings.PROGRAM_LENGTH * 10) - this.settings.PROGRAM_LENGTH;
+                program.push(val);
+            }
+
+            var init_data = [];
+            for (var di = 0; di < this.settings.DATA_LENGTH; di++) {
+                var val = tools_random2(-720, 720);
+                init_data.push(val);
+            }
+            let ep = new Eprobot(this, this.settings.nest_x+tools_random2(-20,20), this.settings.nest_y+tools_random2(-20,20), program, init_data);
+            this.active_objects.push(ep);
+        }
+    }
+
     simulation_step(){
         let t_start = new Date().getTime();
 
-        if (this.world.counter_eprobot == 0){
-            for (let i = 0; i<50;i++){
-                var program = [];
-                for (var pi = 0; pi < this.settings.PROGRAM_LENGTH; pi++) {
-                    var val = tools_random(this.settings.PROGRAM_LENGTH * 10) - this.settings.PROGRAM_LENGTH;
-                    program.push(val);
-                }
-
-                var init_data = [];
-                for (var di = 0; di < this.settings.DATA_LENGTH; di++) {
-                    var val = tools_random2(-720, 720);
-                    init_data.push(val);
-                }
-                let ep = new Eprobot(this, this.settings.nest_x+tools_random2(-20,20), this.settings.nest_y+tools_random2(-20,20), program, init_data);
-                this.active_objects.push(ep);
-            }
-
-        }
+        //if (this.world.counter_eprobot == 0){
+        //    this.init_eprobots();
+        //}
 
         let active_objects_next = [];
 
@@ -73,18 +83,39 @@ class Simulation {
     }
 
     correct_pos_width(x_pos){
-        if (x_pos>=0){
-            return x_pos % this.settings.world_width;
+        if (this.settings.beam_at_borders){
+            if (x_pos>=0){
+                return x_pos % this.settings.world_width;
+            }else{
+                return this.settings.world_width - (Math.abs(x_pos) % this.settings.world_width);
+            }
         }else{
-            return this.settings.world_width - (Math.abs(x_pos) % this.settings.world_width);
+            if (x_pos >= this.settings.world_width){
+                return this.settings.world_width - 1;
+            }else if (x_pos < 0){
+                return 0;
+            }else{
+                return x_pos;
+            }
         }
+
     }
 
     correct_pos_height(y_pos){
-        if (y_pos>=0){
-            return y_pos % this.settings.world_height;
+        if (this.settings.beam_at_borders) {
+            if (y_pos >= 0) {
+                return y_pos % this.settings.world_height;
+            } else {
+                return this.settings.world_height - (Math.abs(y_pos) % this.settings.world_height);
+            }
         }else{
-            return this.settings.world_height - (Math.abs(y_pos) % this.settings.world_height);
+            if (y_pos >= this.settings.world_height){
+                return this.settings.world_height - 1;
+            }else if (y_pos < 0){
+                return 0;
+            }else{
+                return y_pos;
+            }
         }
     }
 }

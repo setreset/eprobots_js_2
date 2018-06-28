@@ -1,6 +1,7 @@
 var OBJECTTYPES = {
     PLANT: 0,
-    EPROBOT: 1
+    EPROBOT: 1,
+    BARRIER: 2
 }
 
 var DIRECTIONS = [
