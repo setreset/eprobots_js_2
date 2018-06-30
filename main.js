@@ -1,4 +1,4 @@
-var s = null;
+var simulation = null;
 
 $(document).ready(function() {
     console.log("ready");
@@ -53,8 +53,8 @@ $(document).ready(function() {
 
     var simulation_canvas = document.getElementById('canvas');
     var simulation_canvas2 = document.getElementById('canvas2');
-    var simulation = new Simulation(simulation_canvas, simulation_canvas2);
-    s = simulation;
+    simulation = new Simulation(simulation_canvas, simulation_canvas2);
+    simulation.init_eprobots();
     simulation.drawer.paint_fast();
 
     function getMousePos(canvas_rect, evt) {
@@ -102,13 +102,13 @@ $(document).ready(function() {
     simulation_canvas.addEventListener("click", clickcanvas);
     //simulation_canvas.addEventListener("dblclick", toggleFullscreen);
 
-    document.getElementById('colorpicker-green').addEventListener("click", function(e){
-        console.log("gruen selektiert");
+    document.getElementById('colorpicker-plant').addEventListener("click", function(e){
+        console.log("plant selektiert");
         simulation.set_draw_mode(OBJECTTYPES.PLANT);
     });
 
-    document.getElementById('colorpicker-black').addEventListener("click", function(e){
-        console.log("schwarz selektiert");
+    document.getElementById('colorpicker-barrier').addEventListener("click", function(e){
+        console.log("barrier selektiert");
         simulation.set_draw_mode(OBJECTTYPES.BARRIER);
     });
 
@@ -116,6 +116,24 @@ $(document).ready(function() {
 
     $("#btn_reset").on("click", function(e){
 
+    });
+
+    $("#btn_load").on("click", function(e){
+        var simsavestate = $("#simsavestate").val();
+        var simsavestateobj = JSON.parse(simsavestate);
+
+        // neue simulation initialisieren
+        simulation = new Simulation(simulation_canvas, simulation_canvas2);
+        simulation.loadState(simsavestateobj);
+
+        simulation.drawer.paint_fast();
+        //simulation.drawer.paint_full();
+    });
+
+    $("#btn_save").on("click", function(e){
+        var simsavestate = JSON.stringify(simulation);
+        //var simsavestate = JSON.stringify(simulation, null, '  ');
+        $("#simsavestate").val(simsavestate);
     });
 
     $("#btn_fullscreen").on("click", toggleFullscreen);

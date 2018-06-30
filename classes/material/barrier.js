@@ -14,6 +14,6 @@ class Barrier {
     }
 
     get_color(){
-        return "rgb(0, 0, 0)";
+        return "rgb(255, 255, 255)";
     }
 }

@@ -4,8 +4,8 @@ class Drawer {
         this.s = s;
         this.canvas = canvas;
         this.canvas2 = canvas2;
-        this.canvas_ctx = canvas.getContext('2d');
-        this.canvas2_ctx = canvas2.getContext('2d');
+        this.canvas_ctx = canvas.getContext('2d', {alpha: false});
+        this.canvas2_ctx = canvas2.getContext('2d', {alpha: false});
         this.x_step = null;
         this.y_step = null;
 
@@ -19,18 +19,20 @@ class Drawer {
         let c_w = rect.width;
         let c_h = rect.height;
 
+        this.x_step = c_w / this.s.settings.world_width;
+        this.y_step = c_h / this.s.settings.world_height;
+
         this.canvas.width = c_w;
         this.canvas.height = c_h;
 
         this.canvas2.width = c_w;
         this.canvas2.height = c_h;
 
-        this.x_step = c_w / this.s.settings.world_width;
-        this.y_step = c_h / this.s.settings.world_height;
-        //console.log(this.x_step);
-
         this.canvas_ctx.fillStyle = this.s.settings.background_color;
-        this.canvas_ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.canvas_ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.canvas2_ctx.fillStyle = this.s.settings.background_color;
+        this.canvas2_ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
     paint_full(){
@@ -65,8 +67,7 @@ class Drawer {
 
     _paint_full(ctx){
         //this.canvas_ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        ctx.clearRect(0, 0, this.canvas2.width, this.canvas2.height);
+        //ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         for (var x=0;x<this.s.settings.world_width;x++) {
             for (var y = 0; y < this.s.settings.world_height; y++) {

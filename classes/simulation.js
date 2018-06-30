@@ -7,8 +7,6 @@ class Simulation {
         this.active_objects = [];
         this.drawer = new Drawer(this, canvas, canvas2);
         this.draw_mode = 0;
-
-        this.init_eprobots();
     }
 
     startSimulation(){

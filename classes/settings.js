@@ -14,7 +14,7 @@ class Settings {
         this.eprobots_max = 300;
         this.eprobots_lifetime = 400;
         this.eprobots_fossiltime = 400;
-        this.PROGRAM_LENGTH = 1000;
+        this.PROGRAM_LENGTH = 500;
         this.DATA_LENGTH = 20;
         this.PROGRAM_STEPS = 1000;
         this.MUTATE_POSSIBILITY = 0.01;

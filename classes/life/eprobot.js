@@ -62,8 +62,8 @@ class Eprobot {
     }
 
     step(){
-        let moveval = this.get_move();
-        //let moveval = this.get_move_OISC();
+        //let moveval = this.get_move();
+        let moveval = this.get_move_OISC();
 
         // move
         if (moveval<DIRECTIONS.length){
