@@ -59,9 +59,28 @@ class Simulation {
         this.active_objects.forEach(function(o) {
             if (o.is_dead) return;
             if (o.tick < o.get_lifetime()){
-                let new_life = o.step();
-                if (new_life != null){
-                    active_objects_next.push(new_life);
+                let x_pos_before = o.x_pos;
+                let y_pos_before = o.y_pos;
+
+                o.working_data[this.settings.DATA_LENGTH-4] = o.tick;
+                o.working_data[this.settings.DATA_LENGTH-3] = o.energy;
+
+                o.step();
+
+                if (x_pos_before != o.x_pos){
+                    o.working_data[this.settings.DATA_LENGTH-2] = 1;
+                }else{
+                    o.working_data[this.settings.DATA_LENGTH-2] = 0;
+                }
+                if (y_pos_before != o.y_pos){
+                    o.working_data[this.settings.DATA_LENGTH-1] = 1;
+                }else{
+                    o.working_data[this.settings.DATA_LENGTH-1] = 0;
+                }
+
+                if (o.new_eprobot){
+                    active_objects_next.push(o.new_eprobot);
+                    o.new_eprobot = null;
                 }
                 active_objects_next.push(o);
             }else{

@@ -70,32 +70,37 @@ $(document).ready(function() {
         var mousePos = getMousePos(canvas_rect, e);
         //console.log("x:" + mousePos.x + " y:" + mousePos.y);
 
-        let world_x = parseInt(tools_map_range(mousePos.x,0,canvas_rect.width, 0, simulation.settings.world_width));
-        let world_y = parseInt(tools_map_range(mousePos.y,0,canvas_rect.height, 0, simulation.settings.world_height));
-        //console.log("x_world:" + world_x + " y_world:" + world_y);
-        let t = simulation.world.get_terrain(world_x, world_y);
-        if (simulation.draw_mode == OBJECTTYPES.PLANT){
-            if (t.energy_object == null){
-                let p = new Plant(simulation, world_x, world_y);
-                //simulation.active_objects.push(p);
-                simulation.drawer.paint_fast();
-            }else{
-                console.log("besetzt");
-            }
-        }else if (simulation.draw_mode == OBJECTTYPES.BARRIER){
-            if (t.slot_object == null){
-                new Barrier(simulation, world_x, world_y);
-                //simulation.active_objects.push(p);
-                simulation.drawer.paint_fast();
-            }else{
-                console.log("besetzt");
+        // hot corner
+        if (mousePos.x>=canvas_rect.width-30 && mousePos.y>=canvas_rect.height-30){
+            toggleFullscreen();
+        }else{
+            let world_x = parseInt(tools_map_range(mousePos.x,0,canvas_rect.width, 0, simulation.settings.world_width));
+            let world_y = parseInt(tools_map_range(mousePos.y,0,canvas_rect.height, 0, simulation.settings.world_height));
+            //console.log("x_world:" + world_x + " y_world:" + world_y);
+            let t = simulation.world.get_terrain(world_x, world_y);
+            if (simulation.draw_mode == OBJECTTYPES.PLANT){
+                if (t.energy_object == null){
+                    let p = new Plant(simulation, world_x, world_y);
+                    //simulation.active_objects.push(p);
+                    simulation.drawer.paint_fast();
+                }else{
+                    console.log("besetzt");
+                }
+            }else if (simulation.draw_mode == OBJECTTYPES.BARRIER){
+                if (t.slot_object == null){
+                    new Barrier(simulation, world_x, world_y);
+                    //simulation.active_objects.push(p);
+                    simulation.drawer.paint_fast();
+                }else{
+                    console.log("besetzt");
+                }
             }
         }
 
     }
 
     simulation_canvas.addEventListener("click", clickcanvas);
-    simulation_canvas.addEventListener("dblclick", toggleFullscreen);
+    //simulation_canvas.addEventListener("dblclick", toggleFullscreen);
 
     document.getElementById('colorpicker-green').addEventListener("click", function(e){
         console.log("gruen selektiert");
