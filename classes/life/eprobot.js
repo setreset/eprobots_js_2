@@ -14,9 +14,6 @@ class Eprobot {
         this.init_data = init_data;
         this.working_data = init_data.slice(0);
 
-        this.s.world.world_set(this);
-        this.s.world.counter_eprobot++;
-
         this.new_eprobot = null;
     }
 
@@ -30,12 +27,6 @@ class Eprobot {
 
     get_lifetime(){
         return this.s.settings.eprobots_lifetime;
-    }
-
-    kill(){
-        this.s.world.world_unset(this.x_pos, this.y_pos);
-        this.s.world.counter_eprobot--;
-        this.is_dead = true;
     }
 
     get_move(){
@@ -61,6 +52,16 @@ class Eprobot {
         return move;
     }
 
+    move(new_x, new_y){
+        let old_pos_x = this.x_pos;
+        let old_pos_y = this.y_pos;
+
+        this.x_pos = new_x;
+        this.y_pos = new_y;
+
+        this.s.world.world_move(this, old_pos_x, old_pos_y);
+    }
+
     step(){
         //let moveval = this.get_move();
         let moveval = this.get_move_OISC();
@@ -73,8 +74,8 @@ class Eprobot {
 
             let t = this.s.world.get_terrain(movepos_x, movepos_y);
             let slot_object = t.get_slot_object();
-            let energy_object = t.get_energy_object();
             if (slot_object == null){
+                let energy_object = t.get_energy_object();
                 if (energy_object){
                     //slot_object.kill();
                     this.energy++;
@@ -84,10 +85,8 @@ class Eprobot {
                         console.log(new Date()+": entferne pflanze");
                     }
                 }
-                this.s.world.world_unset(this.x_pos, this.y_pos);
-                this.x_pos = movepos_x;
-                this.y_pos = movepos_y;
-                this.s.world.world_set(this);
+
+                this.move(movepos_x, movepos_y);
             }
         }
 
@@ -104,6 +103,7 @@ class Eprobot {
                 var new_program = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program);
                 var new_data = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data);
                 this.new_eprobot = new Eprobot(this.s, spreadpos_x, spreadpos_y, new_program, new_data);
+                this.s.world.world_set(this.new_eprobot);
                 this.energy--;
             }
         }

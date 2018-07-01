@@ -81,6 +81,7 @@ $(document).ready(function() {
             if (simulation.draw_mode == OBJECTTYPES.PLANT){
                 if (t.energy_object == null){
                     let p = new Plant(simulation, world_x, world_y);
+                    simulation.world.world_set_energy(p);
                     //simulation.active_objects.push(p);
                     simulation.drawer.paint_fast();
                 }else{
@@ -88,7 +89,8 @@ $(document).ready(function() {
                 }
             }else if (simulation.draw_mode == OBJECTTYPES.BARRIER){
                 if (t.slot_object == null){
-                    new Barrier(simulation, world_x, world_y);
+                    let b = new Barrier(simulation, world_x, world_y);
+                    simulation.world.world_set(b);
                     //simulation.active_objects.push(p);
                     simulation.drawer.paint_fast();
                 }else{

@@ -5,8 +5,6 @@ class Barrier {
         this.y_pos = y_pos;
 
         this.s = s;
-
-        this.s.world.world_set(this);
     }
 
     get_id(){

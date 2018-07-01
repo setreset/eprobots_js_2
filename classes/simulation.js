@@ -40,6 +40,7 @@ class Simulation {
                 init_data.push(val);
             }
             let ep = new Eprobot(this, this.settings.nest_x+tools_random2(-20,20), this.settings.nest_y+tools_random2(-20,20), program, init_data);
+            this.world.world_set(ep);
             this.active_objects.push(ep);
         }
     }
@@ -82,7 +83,8 @@ class Simulation {
                 }
                 active_objects_next.push(o);
             }else{
-                o.kill();
+                this.world.world_unset(o.x_pos, o.y_pos, o.get_id());
+                o.is_dead = true;
             }
         }, this);
 
