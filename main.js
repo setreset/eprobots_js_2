@@ -54,7 +54,8 @@ $(document).ready(function() {
     var simulation_canvas = document.getElementById('canvas');
     var simulation_canvas2 = document.getElementById('canvas2');
     simulation = new Simulation(simulation_canvas, simulation_canvas2);
-    simulation.init_eprobots();
+    simulation.init();
+    //simulation.init_eprobots();
     simulation.drawer.paint_fast();
 
     function getMousePos(canvas_rect, evt) {

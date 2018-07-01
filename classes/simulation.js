@@ -2,11 +2,33 @@ class Simulation {
 
     constructor(canvas, canvas2) {
         this.running = false;
+        this.draw_mode = 0;
+    }
+
+    init(){
         this.settings = new Settings();
         this.world = new World(this, this.settings.world_width,this.settings.world_height);
         this.active_objects = [];
         this.drawer = new Drawer(this, canvas, canvas2);
-        this.draw_mode = 0;
+    }
+
+    loadState(simstate){
+        this.settings = new Settings();
+        this.settings.loadState(simstate.settings);
+
+        //this.world = new World(this);
+        //this.world.loadState(simstate.world);
+
+        //
+        //eprobots_h = [];
+        //eprobots_c = [];
+        //
+        //for (var i = 0; i< simstate.eprobots_h.length; i++){
+        //    var e_state = simstate.eprobots_h[i];
+        //    var e = new Herbivore(sim, e_state.x_pos, e_state.y_pos, e_state.init_programm);
+        //    e.loadState(e_state);
+        //    eprobots_h.push(e);
+        //}
     }
 
     toJSON(){
