@@ -3,21 +3,46 @@ class Simulation {
     constructor(canvas, canvas2) {
         this.running = false;
         this.draw_mode = 0;
+        this.canvas = canvas;
+        this.canvas2 = canvas2
     }
 
     init(){
         this.settings = new Settings();
         this.world = new World(this, this.settings.world_width,this.settings.world_height);
         this.active_objects = [];
-        this.drawer = new Drawer(this, canvas, canvas2);
+        this.drawer = new Drawer(this, this.canvas, this.canvas2);
     }
 
     loadState(simstate){
         this.settings = new Settings();
         this.settings.loadState(simstate.settings);
 
-        //this.world = new World(this);
-        //this.world.loadState(simstate.world);
+        this.world = new World(this, this.settings.world_width,this.settings.world_height);
+
+        simstate.world_objects.forEach(function(o) {
+            if (o.id == OBJECTTYPES.PLANT){
+                let p = new Plant(this);
+                p.energy_count = o.energy_count;
+                this.world.world_set_energy(p, o.x_pos, o.y_pos);
+            }else if (o.id == OBJECTTYPES.BARRIER){
+                let b = new Barrier(this);
+                this.world.world_set(b, o.x_pos, o.y_pos);
+            }
+        }, this);
+
+        this.active_objects = [];
+
+        simstate.active_objects.forEach(function(o) {
+            let ep = new Eprobot(this, o.program, o.init_data);
+            ep.tick = o.tick;
+            ep.energy = o.energy;
+            ep.working_data = o.working_data;
+            this.world.world_set(ep, o.x_pos, o.y_pos);
+            this.active_objects.push(ep);
+        }, this);
+
+        this.drawer = new Drawer(this, this.canvas, this.canvas2);
 
         //
         //eprobots_h = [];
@@ -32,10 +57,24 @@ class Simulation {
     }
 
     toJSON(){
+        // collect world objects
+        let world_objects = [];
+        for (var x=0;x<this.settings.world_width;x++){
+            for (var y=0;y<this.settings.world_height;y++){
+                let t = this.world.get_terrain(x, y);
+                if (t.energy_object){
+                    world_objects.push(t.energy_object);
+                }
+                if (t.slot_object && t.slot_object.get_id() == OBJECTTYPES.BARRIER){
+                    world_objects.push(t.slot_object);
+                }
+            }
+        }
+
         return {
             settings: this.settings,
-            world: this.world,
-            active_objects: this.active_objects,
+            world_objects: world_objects,
+            active_objects: this.active_objects
         };
     }
 

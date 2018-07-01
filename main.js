@@ -139,5 +139,21 @@ $(document).ready(function() {
         $("#simsavestate").val(simsavestate);
     });
 
+    $("#btn_load_from_localstorage").on("click", function(e){
+        var simsavestate = localStorage.getItem('simsavestate');
+        var simsavestateobj = JSON.parse(simsavestate);
+
+        // neue simulation initialisieren
+        simulation = new Simulation(simulation_canvas, simulation_canvas2);
+        simulation.loadState(simsavestateobj);
+
+        simulation.drawer.paint_fast();
+    });
+
+    $("#btn_save_to_localstorage").on("click", function(e){
+        var simsavestate = JSON.stringify(simulation);
+        localStorage.setItem("simsavestate", simsavestate);
+    });
+
     $("#btn_fullscreen").on("click", toggleFullscreen);
 });

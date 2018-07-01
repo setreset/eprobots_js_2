@@ -8,7 +8,9 @@ class Barrier {
 
     toJSON(){
         return {
-            id: this.get_id()
+            id: this.get_id(),
+            x_pos: this.t.x,
+            y_pos: this.t.y,
         };
     }
 

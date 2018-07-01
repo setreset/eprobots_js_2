@@ -21,8 +21,8 @@ class Eprobot {
             id: this.get_id(),
             tick: this.tick,
             energy: this.energy,
-            x_pos: this.x_pos,
-            y_pos: this.y_pos,
+            x_pos: this.t.x,
+            y_pos: this.t.y,
 
             program: this.program,
             init_data: this.init_data,

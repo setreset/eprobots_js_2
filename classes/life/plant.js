@@ -10,6 +10,8 @@ class Plant {
     toJSON(){
         return {
             id: this.get_id(),
+            x_pos: this.t.x,
+            y_pos: this.t.y,
             energy_count: this.energy_count
         };
     }
