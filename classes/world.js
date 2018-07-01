@@ -19,6 +19,12 @@ class World {
         this.paintobj = {};
     }
 
+    toJSON(){
+        return {
+            worldarr: this.worldarr
+        };
+    }
+
     get_terrain(x, y){
         return this.worldarr[x][y];
     }

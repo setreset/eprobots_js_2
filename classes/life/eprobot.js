@@ -17,6 +17,20 @@ class Eprobot {
         this.new_eprobot = null;
     }
 
+    toJSON(){
+        return {
+            id: this.get_id(),
+            tick: this.tick,
+            energy: this.energy,
+            x_pos: this.x_pos,
+            y_pos: this.y_pos,
+
+            program: this.program,
+            init_data: this.init_data,
+            working_data: this.working_data
+        };
+    }
+
     get_id(){
         return OBJECTTYPES.EPROBOT;
     }

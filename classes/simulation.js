@@ -9,6 +9,14 @@ class Simulation {
         this.draw_mode = 0;
     }
 
+    toJSON(){
+        return {
+            settings: this.settings,
+            world: this.world,
+            active_objects: this.active_objects,
+        };
+    }
+
     startSimulation(){
         this.running = true;
         this.simulation_step();

@@ -7,6 +7,12 @@ class Barrier {
         this.s = s;
     }
 
+    toJSON(){
+        return {
+            id: this.get_id()
+        };
+    }
+
     get_id(){
         return OBJECTTYPES.BARRIER;
     }

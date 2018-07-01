@@ -8,6 +8,13 @@ class Plant {
         this.energy_count = 130000; //1000;
     }
 
+    toJSON(){
+        return {
+            id: this.get_id(),
+            energy_count: this.energy_count
+        };
+    }
+
     get_id(){
         return OBJECTTYPES.PLANT;
     }

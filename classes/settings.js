@@ -6,8 +6,8 @@ class Settings {
     constructor() {
         this.background_color = "#000000";
         this.beam_at_borders = false;
-        this.world_width = 360;
-        this.world_height = 225;
+        this.world_width = 200;
+        this.world_height = 200;
         this.sleeptime = 25;
         this.plants_max = 500;
         this.plants_lifetime = 250;
@@ -21,5 +21,13 @@ class Settings {
         this.MUTATE_STRENGTH = 400;
         this.nest_x = 50;
         this.nest_y = 50;
+    }
+
+    toJSON(){
+        var settings_o = {};
+        Object.entries(this).forEach(function(o) {
+            settings_o[o[0]] = o[1];
+        }, this);
+        return settings_o;
     }
 }
