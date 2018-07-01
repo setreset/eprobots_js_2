@@ -69,8 +69,10 @@ class Simulation {
                 var val = tools_random2(-720, 720);
                 init_data.push(val);
             }
-            let ep = new Eprobot(this, this.settings.nest_x+tools_random2(-20,20), this.settings.nest_y+tools_random2(-20,20), program, init_data);
-            this.world.world_set(ep);
+            let x = this.settings.nest_x+tools_random2(-20,20);
+            let y = this.settings.nest_y+tools_random2(-20,20);
+            let ep = new Eprobot(this, program, init_data);
+            this.world.world_set(ep, x, y);
             this.active_objects.push(ep);
         }
     }
@@ -88,20 +90,20 @@ class Simulation {
         this.active_objects.forEach(function(o) {
             if (o.is_dead) return;
             if (o.tick < o.get_lifetime()){
-                let x_pos_before = o.x_pos;
-                let y_pos_before = o.y_pos;
+                let x_pos_before = o.t.x;
+                let y_pos_before = o.t.y;
 
                 o.working_data[this.settings.DATA_LENGTH-4] = o.tick;
                 o.working_data[this.settings.DATA_LENGTH-3] = o.energy;
 
                 o.step();
 
-                if (x_pos_before != o.x_pos){
+                if (x_pos_before != o.t.x){
                     o.working_data[this.settings.DATA_LENGTH-2] = 1;
                 }else{
                     o.working_data[this.settings.DATA_LENGTH-2] = 0;
                 }
-                if (y_pos_before != o.y_pos){
+                if (y_pos_before != o.t.y){
                     o.working_data[this.settings.DATA_LENGTH-1] = 1;
                 }else{
                     o.working_data[this.settings.DATA_LENGTH-1] = 0;
@@ -113,7 +115,7 @@ class Simulation {
                 }
                 active_objects_next.push(o);
             }else{
-                this.world.world_unset(o.x_pos, o.y_pos, o.get_id());
+                this.world.world_unset(o.t.x, o.t.y, o.get_id());
                 o.is_dead = true;
             }
         }, this);

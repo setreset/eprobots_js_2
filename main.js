@@ -55,7 +55,7 @@ $(document).ready(function() {
     var simulation_canvas2 = document.getElementById('canvas2');
     simulation = new Simulation(simulation_canvas, simulation_canvas2);
     simulation.init();
-    //simulation.init_eprobots();
+    simulation.init_eprobots();
     simulation.drawer.paint_fast();
 
     function getMousePos(canvas_rect, evt) {
@@ -81,8 +81,8 @@ $(document).ready(function() {
             let t = simulation.world.get_terrain(world_x, world_y);
             if (simulation.draw_mode == OBJECTTYPES.PLANT){
                 if (t.energy_object == null){
-                    let p = new Plant(simulation, world_x, world_y);
-                    simulation.world.world_set_energy(p);
+                    let p = new Plant(simulation);
+                    simulation.world.world_set_energy(p, world_x, world_y);
                     //simulation.active_objects.push(p);
                     simulation.drawer.paint_fast();
                 }else{
@@ -90,8 +90,8 @@ $(document).ready(function() {
                 }
             }else if (simulation.draw_mode == OBJECTTYPES.BARRIER){
                 if (t.slot_object == null){
-                    let b = new Barrier(simulation, world_x, world_y);
-                    simulation.world.world_set(b);
+                    let b = new Barrier(simulation);
+                    simulation.world.world_set(b, world_x, world_y);
                     //simulation.active_objects.push(p);
                     simulation.drawer.paint_fast();
                 }else{

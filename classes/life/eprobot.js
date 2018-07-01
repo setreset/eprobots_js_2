@@ -1,8 +1,7 @@
 class Eprobot {
 
-    constructor(s, x_pos, y_pos, program, init_data) {
-        this.x_pos = x_pos;
-        this.y_pos = y_pos;
+    constructor(s, program, init_data) {
+        this.t = null;
 
         this.s = s;
         this.tick = 0;
@@ -66,14 +65,11 @@ class Eprobot {
         return move;
     }
 
-    move(new_x, new_y){
-        let old_pos_x = this.x_pos;
-        let old_pos_y = this.y_pos;
+    move(new_pos_x, new_pos_y){
+        let old_pos_x = this.t.x;
+        let old_pos_y = this.t.y;
 
-        this.x_pos = new_x;
-        this.y_pos = new_y;
-
-        this.s.world.world_move(this, old_pos_x, old_pos_y);
+        this.s.world.world_move(this, old_pos_x, old_pos_y, new_pos_x, new_pos_y);
     }
 
     step(){
@@ -83,8 +79,8 @@ class Eprobot {
         // move
         if (moveval<DIRECTIONS.length){
             let vec = DIRECTIONS[moveval];
-            let movepos_x = this.s.correct_pos_width(this.x_pos + vec.x);
-            let movepos_y = this.s.correct_pos_height(this.y_pos + vec.y);
+            let movepos_x = this.s.correct_pos_width(this.t.x + vec.x);
+            let movepos_y = this.s.correct_pos_height(this.t.y + vec.y);
 
             let t = this.s.world.get_terrain(movepos_x, movepos_y);
             let slot_object = t.get_slot_object();
@@ -108,16 +104,16 @@ class Eprobot {
             // new eprobot
             let spreadval = tools_random(8);
             let vec = DIRECTIONS[spreadval];
-            let spreadpos_x = this.s.correct_pos_width(this.x_pos + vec.x);
-            let spreadpos_y = this.s.correct_pos_height(this.y_pos + vec.y);
+            let spreadpos_x = this.s.correct_pos_width(this.t.x + vec.x);
+            let spreadpos_y = this.s.correct_pos_height(this.t.y + vec.y);
             //let spreadpos_x = this.s.settings.nest_x+tools_random2(-20,20);
             //let spreadpos_y = this.s.settings.nest_y+tools_random2(-20,20);
             let spreadterrain = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
             if (spreadterrain.slot_object == null){
                 var new_program = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program);
                 var new_data = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data);
-                this.new_eprobot = new Eprobot(this.s, spreadpos_x, spreadpos_y, new_program, new_data);
-                this.s.world.world_set(this.new_eprobot);
+                this.new_eprobot = new Eprobot(this.s, new_program, new_data);
+                this.s.world.world_set(this.new_eprobot, spreadpos_x, spreadpos_y);
                 this.energy--;
             }
         }

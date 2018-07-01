@@ -1,8 +1,7 @@
 class Barrier {
 
-    constructor(s, x_pos, y_pos) {
-        this.x_pos = x_pos;
-        this.y_pos = y_pos;
+    constructor(s) {
+        this.t = null;
 
         this.s = s;
     }
