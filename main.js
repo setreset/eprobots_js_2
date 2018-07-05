@@ -31,11 +31,11 @@ $(document).ready(function() {
 
     function toggleRun() {
         if (simulation.getRunning()){
-            simulation.stopSimulation();
+            simulation.stop_simulation();
             $("#btn_reset").removeAttr("disabled");
             $("#btn_start").text("Start");
         }else{
-            simulation.startSimulation();
+            simulation.start_simulation();
             $("#btn_reset").attr("disabled", "disabled");
             $("#btn_start").text("Stop");
         }

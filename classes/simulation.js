@@ -78,12 +78,14 @@ class Simulation {
         };
     }
 
-    startSimulation(){
+    start_simulation(){
+        this.time_start = new Date();
+
         this.running = true;
         this.simulation_step();
     }
 
-    stopSimulation(){
+    stop_simulation(){
         this.running = false;
     }
 
@@ -119,9 +121,13 @@ class Simulation {
     simulation_step(){
         let t_start = new Date().getTime();
 
-        //if (this.world.counter_eprobot == 0){
-        //    this.init_eprobots();
-        //}
+        if (this.world.counter_eprobot == 0){
+            //this.init_eprobots();
+            console.log("died");
+            var duration = (new Date()-this.time_start)/1000;
+            console.log("duration seconds: "+duration);
+            this.stop_simulation();
+        }
 
         let active_objects_next = [];
 
