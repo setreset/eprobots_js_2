@@ -138,8 +138,16 @@ class Simulation {
                 let x_pos_before = o.t.x;
                 let y_pos_before = o.t.y;
 
-                o.working_data[this.settings.DATA_LENGTH-4] = o.tick;
-                o.working_data[this.settings.DATA_LENGTH-3] = o.energy;
+                if (o.t.energy_object){
+                    o.working_data[this.settings.DATA_LENGTH-7] = 1;
+                }else{
+                    o.working_data[this.settings.DATA_LENGTH-7] = 0;
+                }
+
+                o.working_data[this.settings.DATA_LENGTH-6] = o.tick;
+                o.working_data[this.settings.DATA_LENGTH-5] = o.energy;
+                o.working_data[this.settings.DATA_LENGTH-4] = o.t.x;
+                o.working_data[this.settings.DATA_LENGTH-3] = o.t.y;
 
                 o.step();
 
