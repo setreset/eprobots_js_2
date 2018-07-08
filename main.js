@@ -1,7 +1,29 @@
 var simulation = null;
 
+function toggleRun() {
+    if (simulation.getRunning()){
+        $("#btn_reset").removeAttr("disabled");
+        $("#btn_start").text("Start");
+        simulation.stop_simulation();
+    }else{
+        $("#btn_reset").attr("disabled", "disabled");
+        $("#btn_start").text("Stop");
+        simulation.start_simulation();
+    }
+}
+
 $(document).ready(function() {
     console.log("ready");
+
+    if (typeof Math.seedrandom === "function") {
+        console.log("Math.seedrandom vorhanden");
+        //var seed = makeid(8);
+        var seed="abc";
+        console.log("seedRandom: "+ seed);
+        Math.seedrandom(seed);
+    }else{
+        console.log("Math.seedrandom nicht vorhanden");
+    }
 
     function toggleFullscreen() {
         var elem = document.getElementById('canvas');
@@ -29,18 +51,6 @@ $(document).ready(function() {
         }
     }
 
-    function toggleRun() {
-        if (simulation.getRunning()){
-            simulation.stop_simulation();
-            $("#btn_reset").removeAttr("disabled");
-            $("#btn_start").text("Start");
-        }else{
-            simulation.start_simulation();
-            $("#btn_reset").attr("disabled", "disabled");
-            $("#btn_start").text("Stop");
-        }
-    }
-
     document.addEventListener('fullscreenchange', on_fullscreen_change);
     document.addEventListener('mozfullscreenchange', on_fullscreen_change);
     document.addEventListener('webkitfullscreenchange', on_fullscreen_change);
@@ -51,8 +61,8 @@ $(document).ready(function() {
         simulation.drawer.paint_full();
     }
 
-    var simulation_canvas = document.getElementById('canvas');
-    var simulation_canvas2 = document.getElementById('canvas2');
+    simulation_canvas = document.getElementById('canvas');
+    simulation_canvas2 = document.getElementById('canvas2');
     simulation = new Simulation(simulation_canvas, simulation_canvas2);
     simulation.init();
     simulation.init_eprobots();
@@ -118,7 +128,15 @@ $(document).ready(function() {
     $("#btn_start").on("click", toggleRun);
 
     $("#btn_reset").on("click", function(e){
+        simulation = new Simulation(simulation_canvas, simulation_canvas2);
+        simulation.init();
+        simulation.init_eprobots();
+        simulation.drawer.paint_fast();
+    });
 
+    $("#btn_init_eprobots").on("click", function(e){
+        simulation.init_eprobots();
+        simulation.drawer.paint_fast();
     });
 
     $("#btn_load").on("click", function(e){

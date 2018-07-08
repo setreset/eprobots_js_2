@@ -5,6 +5,7 @@ class Simulation {
         this.draw_mode = 0;
         this.canvas = canvas;
         this.canvas2 = canvas2
+        this.steps = 0;
     }
 
     init(){
@@ -112,9 +113,11 @@ class Simulation {
             }
             let x = this.settings.nest_x+tools_random2(-20,20);
             let y = this.settings.nest_y+tools_random2(-20,20);
-            let ep = new Eprobot(this, program, init_data);
-            this.world.world_set(ep, x, y);
-            this.active_objects.push(ep);
+            if (this.world.get_terrain(x,y).slot_object==null){
+                let ep = new Eprobot(this, program, init_data);
+                this.world.world_set(ep, x, y);
+                this.active_objects.push(ep);
+            }
         }
     }
 
@@ -126,7 +129,9 @@ class Simulation {
             console.log("died");
             var duration = (new Date()-this.time_start)/1000;
             console.log("duration seconds: "+duration);
-            this.stop_simulation();
+            console.log("steps: "+this.steps);
+            toggleRun();
+            return;
         }
 
         let active_objects_next = [];
@@ -180,6 +185,7 @@ class Simulation {
 
         this.drawer.paint_fast();
 
+        this.steps++;
         if (this.running) {
             let st = this.settings.sleeptime - frame_time;
             setTimeout(()=>{this.simulation_step()}, st);

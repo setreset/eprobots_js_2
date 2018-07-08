@@ -72,3 +72,13 @@ function tools_mutate(mutate_possibility, mutate_strength, memory) {
 
     return new_memory;
 }
+
+function makeid(nchars){
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < nchars; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
