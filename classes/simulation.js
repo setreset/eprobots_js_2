@@ -137,7 +137,9 @@ class Simulation {
         let active_objects_next = [];
 
         //this.drawer.paint_fast();
-        this.active_objects.forEach(function(o) {
+        let eprobots_with_energy = [];
+        shuffle(this.active_objects);
+        for (let o of this.active_objects) {
             if (o.is_dead) return;
             if (o.tick < o.get_lifetime()){
                 let x_pos_before = o.t.x;
@@ -167,16 +169,35 @@ class Simulation {
                     o.working_data[this.settings.DATA_LENGTH-1] = 0;
                 }
 
-                if (o.new_eprobot){
-                    active_objects_next.push(o.new_eprobot);
-                    o.new_eprobot = null;
+                if (o.energy >= 5){
+                    eprobots_with_energy.push(o);
                 }
                 active_objects_next.push(o);
+
             }else{
                 this.world.world_unset(o.t.x, o.t.y, o.get_id());
                 o.is_dead = true;
             }
-        }, this);
+        }
+
+        // absteigend sortieren
+        eprobots_with_energy.sort(function(a, b){return b.energy - a.energy});
+
+        // fork
+        for (let o of eprobots_with_energy) {
+            let new_eprobot = null;
+            if (this.world.counter_eprobot<this.settings.eprobots_max){
+                new_eprobot = o.fork()
+            }else{
+                break;
+            }
+
+            if (new_eprobot){
+                active_objects_next.push(new_eprobot);
+            }
+        }
+
+
 
         this.active_objects = active_objects_next;
 

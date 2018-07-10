@@ -12,8 +12,6 @@ class Eprobot {
 
         this.init_data = init_data;
         this.working_data = init_data.slice(0);
-
-        this.new_eprobot = null;
     }
 
     toJSON(){
@@ -100,24 +98,26 @@ class Eprobot {
             }
         }
 
-        if (this.energy > 0 && this.s.world.counter_eprobot<this.s.settings.eprobots_max){
-            // new eprobot
-            let spreadval = tools_random(8);
-            let vec = DIRECTIONS[spreadval];
-            let spreadpos_x = this.s.correct_pos_width(this.t.x + vec.x);
-            let spreadpos_y = this.s.correct_pos_height(this.t.y + vec.y);
-            //let spreadpos_x = this.s.settings.nest_x+tools_random2(-20,20);
-            //let spreadpos_y = this.s.settings.nest_y+tools_random2(-20,20);
-            let spreadterrain = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
-            if (spreadterrain.slot_object == null){
-                var new_program = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program);
-                var new_data = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data);
-                this.new_eprobot = new Eprobot(this.s, new_program, new_data);
-                this.s.world.world_set(this.new_eprobot, spreadpos_x, spreadpos_y);
-                this.energy--;
-            }
-        }
-
         this.tick++;
+    }
+
+    fork(){
+        // new eprobot
+        let new_eprobot = null;
+        let spreadval = tools_random(8);
+        let vec = DIRECTIONS[spreadval];
+        let spreadpos_x = this.s.correct_pos_width(this.t.x + vec.x);
+        let spreadpos_y = this.s.correct_pos_height(this.t.y + vec.y);
+        //let spreadpos_x = this.s.settings.nest_x+tools_random2(-20,20);
+        //let spreadpos_y = this.s.settings.nest_y+tools_random2(-20,20);
+        let spreadterrain = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
+        if (spreadterrain.slot_object == null){
+            var new_program = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program);
+            var new_data = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data);
+            new_eprobot = new Eprobot(this.s, new_program, new_data);
+            this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
+            this.energy = this.energy-2;
+        }
+        return new_eprobot
     }
 }
