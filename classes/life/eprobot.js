@@ -116,7 +116,7 @@ class Eprobot {
             var new_data = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data);
             new_eprobot = new Eprobot(this.s, new_program, new_data);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
-            this.energy = this.energy-2;
+            this.energy = this.energy-1;
         }
         return new_eprobot
     }

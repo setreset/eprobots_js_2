@@ -4,7 +4,7 @@ class Simulation {
         this.running = false;
         this.draw_mode = 0;
         this.canvas = canvas;
-        this.canvas2 = canvas2
+        this.canvas2 = canvas2;
         this.steps = 0;
     }
 
@@ -122,7 +122,7 @@ class Simulation {
     }
 
     simulation_step(){
-        let t_start = new Date().getTime();
+        let steptime_start = new Date().getTime();
 
         if (this.world.counter_eprobot == 0){
             //this.init_eprobots();
@@ -169,7 +169,7 @@ class Simulation {
                     o.working_data[this.settings.DATA_LENGTH-1] = 0;
                 }
 
-                if (o.energy >= 5){
+                if (o.energy >= 1){
                     eprobots_with_energy.push(o);
                 }
                 active_objects_next.push(o);
@@ -181,7 +181,10 @@ class Simulation {
         }
 
         // absteigend sortieren
-        eprobots_with_energy.sort(function(a, b){return b.energy - a.energy});
+        //this.eprobots_with_energy.sort(function(a, b){return b.energy - a.energy});
+        // aufsteigend sortieren
+        //this.eprobots_with_energy.sort(function(a, b){return a.energy - b.energy});
+        shuffle(eprobots_with_energy);
 
         // fork
         for (let o of eprobots_with_energy) {
@@ -201,8 +204,8 @@ class Simulation {
 
         this.active_objects = active_objects_next;
 
-        let t_end = new Date().getTime();
-        let frame_time = t_end-t_start;
+        let steptime_end = new Date().getTime();
+        let frame_time = steptime_end - steptime_start;
 
         this.drawer.paint_fast();
 

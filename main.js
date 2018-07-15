@@ -25,8 +25,15 @@ $(document).ready(function() {
         console.log("Math.seedrandom nicht vorhanden");
     }
 
+    var simulation_canvas = document.getElementById('canvas');
+    var simulation_canvas2 = document.getElementById('canvas2');
+    simulation = new Simulation(simulation_canvas, simulation_canvas2);
+    simulation.init();
+    simulation.init_eprobots();
+    simulation.drawer.paint_fast();
+
     function toggleFullscreen() {
-        var elem = document.getElementById('canvas');
+        var elem = simulation_canvas;
         if (!document.fullscreenElement && !document.mozFullScreenElement &&
             !document.webkitFullscreenElement && !document.msFullscreenElement) {
             if (elem.requestFullscreen) {
@@ -60,13 +67,6 @@ $(document).ready(function() {
         simulation.drawer.init_canvas();
         simulation.drawer.paint_full();
     }
-
-    simulation_canvas = document.getElementById('canvas');
-    simulation_canvas2 = document.getElementById('canvas2');
-    simulation = new Simulation(simulation_canvas, simulation_canvas2);
-    simulation.init();
-    simulation.init_eprobots();
-    simulation.drawer.paint_fast();
 
     function getMousePos(canvas_rect, evt) {
         return {
