@@ -126,12 +126,13 @@ class Simulation {
 
         if (this.world.counter_eprobot == 0){
             //this.init_eprobots();
-            console.log("died");
-            var duration = (new Date()-this.time_start)/1000;
-            console.log("duration seconds: "+duration);
-            console.log("steps: "+this.steps);
-            toggleRun();
-            return;
+
+            //console.log("died");
+            //var duration = (new Date()-this.time_start)/1000;
+            //console.log("duration seconds: "+duration);
+            //console.log("steps: "+this.steps);
+            //toggleRun();
+            //return;
         }
 
         let active_objects_next = [];

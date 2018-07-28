@@ -6,13 +6,13 @@ class Settings {
     constructor() {
         this.background_color = "#000000";
         this.beam_at_borders = false;
-        this.world_width = 400;
-        this.world_height = 240;
-        this.sleeptime = 25;
+        this.world_width = 720;
+        this.world_height = 450;
+        this.sleeptime = 0;
         this.plants_max = 500;
         this.plants_lifetime = 250;
-        this.eprobots_max = 300;
-        this.eprobots_lifetime = 400;
+        this.eprobots_max = 10000;
+        this.eprobots_lifetime = 10000;
         this.eprobots_fossiltime = 400;
         this.PROGRAM_LENGTH = 500;
         this.DATA_LENGTH = 20;
