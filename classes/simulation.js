@@ -2,7 +2,6 @@ class Simulation {
 
     constructor(canvas, canvas2) {
         this.running = false;
-        this.draw_mode = 0;
         this.canvas = canvas;
         this.canvas2 = canvas2;
         this.steps = 0;
@@ -92,10 +91,6 @@ class Simulation {
 
     getRunning(){
         return this.running;
-    }
-
-    set_draw_mode(dm){
-        this.draw_mode = dm;
     }
 
     init_eprobots(){
