@@ -1,7 +1,6 @@
 class Simulation {
 
     constructor(canvas, canvas2) {
-        this.running = false;
         this.canvas = canvas;
         this.canvas2 = canvas2;
         this.steps = 0;
@@ -78,21 +77,6 @@ class Simulation {
         };
     }
 
-    start_simulation(){
-        this.time_start = new Date();
-
-        this.running = true;
-        this.simulation_step();
-    }
-
-    stop_simulation(){
-        this.running = false;
-    }
-
-    getRunning(){
-        return this.running;
-    }
-
     init_eprobots(){
         for (let i = 0; i<50;i++){
             var program = [];
@@ -117,19 +101,6 @@ class Simulation {
     }
 
     simulation_step(){
-        let steptime_start = new Date().getTime();
-
-        if (this.world.counter_eprobot == 0){
-            //this.init_eprobots();
-
-            //console.log("died");
-            //var duration = (new Date()-this.time_start)/1000;
-            //console.log("duration seconds: "+duration);
-            //console.log("steps: "+this.steps);
-            //toggleRun();
-            //return;
-        }
-
         let active_objects_next = [];
 
         //this.drawer.paint_fast();
@@ -196,20 +167,8 @@ class Simulation {
             }
         }
 
-
-
         this.active_objects = active_objects_next;
-
-        let steptime_end = new Date().getTime();
-        let frame_time = steptime_end - steptime_start;
-
-        this.drawer.paint_fast();
-
         this.steps++;
-        if (this.running) {
-            let st = this.settings.sleeptime - frame_time;
-            setTimeout(()=>{this.simulation_step()}, st);
-        }
     }
 
     correct_pos_width(x_pos){
