@@ -57,7 +57,7 @@ class Controller {
     }
 
     init_simulation(){
-        this.simulation = new Simulation(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
+        this.simulation = new Simulation_simple(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
         this.simulation.init();
         this.simulation.init_eprobots();
         this.simulation.drawer.paint_fast();
@@ -117,26 +117,7 @@ class Controller {
             let world_x = parseInt(tools_map_range(mousePos.x,0,canvas_rect.width, 0, this.simulation.settings.world_width));
             let world_y = parseInt(tools_map_range(mousePos.y,0,canvas_rect.height, 0, this.simulation.settings.world_height));
             //console.log("x_world:" + world_x + " y_world:" + world_y);
-            let t = this.simulation.world.get_terrain(world_x, world_y);
-            if (this.draw_mode == OBJECTTYPES.PLANT.id){
-                if (t.energy_object == null){
-                    let p = new Plant(this.simulation);
-                    this.simulation.world.world_set_energy(p, world_x, world_y);
-                    //simulation.active_objects.push(p);
-                    this.simulation.drawer.paint_fast();
-                }else{
-                    console.log("besetzt");
-                }
-            }else if (this.draw_mode == OBJECTTYPES.BARRIER.id){
-                if (t.slot_object == null){
-                    let b = new Barrier(this.simulation);
-                    this.simulation.world.world_set(b, world_x, world_y);
-                    //simulation.active_objects.push(p);
-                    this.simulation.drawer.paint_fast();
-                }else{
-                    console.log("besetzt");
-                }
-            }
+            this.simulation.click_world(world_x, world_y, this.draw_mode);
         }
 
     }
@@ -161,7 +142,7 @@ class Controller {
         var simsavestateobj = JSON.parse(simsavestate);
 
         // neue simulation initialisieren
-        this.simulation = new Simulation(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
+        this.simulation = new Simulation_simple(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
         this.simulation.loadState(simsavestateobj);
 
         this.simulation.drawer.paint_fast();
@@ -181,7 +162,7 @@ class Controller {
         var simsavestateobj = JSON.parse(simsavestate);
 
         // neue simulation initialisieren
-        this.simulation = new Simulation(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
+        this.simulation = new Simulation_simple(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
         this.simulation.loadState(simsavestateobj);
 
         this.simulation.drawer.paint_fast();

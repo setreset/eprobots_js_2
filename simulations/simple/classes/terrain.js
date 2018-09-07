@@ -1,4 +1,4 @@
-class Terrain {
+class Terrain_simple {
 
     constructor(s, x, y) {
         this.s = s;
@@ -12,7 +12,7 @@ class Terrain {
     toJSON(){
         var slot_object = this.slot_object;
         if (slot_object != null){
-            if (slot_object.get_id() == OBJECTTYPES.EPROBOT.id){
+            if (slot_object.get_id() == OBJECTTYPES_simple.EPROBOT.id){
                 slot_object = {
                     id: slot_object.get_id()
                 }
