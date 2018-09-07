@@ -1,4 +1,4 @@
-var OBJECTTYPES_simple = {
+var OBJECTTYPES = {
     PLANT: {
         id: 0,
         color: "rgb(0, 255, 0)",

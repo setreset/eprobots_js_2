@@ -1,4 +1,4 @@
-class Settings_simple {
+class Settings {
 
     // raspi: 800x480 | 400x240
     // kleiner monitor: 1440x900 | 360x225

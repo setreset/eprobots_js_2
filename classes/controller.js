@@ -57,7 +57,7 @@ class Controller {
     }
 
     init_simulation(){
-        this.simulation = new Simulation_simple(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
+        this.simulation = new Simulation(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
         this.simulation.init();
         this.simulation.init_eprobots();
         this.simulation.drawer.paint_fast();
@@ -142,7 +142,7 @@ class Controller {
         var simsavestateobj = JSON.parse(simsavestate);
 
         // neue simulation initialisieren
-        this.simulation = new Simulation_simple(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
+        this.simulation = new Simulation(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
         this.simulation.loadState(simsavestateobj);
 
         this.simulation.drawer.paint_fast();
@@ -162,7 +162,7 @@ class Controller {
         var simsavestateobj = JSON.parse(simsavestate);
 
         // neue simulation initialisieren
-        this.simulation = new Simulation_simple(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
+        this.simulation = new Simulation(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
         this.simulation.loadState(simsavestateobj);
 
         this.simulation.drawer.paint_fast();

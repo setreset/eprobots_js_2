@@ -1,4 +1,4 @@
-class Eprobot_simple {
+class Eprobot {
 
     constructor(s, program, init_data) {
         this.t = null;
@@ -29,11 +29,11 @@ class Eprobot_simple {
     }
 
     get_id(){
-        return OBJECTTYPES_simple.EPROBOT.id;
+        return OBJECTTYPES.EPROBOT.id;
     }
 
     get_color(){
-        return OBJECTTYPES_simple.EPROBOT.color;
+        return OBJECTTYPES.EPROBOT.color;
     }
 
     get_lifetime(){
@@ -114,7 +114,7 @@ class Eprobot_simple {
         if (spreadterrain.slot_object == null){
             var new_program = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program);
             var new_data = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data);
-            new_eprobot = new Eprobot_simple(this.s, new_program, new_data);
+            new_eprobot = new Eprobot(this.s, new_program, new_data);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
             this.energy = this.energy-1;
         }

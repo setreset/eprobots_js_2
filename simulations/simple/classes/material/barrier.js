@@ -1,4 +1,4 @@
-class Barrier_simple {
+class Barrier {
 
     constructor(s) {
         this.t = null;
@@ -15,10 +15,10 @@ class Barrier_simple {
     }
 
     get_id(){
-        return OBJECTTYPES_simple.BARRIER.id;
+        return OBJECTTYPES.BARRIER.id;
     }
 
     get_color(){
-        return OBJECTTYPES_simple.BARRIER.color;
+        return OBJECTTYPES.BARRIER.color;
     }
 }

@@ -1,4 +1,4 @@
-class Plant_simple {
+class Plant {
 
     constructor(s) {
         this.t = null;
@@ -17,11 +17,11 @@ class Plant_simple {
     }
 
     get_id(){
-        return OBJECTTYPES_simple.PLANT.id;
+        return OBJECTTYPES.PLANT.id;
     }
 
     get_color(){
-        return OBJECTTYPES_simple.PLANT.color;
+        return OBJECTTYPES.PLANT.color;
     }
 
     //get_lifetime(){
@@ -44,7 +44,7 @@ class Plant_simple {
     //        let spreadpos_y = this.s.correct_pos_height(this.y_pos + vec.y);
     //        let t = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
     //        if (t.slot_object == null){
-    //            new_plant = new Plant_simple(this.s, spreadpos_x, spreadpos_y);
+    //            new_plant = new Plant(this.s, spreadpos_x, spreadpos_y);
     //        }
     //    }
     //

@@ -1,4 +1,4 @@
-class World_simple {
+class World {
 
     constructor(s, width, height) {
         this.s = s;
@@ -8,7 +8,7 @@ class World_simple {
         for (var x=0;x<this.worldarr.length;x++){
             this.worldarr[x] = new Array(height);
             for (var y=0;y<height;y++){
-                this.worldarr[x][y] = new Terrain_simple(s, x, y);
+                this.worldarr[x][y] = new Terrain(s, x, y);
             }
         }
 
@@ -46,7 +46,7 @@ class World_simple {
         t.set_slot_object(o);
         o.t = t;
 
-        if (o.get_id()==OBJECTTYPES_simple.EPROBOT.id){
+        if (o.get_id()==OBJECTTYPES.EPROBOT.id){
             this.counter_eprobot++;
         }
 
@@ -57,7 +57,7 @@ class World_simple {
         var t = this.get_terrain(x, y);
         t.set_slot_object(null);
 
-        if (object_class==OBJECTTYPES_simple.EPROBOT.id){
+        if (object_class==OBJECTTYPES.EPROBOT.id){
             this.counter_eprobot--;
         }
 

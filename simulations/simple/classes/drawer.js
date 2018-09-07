@@ -1,4 +1,4 @@
-class Drawer_simple {
+class Drawer {
 
     constructor(s, canvas, canvas2) {
         this.s = s;

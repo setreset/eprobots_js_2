@@ -1,4 +1,4 @@
-class Simulation_simple {
+class Simulation {
 
     constructor(canvas, canvas2) {
         this.canvas = canvas;
@@ -7,25 +7,25 @@ class Simulation_simple {
     }
 
     init(){
-        this.settings = new Settings_simple();
-        this.world = new World_simple(this, this.settings.world_width,this.settings.world_height);
+        this.settings = new Settings();
+        this.world = new World(this, this.settings.world_width,this.settings.world_height);
         this.active_objects = [];
-        this.drawer = new Drawer_simple(this, this.canvas, this.canvas2);
+        this.drawer = new Drawer(this, this.canvas, this.canvas2);
     }
 
     loadState(simstate){
-        this.settings = new Settings_simple();
+        this.settings = new Settings();
         this.settings.loadState(simstate.settings);
 
-        this.world = new World_simple(this, this.settings.world_width,this.settings.world_height);
+        this.world = new World(this, this.settings.world_width,this.settings.world_height);
 
         simstate.world_objects.forEach(function(o) {
-            if (o.id == OBJECTTYPES_simple.PLANT.id){
-                let p = new Plant_simple(this);
+            if (o.id == OBJECTTYPES.PLANT.id){
+                let p = new Plant(this);
                 p.energy_count = o.energy_count;
                 this.world.world_set_energy(p, o.x_pos, o.y_pos);
-            }else if (o.id == OBJECTTYPES_simple.BARRIER.id){
-                let b = new Barrier_simple(this);
+            }else if (o.id == OBJECTTYPES.BARRIER.id){
+                let b = new Barrier(this);
                 this.world.world_set(b, o.x_pos, o.y_pos);
             }
         }, this);
@@ -33,7 +33,7 @@ class Simulation_simple {
         this.active_objects = [];
 
         simstate.active_objects.forEach(function(o) {
-            let ep = new Eprobot_simple(this, o.program, o.init_data);
+            let ep = new Eprobot(this, o.program, o.init_data);
             ep.tick = o.tick;
             ep.energy = o.energy;
             ep.working_data = o.working_data;
@@ -41,7 +41,7 @@ class Simulation_simple {
             this.active_objects.push(ep);
         }, this);
 
-        this.drawer = new Drawer_simple(this, this.canvas, this.canvas2);
+        this.drawer = new Drawer(this, this.canvas, this.canvas2);
 
         //
         //eprobots_h = [];
@@ -64,7 +64,7 @@ class Simulation_simple {
                 if (t.energy_object){
                     world_objects.push(t.energy_object);
                 }
-                if (t.slot_object && t.slot_object.get_id() == OBJECTTYPES_simple.BARRIER.id){
+                if (t.slot_object && t.slot_object.get_id() == OBJECTTYPES.BARRIER.id){
                     world_objects.push(t.slot_object);
                 }
             }
@@ -93,7 +93,7 @@ class Simulation_simple {
             let x = this.settings.nest_x+tools_random2(-20,20);
             let y = this.settings.nest_y+tools_random2(-20,20);
             if (this.world.get_terrain(x,y).slot_object==null){
-                let ep = new Eprobot_simple(this, program, init_data);
+                let ep = new Eprobot(this, program, init_data);
                 this.world.world_set(ep, x, y);
                 this.active_objects.push(ep);
             }
@@ -209,24 +209,24 @@ class Simulation_simple {
     }
 
     get_object_types(){
-        return OBJECTTYPES_simple;
+        return OBJECTTYPES;
     }
 
     click_world(world_x, world_y, draw_mode){
         let t = this.world.get_terrain(world_x, world_y);
 
-        if (draw_mode == OBJECTTYPES_simple.PLANT.id){
+        if (draw_mode == OBJECTTYPES.PLANT.id){
             if (t.energy_object == null){
-                let p = new Plant_simple(this);
+                let p = new Plant(this);
                 this.world.world_set_energy(p, world_x, world_y);
                 //simulation.active_objects.push(p);
                 this.drawer.paint_fast();
             }else{
                 console.log("besetzt");
             }
-        }else if (draw_mode == OBJECTTYPES_simple.BARRIER.id){
+        }else if (draw_mode == OBJECTTYPES.BARRIER.id){
             if (t.slot_object == null){
-                let b = new Barrier_simple(this);
+                let b = new Barrier(this);
                 this.world.world_set(b, world_x, world_y);
                 //simulation.active_objects.push(p);
                 this.drawer.paint_fast();
