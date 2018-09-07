@@ -1,7 +1,16 @@
 var OBJECTTYPES = {
-    PLANT: 0,
-    EPROBOT: 1,
-    BARRIER: 2
+    PLANT: {
+        id: 0,
+        drawable: true
+    },
+    EPROBOT: {
+        id: 1,
+        drawable: false
+    },
+    BARRIER: {
+        id: 2,
+        drawable: true
+    }
 }
 
 var DIRECTIONS = [

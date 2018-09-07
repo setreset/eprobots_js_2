@@ -12,7 +12,7 @@ class Terrain {
     toJSON(){
         var slot_object = this.slot_object;
         if (slot_object != null){
-            if (slot_object.get_id() == OBJECTTYPES.EPROBOT){
+            if (slot_object.get_id() == OBJECTTYPES.EPROBOT.id){
                 slot_object = {
                     id: slot_object.get_id()
                 }

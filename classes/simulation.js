@@ -20,11 +20,11 @@ class Simulation {
         this.world = new World(this, this.settings.world_width,this.settings.world_height);
 
         simstate.world_objects.forEach(function(o) {
-            if (o.id == OBJECTTYPES.PLANT){
+            if (o.id == OBJECTTYPES.PLANT.id){
                 let p = new Plant(this);
                 p.energy_count = o.energy_count;
                 this.world.world_set_energy(p, o.x_pos, o.y_pos);
-            }else if (o.id == OBJECTTYPES.BARRIER){
+            }else if (o.id == OBJECTTYPES.BARRIER.id){
                 let b = new Barrier(this);
                 this.world.world_set(b, o.x_pos, o.y_pos);
             }
@@ -64,7 +64,7 @@ class Simulation {
                 if (t.energy_object){
                     world_objects.push(t.energy_object);
                 }
-                if (t.slot_object && t.slot_object.get_id() == OBJECTTYPES.BARRIER){
+                if (t.slot_object && t.slot_object.get_id() == OBJECTTYPES.BARRIER.id){
                     world_objects.push(t.slot_object);
                 }
             }

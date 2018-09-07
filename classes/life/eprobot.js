@@ -29,7 +29,7 @@ class Eprobot {
     }
 
     get_id(){
-        return OBJECTTYPES.EPROBOT;
+        return OBJECTTYPES.EPROBOT.id;
     }
 
     get_color(){

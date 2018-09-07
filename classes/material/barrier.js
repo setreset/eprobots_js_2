@@ -15,7 +15,7 @@ class Barrier {
     }
 
     get_id(){
-        return OBJECTTYPES.BARRIER;
+        return OBJECTTYPES.BARRIER.id;
     }
 
     get_color(){

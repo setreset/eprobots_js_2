@@ -46,7 +46,7 @@ class World {
         t.set_slot_object(o);
         o.t = t;
 
-        if (o.get_id()==OBJECTTYPES.EPROBOT){
+        if (o.get_id()==OBJECTTYPES.EPROBOT.id){
             this.counter_eprobot++;
         }
 
@@ -57,7 +57,7 @@ class World {
         var t = this.get_terrain(x, y);
         t.set_slot_object(null);
 
-        if (object_class==OBJECTTYPES.EPROBOT){
+        if (object_class==OBJECTTYPES.EPROBOT.id){
             this.counter_eprobot--;
         }
 

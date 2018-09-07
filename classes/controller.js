@@ -118,7 +118,7 @@ class Controller {
             let world_y = parseInt(tools_map_range(mousePos.y,0,canvas_rect.height, 0, this.simulation.settings.world_height));
             //console.log("x_world:" + world_x + " y_world:" + world_y);
             let t = this.simulation.world.get_terrain(world_x, world_y);
-            if (this.draw_mode == OBJECTTYPES.PLANT){
+            if (this.draw_mode == OBJECTTYPES.PLANT.id){
                 if (t.energy_object == null){
                     let p = new Plant(this.simulation);
                     this.simulation.world.world_set_energy(p, world_x, world_y);
@@ -127,7 +127,7 @@ class Controller {
                 }else{
                     console.log("besetzt");
                 }
-            }else if (this.draw_mode == OBJECTTYPES.BARRIER){
+            }else if (this.draw_mode == OBJECTTYPES.BARRIER.id){
                 if (t.slot_object == null){
                     let b = new Barrier(this.simulation);
                     this.simulation.world.world_set(b, world_x, world_y);
@@ -143,12 +143,12 @@ class Controller {
 
     click_colorpicker_plant(){
         console.log("plant selektiert");
-        this._set_draw_mode(OBJECTTYPES.PLANT);
+        this._set_draw_mode(OBJECTTYPES.PLANT.id);
     }
 
     click_colorpicker_barrier(){
         console.log("barrier selektiert");
-        this._set_draw_mode(OBJECTTYPES.BARRIER);
+        this._set_draw_mode(OBJECTTYPES.BARRIER.id);
     }
 
     on_fullscreen_change() {

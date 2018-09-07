@@ -17,7 +17,7 @@ class Plant {
     }
 
     get_id(){
-        return OBJECTTYPES.PLANT;
+        return OBJECTTYPES.PLANT.id;
     }
 
     get_color(){
