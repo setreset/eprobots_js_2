@@ -19,8 +19,7 @@ $(document).ready(function() {
     controls["btn_start"] = $("#btn_start");
     controls["btn_fullscreen"] = $("#btn_fullscreen");
     controls["btn_init_eprobots"] = $("#btn_init_eprobots");
-    controls["colorpicker-plant"] = document.getElementById('colorpicker-plant');
-    controls["colorpicker-barrier"] = document.getElementById('colorpicker-barrier');
+    controls["simitem-selector"] = $("#simitem-selector");
     controls["btn_load"] = $("#btn_load");
     controls["btn_save"]= $("#btn_save");
     controls["textbox_simsavestate"] = $("#simsavestate");
@@ -34,10 +33,15 @@ $(document).ready(function() {
     document.addEventListener('webkitfullscreenchange', function(ev){controller.on_fullscreen_change();});
 
     controls["simulation_canvas"].on("click", function(ev){controller.click_canvas(ev)});
-    //simulation_canvas.addEventListener("dblclick", toggleFullscreen);
 
-    controls["colorpicker-plant"].addEventListener("click", function(e){controller.click_colorpicker_plant()});
-    controls["colorpicker-barrier"].addEventListener("click", function(e){controller.click_colorpicker_barrier()});
+    controls["simitem-selector"].on("click", "span", function(e){
+        console.log("simitem-selector span");
+        console.log($(this).attr("id"));
+
+        let elem_id = $(this).attr("id");
+        let object_id = elem_id.split("-")[1];
+        controller.click_simitem_selector(object_id);
+    });
 
     controls["btn_start"].on("click", function(ev){controller.toggle_run()});
 
@@ -54,4 +58,15 @@ $(document).ready(function() {
     controls["btn_load_from_localstorage"].on("click", function(e){controller.click_load_from_ls()});
 
     controls["btn_save_to_localstorage"].on("click", function(e){controller.click_save_to_ls()});
+
+    // setup simitem-selector
+    Object.entries(controller.get_object_types()).forEach(function(o) {
+        //console.log(o[0]+" "+o[1]);
+
+        let object_value = o[1];
+        if (object_value['drawable']){
+            let span = '<span id="colorpicker-'+object_value['id']+'" style="width:20px; height:15px; background-color: '+object_value['color']+'; display: inline-block; margin-right: 4px"></span>';
+            controls["simitem-selector"].append(span);
+        }
+    }, this);
 });

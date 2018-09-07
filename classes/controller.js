@@ -141,14 +141,9 @@ class Controller {
 
     }
 
-    click_colorpicker_plant(){
-        console.log("plant selektiert");
-        this._set_draw_mode(OBJECTTYPES.PLANT.id);
-    }
-
-    click_colorpicker_barrier(){
-        console.log("barrier selektiert");
-        this._set_draw_mode(OBJECTTYPES.BARRIER.id);
+    click_simitem_selector(id){
+        console.log(id + " selektiert");
+        this._set_draw_mode(id);
     }
 
     on_fullscreen_change() {
@@ -203,5 +198,9 @@ class Controller {
             alert("Error: "+err);
         }
 
+    }
+
+    get_object_types(){
+        return this.simulation.get_object_types();
     }
 }
