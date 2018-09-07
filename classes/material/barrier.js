@@ -19,6 +19,6 @@ class Barrier {
     }
 
     get_color(){
-        return "rgb(255, 255, 255)";
+        return OBJECTTYPES.BARRIER.color;
     }
 }

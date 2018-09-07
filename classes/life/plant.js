@@ -21,7 +21,7 @@ class Plant {
     }
 
     get_color(){
-        return "rgb(0, 255, 0)";
+        return OBJECTTYPES.PLANT.color;
     }
 
     //get_lifetime(){

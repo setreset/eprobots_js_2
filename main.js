@@ -13,8 +13,8 @@ $(document).ready(function() {
         console.log("Math.seedrandom nicht vorhanden");
     }
 
-    controls["simulation_canvas"] = document.getElementById('canvas');
-    controls["simulation_canvas2"] = document.getElementById('canvas2');
+    controls["simulation_canvas"] = $("#canvas");
+    controls["simulation_canvas2"] = $("#canvas2");
     controls["btn_reset"] = $("#btn_reset");
     controls["btn_start"] = $("#btn_start");
     controls["btn_fullscreen"] = $("#btn_fullscreen");
@@ -33,11 +33,10 @@ $(document).ready(function() {
     document.addEventListener('mozfullscreenchange', function(ev){controller.on_fullscreen_change();});
     document.addEventListener('webkitfullscreenchange', function(ev){controller.on_fullscreen_change();});
 
-    controls["simulation_canvas"].addEventListener("click", function(ev){controller.click_canvas(ev)});
+    controls["simulation_canvas"].on("click", function(ev){controller.click_canvas(ev)});
     //simulation_canvas.addEventListener("dblclick", toggleFullscreen);
 
     controls["colorpicker-plant"].addEventListener("click", function(e){controller.click_colorpicker_plant()});
-
     controls["colorpicker-barrier"].addEventListener("click", function(e){controller.click_colorpicker_barrier()});
 
     controls["btn_start"].on("click", function(ev){controller.toggle_run()});

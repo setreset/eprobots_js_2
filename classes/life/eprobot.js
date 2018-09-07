@@ -33,7 +33,7 @@ class Eprobot {
     }
 
     get_color(){
-        return "rgb(255, 0, 0)";
+        return OBJECTTYPES.EPROBOT.color;
     }
 
     get_lifetime(){

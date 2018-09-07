@@ -207,4 +207,8 @@ class Simulation {
             }
         }
     }
+
+    get_object_types(){
+        return OBJECTTYPES;
+    }
 }

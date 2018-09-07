@@ -57,7 +57,7 @@ class Controller {
     }
 
     init_simulation(){
-        this.simulation = new Simulation(controls["simulation_canvas"], controls["simulation_canvas2"]);
+        this.simulation = new Simulation(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
         this.simulation.init();
         this.simulation.init_eprobots();
         this.simulation.drawer.paint_fast();
@@ -73,7 +73,7 @@ class Controller {
     }
 
     toggle_fullscreen() {
-        var elem = controls["simulation_canvas"];
+        var elem = controls["simulation_canvas"][0];
         if (!document.fullscreenElement && !document.mozFullScreenElement &&
             !document.webkitFullscreenElement && !document.msFullscreenElement) {
             if (elem.requestFullscreen) {
@@ -107,7 +107,7 @@ class Controller {
 
     click_canvas(e){
 
-        let canvas_rect = controls["simulation_canvas"].getBoundingClientRect();
+        let canvas_rect = controls["simulation_canvas"][0].getBoundingClientRect();
         var mousePos = this._get_mouse_pos(canvas_rect, e);
 
         // hot corner
@@ -166,7 +166,7 @@ class Controller {
         var simsavestateobj = JSON.parse(simsavestate);
 
         // neue simulation initialisieren
-        this.simulation = new Simulation(controls["simulation_canvas"], controls["simulation_canvas2"]);
+        this.simulation = new Simulation(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
         this.simulation.loadState(simsavestateobj);
 
         this.simulation.drawer.paint_fast();
@@ -186,7 +186,7 @@ class Controller {
         var simsavestateobj = JSON.parse(simsavestate);
 
         // neue simulation initialisieren
-        this.simulation = new Simulation(controls["simulation_canvas"], controls["simulation_canvas2"]);
+        this.simulation = new Simulation(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
         this.simulation.loadState(simsavestateobj);
 
         this.simulation.drawer.paint_fast();
