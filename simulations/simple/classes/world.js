@@ -13,19 +13,10 @@ class World {
         }
 
         this.counter_eprobot = 0;
-
-        this.paintlist = [];
-        this.paintobj = {};
     }
 
     get_terrain(x, y){
         return this.worldarr[x][y];
-    }
-
-    refresh_paintobj(t, x_pos, y_pos){
-        let coord = t.x.toString() + ":" + t.y.toString();
-        this.paintobj[coord] = {color: t.get_color(), x_pos: t.x, y_pos: t.y};
-        //this.paintlist.push({color: o.get_color(), x_pos: o.x_pos, y_pos: o.y_pos});
     }
 
     world_move(o, old_pos_x, old_pos_y, new_pos_x, new_pos_y){
@@ -33,12 +24,12 @@ class World {
         t.set_slot_object(o);
         o.t = t;
 
-        this.refresh_paintobj(t);
+        this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
 
         var t = this.get_terrain(old_pos_x, old_pos_y);
         t.set_slot_object(null);
 
-        this.refresh_paintobj(t);
+        this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
     }
 
     world_set(o, x_pos, y_pos){
@@ -50,7 +41,7 @@ class World {
             this.counter_eprobot++;
         }
 
-        this.refresh_paintobj(t);
+        this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
     }
 
     world_unset(x,y, object_class){
@@ -61,7 +52,7 @@ class World {
             this.counter_eprobot--;
         }
 
-        this.refresh_paintobj(t);
+        this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
     }
 
     world_set_energy(o, x_pos, y_pos){
@@ -69,14 +60,14 @@ class World {
         t.set_energy_object(o);
         o.t = t;
 
-        this.refresh_paintobj(t);
+        this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
     }
 
     world_unset_energy(x,y){
         var t = this.get_terrain(x, y);
         t.set_energy_object(null);
 
-        this.refresh_paintobj(t);
+        this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
     }
 
 }

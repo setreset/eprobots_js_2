@@ -9,6 +9,9 @@ class Drawer {
         this.x_step = null;
         this.y_step = null;
 
+        this.paintlist = [];
+        this.paintobj = {};
+
         this.init_canvas();
     }
 
@@ -35,6 +38,12 @@ class Drawer {
         this.canvas2_ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
+    refresh_paintobj(x, y, color){
+        let coord = x.toString() + ":" + y.toString();
+        this.paintobj[coord] = {color: color, x_pos: x, y_pos: y};
+        //this.paintlist.push({color: o.get_color(), x_pos: o.x_pos, y_pos: o.y_pos});
+    }
+
     paint_full(){
         this._paint_full(this.canvas_ctx);
     }
@@ -43,15 +52,15 @@ class Drawer {
         this._paint_fast(this.canvas_ctx);
         //this._paint_full(this.canvas_ctx);
 
-        this.s.world.paintobj = {};
-        this.s.world.paintlist = [];
+        this.paintobj = {};
+        //this.paintlist = [];
     }
 
     _paint_fast(ctx){
-        for (var key in this.s.world.paintobj){
+        for (var key in this.paintobj){
             // skip loop if the property is from prototype
             //if (!this.s.world.paintobj.hasOwnProperty(key)) continue;
-            let el = this.s.world.paintobj[key];
+            let el = this.paintobj[key];
             ctx.fillStyle = el.color;
             ctx.fillRect(el.x_pos * this.x_step, el.y_pos * this.y_step, this.x_step, this.y_step);
         }
