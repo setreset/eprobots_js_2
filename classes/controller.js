@@ -59,6 +59,7 @@ class Controller {
     init_simulation(){
         this.simulation = new Simulation(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
         this.simulation.init();
+        //this.simulation.prepare();
         this.simulation.init_eprobots();
         this.simulation.drawer.paint_fast();
     }

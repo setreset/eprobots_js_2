@@ -6,6 +6,13 @@ class Simulation {
         this.steps = 0;
     }
 
+    prepare(){
+        for (var i=0;i<this.settings.world_height; i++){
+            let b = new Barrier(this);
+            this.world.world_set(b, this.settings.world_width/2, i);
+        }
+    }
+
     init(){
         this.settings = new Settings();
         this.world = new World(this, this.settings.world_width,this.settings.world_height);
