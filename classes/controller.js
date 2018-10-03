@@ -114,7 +114,10 @@ class Controller {
         // hot corner
         if (mousePos.x>=canvas_rect.width-30 && mousePos.y>=canvas_rect.height-30){
             this.toggle_fullscreen();
-        }else{
+        }else if(mousePos.x>=canvas_rect.width-30 && mousePos.y<=30) {
+            this.toggle_run();
+        }
+        else{
             let world_x = parseInt(tools_map_range(mousePos.x,0,canvas_rect.width, 0, this.simulation.settings.world_width));
             let world_y = parseInt(tools_map_range(mousePos.y,0,canvas_rect.height, 0, this.simulation.settings.world_height));
             //console.log("x_world:" + world_x + " y_world:" + world_y);
