@@ -12,6 +12,8 @@ class Eprobot {
 
         this.init_data = init_data;
         this.working_data = init_data.slice(0);
+
+        this.my_color = tools_random(359);
     }
 
     toJSON(){
@@ -33,7 +35,19 @@ class Eprobot {
     }
 
     get_color(){
-        return OBJECTTYPES.EPROBOT.color;
+        //var color = "hsl("+parseInt(this.tick/16)%360+", 100%, 48%)";
+
+        //var s = parseInt(tools_map_range(this.tick, 0, this.s.settings.eprobots_lifetime, 100, 0));
+        //var color = "hsl("+this.my_color+", "+s+"%, 48%)";
+
+        //var l = parseInt(tools_map_range(this.tick, 0, this.s.settings.eprobots_lifetime, 48, 0));
+        //var color = "hsl("+this.my_color+", 100%, "+l+"%, 0.5)";
+
+        var h = parseInt(tools_map_range(this.tick, 0, this.s.settings.eprobots_lifetime, 0, 360));
+        var color = "hsl("+h+", 100%, 48%)";
+
+        return color;
+        //return OBJECTTYPES.EPROBOT.color;
     }
 
     get_lifetime(){

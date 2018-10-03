@@ -29,7 +29,7 @@ class World {
         var t = this.get_terrain(old_pos_x, old_pos_y);
         t.set_slot_object(null);
 
-        this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
+        //this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
     }
 
     world_set(o, x_pos, y_pos){
