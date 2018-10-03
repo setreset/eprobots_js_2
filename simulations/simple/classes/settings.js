@@ -11,7 +11,7 @@ class Settings {
         this.sleeptime = 0;
         this.plants_max = 500;
         this.plants_lifetime = 250;
-        this.eprobots_max = 2500;
+        this.eprobots_max = 500;
         this.eprobots_lifetime = 10000;
         this.eprobots_fossiltime = 400;
         this.PROGRAM_LENGTH = 500;
@@ -19,8 +19,8 @@ class Settings {
         this.PROGRAM_STEPS = 1000;
         this.MUTATE_POSSIBILITY = 0.01;
         this.MUTATE_STRENGTH = 400;
-        this.nest_x = this.world_width/2;
-        this.nest_y = this.world_height/2;
+        this.nest_x = parseInt(this.world_width/2);
+        this.nest_y = parseInt(this.world_height/2);
     }
 
     loadState(settingsstate){
