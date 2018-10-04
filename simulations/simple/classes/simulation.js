@@ -26,6 +26,8 @@ class Simulation {
 
         this.world = new World(this, this.settings.world_width,this.settings.world_height);
 
+        this.drawer = new Drawer(this, this.canvas, this.canvas2);
+
         simstate.world_objects.forEach(function(o) {
             if (o.id == OBJECTTYPES.PLANT.id){
                 let p = new Plant(this);
@@ -47,8 +49,6 @@ class Simulation {
             this.world.world_set(ep, o.x_pos, o.y_pos);
             this.active_objects.push(ep);
         }, this);
-
-        this.drawer = new Drawer(this, this.canvas, this.canvas2);
 
         //
         //eprobots_h = [];
@@ -119,6 +119,7 @@ class Simulation {
                 let x_pos_before = o.t.x;
                 let y_pos_before = o.t.y;
 
+                // INPUT
                 if (o.t.energy_object){
                     o.working_data[this.settings.DATA_LENGTH-7] = 1;
                 }else{
@@ -132,6 +133,7 @@ class Simulation {
 
                 o.step();
 
+                // INPUT after step
                 if (x_pos_before != o.t.x){
                     o.working_data[this.settings.DATA_LENGTH-2] = 1;
                 }else{
@@ -164,13 +166,12 @@ class Simulation {
         for (let o of eprobots_with_energy) {
             let new_eprobot = null;
             if (this.world.counter_eprobot<this.settings.eprobots_max){
-                new_eprobot = o.fork()
+                new_eprobot = o.fork();
+                if (new_eprobot){
+                    active_objects_next.push(new_eprobot);
+                }
             }else{
                 break;
-            }
-
-            if (new_eprobot){
-                active_objects_next.push(new_eprobot);
             }
         }
 
