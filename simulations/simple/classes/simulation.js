@@ -26,6 +26,8 @@ class Simulation {
 
         this.world = new World(this, this.settings.world_width,this.settings.world_height);
 
+        this.drawer = new Drawer(this, this.canvas, this.canvas2);
+
         simstate.world_objects.forEach(function(o) {
             if (o.id == OBJECTTYPES.PLANT.id){
                 let p = new Plant(this);
@@ -47,8 +49,6 @@ class Simulation {
             this.world.world_set(ep, o.x_pos, o.y_pos);
             this.active_objects.push(ep);
         }, this);
-
-        this.drawer = new Drawer(this, this.canvas, this.canvas2);
 
         //
         //eprobots_h = [];
