@@ -6,7 +6,7 @@ class Eprobot {
         this.s = s;
         this.tick = 0;
         this.is_dead = false;
-        this.energy = 0;
+        this.energy = 100;
 
         this.program = program;
 
@@ -35,7 +35,7 @@ class Eprobot {
     }
 
     get_color(){
-        //var color = "hsl("+parseInt(this.tick/16)%360+", 100%, 48%)";
+        var color = "hsl("+parseInt(this.tick/16)%360+", 100%, 48%)";
 
         //var s = parseInt(tools_map_range(this.tick, 0, this.s.settings.eprobots_lifetime, 100, 0));
         //var color = "hsl("+this.my_color+", "+s+"%, 48%)";
@@ -43,8 +43,8 @@ class Eprobot {
         //var l = parseInt(tools_map_range(this.tick, 0, this.s.settings.eprobots_lifetime, 48, 0));
         //var color = "hsl("+this.my_color+", 100%, "+l+"%, 0.5)";
 
-        var h = parseInt(tools_map_range(this.tick, 0, this.s.settings.eprobots_lifetime, 0, 360));
-        var color = "hsl("+h+", 100%, 48%)";
+        //var h = parseInt(tools_map_range(this.tick, 0, this.s.settings.eprobots_lifetime, 0, 360));
+        //var color = "hsl("+h+", 100%, 48%)";
 
         return color;
         //return OBJECTTYPES.EPROBOT.color;
@@ -100,7 +100,7 @@ class Eprobot {
                 let energy_object = t.get_energy_object();
                 if (energy_object){
                     //slot_object.kill();
-                    this.energy++;
+                    this.energy+=100;
                     energy_object.energy_count--;
                     if (energy_object.energy_count==0){
                         this.s.world.world_unset_energy(movepos_x, movepos_y);
@@ -113,6 +113,7 @@ class Eprobot {
         }
 
         this.tick++;
+        this.energy--;
     }
 
     fork(){
@@ -130,7 +131,7 @@ class Eprobot {
             var new_data = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data);
             new_eprobot = new Eprobot(this.s, new_program, new_data);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
-            this.energy = this.energy-1;
+            this.energy = this.energy-10;
         }
         return new_eprobot
     }
