@@ -6,8 +6,8 @@ class Settings {
     constructor() {
         this.background_color = "#000000";
         this.beam_at_borders = false;
-        this.world_width = 720;
-        this.world_height = 450;
+        this.world_width = 960;
+        this.world_height = 540;
         this.sleeptime = 0;
         this.plants_max = 500;
         this.plants_lifetime = 250;
