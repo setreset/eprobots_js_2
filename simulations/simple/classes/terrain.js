@@ -51,12 +51,22 @@ class Terrain {
 
     get_color(){
         if (this.slot_object){
-            return this.slot_object.get_color();
+            if (this.slot_object.get_id()==OBJECTTYPES.EPROBOT.id){
+                var color = "hsl("+this.slot_object.get_color()+", 100%, 48%)";
+                return color;
+            }else{
+                return this.slot_object.get_color();
+            }
         }else{
             if (this.energy_object){
                 return this.energy_object.get_color();
             }else{
-                return this.s.settings.background_color;
+                if (this.trace_object){
+                    var color = "hsl("+this.trace_object.get_color()+", 100%, 10%)";
+                    return color;
+                }else{
+                    return this.s.settings.background_color;
+                }
             }
         }
     }

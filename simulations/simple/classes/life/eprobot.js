@@ -45,9 +45,9 @@ class Eprobot {
         //var color = "hsl("+this.my_color+", 100%, "+l+"%, 0.5)";
 
         var h = parseInt(tools_map_range(this.tick, 0, this.s.settings.eprobots_lifetime, 0, 360));
-        var color = "hsl("+h+", 100%, 48%)";
+        //var color = "hsl("+h+", 100%, 48%)";
 
-        return color;
+        return h;
         //return OBJECTTYPES.EPROBOT.color;
     }
 

@@ -29,12 +29,11 @@ class World {
         var t_old = this.get_terrain(old_pos_x, old_pos_y);
         t_old.set_slot_object(null);
 
-        var trace = new Trace(this.s);
+        //this.s.drawer.refresh_paintobj(t_old.x, t_old.y, t_old.get_color());
+
+        var trace = new Trace(this.s, o.get_color());
         this.world_set_trace(trace, t_old.x, t_old.y);
 
-        var h = parseInt(tools_map_range(o.tick, 0, this.s.settings.eprobots_lifetime, 0, 360));
-        var color = "hsl("+h+", 100%, 10%)";
-        this.s.drawer.refresh_paintobj(t_old.x, t_old.y, color);
         return trace;
     }
 
@@ -81,7 +80,7 @@ class World {
         t.set_trace_object(o);
         o.t = t;
 
-        //this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
+        this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
     }
 
     world_unset_trace(x,y){

@@ -1,10 +1,11 @@
 class Trace {
 
-    constructor(s) {
+    constructor(s, color) {
         this.t = null;
 
         this.s = s;
         this.created = s.steps;
+        this.color = color;
     }
 
     toJSON(){
@@ -17,5 +18,9 @@ class Trace {
 
     get_id(){
         return OBJECTTYPES.TRACE.id;
+    }
+
+    get_color(){
+        return this.color;
     }
 }
