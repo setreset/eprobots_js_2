@@ -41,6 +41,7 @@ class Simulation {
         }, this);
 
         this.active_objects = [];
+        this.trace_objects = {};
 
         simstate.active_objects.forEach(function(o) {
             let ep = new Eprobot(this, o.program, o.init_data);
@@ -117,10 +118,16 @@ class Simulation {
         for (let o of this.active_objects) {
             if (o.is_dead) return;
             if (o.tick < o.get_lifetime()){
-                let x_pos_before = o.t.x;
-                let y_pos_before = o.t.y;
+                //let x_pos_before = o.t.x;
+                //let y_pos_before = o.t.y;
 
                 // INPUT
+                if (o.trace_object){
+                    o.working_data[this.settings.DATA_LENGTH-8] = o.trace_object.get_color()+1;
+                }else{
+                    o.working_data[this.settings.DATA_LENGTH-8] = 0;
+                }
+
                 if (o.t.energy_object){
                     o.working_data[this.settings.DATA_LENGTH-7] = 1;
                 }else{
@@ -136,11 +143,11 @@ class Simulation {
 
                 if (o.trace){
                     var key = o.trace.t.x.toString()+":"+o.trace.t.y.toString();
-                    this.trace_objects[key]= o.trace;
+                    this.trace_objects[key] = o.trace;
                 }
 
                 // INPUT after step
-                if (x_pos_before != o.t.x){
+                /*if (x_pos_before != o.t.x){
                     o.working_data[this.settings.DATA_LENGTH-2] = 1;
                 }else{
                     o.working_data[this.settings.DATA_LENGTH-2] = 0;
@@ -149,7 +156,7 @@ class Simulation {
                     o.working_data[this.settings.DATA_LENGTH-1] = 1;
                 }else{
                     o.working_data[this.settings.DATA_LENGTH-1] = 0;
-                }
+                }*/
 
                 if (o.energy >= 1){
                     eprobots_with_energy.push(o);
@@ -185,7 +192,7 @@ class Simulation {
 
         if (this.steps % 10 == 0){
             var traces_to_remove = [];
-            console.log(Object.keys(this.trace_objects).length);
+            //console.log(Object.keys(this.trace_objects).length);
             // traces wegräumen
             for (var key in this.trace_objects){
                 let trace = this.trace_objects[key];
