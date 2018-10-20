@@ -7,6 +7,7 @@ class Terrain {
 
         this.slot_object = null;
         this.energy_object = null;
+        this.trace_object = null;
     }
 
     toJSON(){
@@ -38,6 +39,14 @@ class Terrain {
 
     get_energy_object(){
         return this.energy_object;
+    }
+
+    set_trace_object(o){
+        this.trace_object = o;
+    }
+
+    get_trace_object(){
+        return this.trace_object;
     }
 
     get_color(){

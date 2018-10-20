@@ -26,10 +26,16 @@ class World {
 
         this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
 
-        var t = this.get_terrain(old_pos_x, old_pos_y);
-        t.set_slot_object(null);
+        var t_old = this.get_terrain(old_pos_x, old_pos_y);
+        t_old.set_slot_object(null);
 
-        this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
+        var trace = new Trace(this.s);
+        this.world_set_trace(trace, t_old.x, t_old.y);
+
+        var h = parseInt(tools_map_range(o.tick, 0, this.s.settings.eprobots_lifetime, 0, 360));
+        var color = "hsl("+h+", 100%, 10%)";
+        this.s.drawer.refresh_paintobj(t_old.x, t_old.y, color);
+        return trace;
     }
 
     world_set(o, x_pos, y_pos){
@@ -66,6 +72,21 @@ class World {
     world_unset_energy(x,y){
         var t = this.get_terrain(x, y);
         t.set_energy_object(null);
+
+        this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
+    }
+
+    world_set_trace(o, x_pos, y_pos){
+        var t = this.get_terrain(x_pos, y_pos);
+        t.set_trace_object(o);
+        o.t = t;
+
+        //this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
+    }
+
+    world_unset_trace(x,y){
+        var t = this.get_terrain(x, y);
+        t.set_trace_object(null);
 
         this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
     }

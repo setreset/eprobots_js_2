@@ -13,5 +13,9 @@ var OBJECTTYPES = {
         id: 2,
         color: "rgb(255, 255, 255)",
         drawable: true
+    },
+    TRACE: {
+        id: 3,
+        drawable: false
     }
 }

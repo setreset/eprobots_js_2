@@ -17,6 +17,7 @@ class Simulation {
         this.settings = new Settings();
         this.world = new World(this, this.settings.world_width,this.settings.world_height);
         this.active_objects = [];
+        this.trace_objects = {};
         this.drawer = new Drawer(this, this.canvas, this.canvas2);
     }
 
@@ -133,6 +134,11 @@ class Simulation {
 
                 o.step();
 
+                if (o.trace){
+                    var key = o.trace.t.x.toString()+":"+o.trace.t.y.toString();
+                    this.trace_objects[key]= o.trace;
+                }
+
                 // INPUT after step
                 if (x_pos_before != o.t.x){
                     o.working_data[this.settings.DATA_LENGTH-2] = 1;
@@ -176,6 +182,25 @@ class Simulation {
         }
 
         this.active_objects = active_objects_next;
+
+        if (this.steps % 10 == 0){
+            var traces_to_remove = [];
+            console.log(Object.keys(this.trace_objects).length);
+            // traces wegräumen
+            for (var key in this.trace_objects){
+                let trace = this.trace_objects[key];
+                if (trace.created+1000<this.steps){
+                    //console.log("abgelaufen");
+                    this.world.world_unset_trace(trace.t.x, trace.t.y);
+                    traces_to_remove.push(key);
+                }
+            }
+
+            for (let trace_to_remove_key of traces_to_remove) {
+                delete this.trace_objects[trace_to_remove_key];
+            }
+        }
+
         this.steps++;
     }
 
