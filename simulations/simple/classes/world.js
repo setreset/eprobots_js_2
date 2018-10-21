@@ -30,11 +30,6 @@ class World {
         t_old.set_slot_object(null);
 
         //this.s.drawer.refresh_paintobj(t_old.x, t_old.y, t_old.get_color());
-
-        var trace = new Trace(this.s, o.get_color());
-        this.world_set_trace(trace, t_old.x, t_old.y);
-
-        return trace;
     }
 
     world_set(o, x_pos, y_pos){

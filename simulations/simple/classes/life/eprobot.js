@@ -14,7 +14,7 @@ class Eprobot {
         this.working_data = init_data.slice(0);
 
         this.my_color = tools_random(359);
-        this.trace = null;
+        this.afterstep_trace = null;
     }
 
     toJSON(){
@@ -65,30 +65,49 @@ class Eprobot {
 
     get_move_OISC(){
         tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS);
-
-        var move_val = this.working_data[0];
-
-        if (isFinite(move_val)){
-            var move = Math.abs(move_val) % (DIRECTIONS.length + 1);
-        }else{
-            console.log("Infinite: "+move_val);
-            var move = this.get_move_random();
-        }
-
-        return move;
     }
 
     move(new_pos_x, new_pos_y){
         let old_pos_x = this.t.x;
         let old_pos_y = this.t.y;
 
-        this.trace = this.s.world.world_move(this, old_pos_x, old_pos_y, new_pos_x, new_pos_y);
+        this.s.world.world_move(this, old_pos_x, old_pos_y, new_pos_x, new_pos_y);
+
+        this.afterstep_trace = new Trace(this.s, this.get_color());
+        this.s.world.world_set_trace(this.afterstep_trace, old_pos_x, old_pos_y);
+    }
+
+    set_input(){
+        if (this.t.trace_object){
+            this.working_data[this.s.settings.DATA_LENGTH-6] = this.t.trace_object.get_color()+1;
+        }else{
+            this.working_data[this.s.settings.DATA_LENGTH-6] = 0;
+        }
+
+        if (this.t.energy_object){
+            this.working_data[this.s.settings.DATA_LENGTH-5] = 1;
+        }else{
+            this.working_data[this.s.settings.DATA_LENGTH-5] = 0;
+        }
+
+        this.working_data[this.s.settings.DATA_LENGTH-4] = this.tick;
+        this.working_data[this.s.settings.DATA_LENGTH-3] = this.energy;
+        this.working_data[this.s.settings.DATA_LENGTH-2] = this.t.x;
+        this.working_data[this.s.settings.DATA_LENGTH-1] = this.t.y;
     }
 
     step(){
         //let moveval = this.get_move();
-        this.trace = null;
-        let moveval = this.get_move_OISC();
+        this.afterstep_trace = null;
+        this.get_move_OISC();
+        var move_val = this.working_data[0];
+
+        if (isFinite(move_val)){
+            var moveval = Math.abs(move_val) % (DIRECTIONS.length + 1);
+        }else{
+            console.log("Infinite: "+move_val);
+            var moveval = this.get_move_random();
+        }
 
         // move
         if (moveval<DIRECTIONS.length){
