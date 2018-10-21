@@ -4,6 +4,8 @@ class Simulation {
         this.canvas = canvas;
         this.canvas2 = canvas2;
         this.steps = 0;
+
+        sim = this;
     }
 
     prepare(){
@@ -13,11 +15,24 @@ class Simulation {
         }
     }
 
+    statsinit(){
+        return {
+            "eprobots_created": 0,
+            "high_stepcounter": 0,
+            "fork_water": 0,
+            "fork_normal": 0,
+            "infinity_negative": 0,
+            "infinity_positive": 0,
+            "infinity_nan": 0
+        }
+    }
+
     init(){
         this.settings = new Settings();
         this.world = new World(this, this.settings.world_width,this.settings.world_height);
         this.active_objects = [];
         this.trace_objects = {};
+        this.stats = this.statsinit();
         this.drawer = new Drawer(this, this.canvas, this.canvas2);
     }
 
@@ -42,6 +57,7 @@ class Simulation {
 
         this.active_objects = [];
         this.trace_objects = {};
+        this.stats = this.statsinit();
 
         simstate.active_objects.forEach(function(o) {
             let ep = new Eprobot(this, o.program, o.init_data);
@@ -113,6 +129,7 @@ class Simulation {
         let active_objects_next = [];
 
         //this.drawer.paint_fast();
+        let eprobots_with_energy_and_water = [];
         let eprobots_with_energy = [];
         shuffle(this.active_objects);
         for (let o of this.active_objects) {
@@ -128,7 +145,9 @@ class Simulation {
                     this.trace_objects[key] = o.afterstep_trace;
                 }
 
-                if (o.energy >= 1){
+                if (o.energy >= 1 && o.water >= 1){
+                    eprobots_with_energy_and_water.push(o);
+                } else if (o.energy >= 1){
                     eprobots_with_energy.push(o);
                 }
                 active_objects_next.push(o);
@@ -144,9 +163,24 @@ class Simulation {
         // aufsteigend sortieren
         //this.eprobots_with_energy.sort(function(a, b){return a.energy - b.energy});
         shuffle(eprobots_with_energy);
+        shuffle(eprobots_with_energy_and_water);
 
         // fork
+        for (let o of eprobots_with_energy_and_water) {
+            this.stats["fork_water"]++;
+            let new_eprobot = null;
+            if (this.world.counter_eprobot<this.settings.eprobots_max){
+                new_eprobot = o.fork();
+                if (new_eprobot){
+                    active_objects_next.push(new_eprobot);
+                }
+            }else{
+                break;
+            }
+        }
+
         for (let o of eprobots_with_energy) {
+            this.stats["fork_normal"]++;
             let new_eprobot = null;
             if (this.world.counter_eprobot<this.settings.eprobots_max){
                 new_eprobot = o.fork();
@@ -166,7 +200,7 @@ class Simulation {
             // traces wegräumen
             for (var key in this.trace_objects){
                 let trace = this.trace_objects[key];
-                if (trace.created+1000<this.steps){
+                if (trace.created+500<this.steps){
                     //console.log("abgelaufen");
                     this.world.world_unset_trace(trace.t.x, trace.t.y);
                     traces_to_remove.push(key);
@@ -229,6 +263,15 @@ class Simulation {
             if (t.energy_object == null){
                 let p = new Plant(this);
                 this.world.world_set_energy(p, world_x, world_y);
+                //simulation.active_objects.push(p);
+                this.drawer.paint_fast();
+            }else{
+                console.log("besetzt");
+            }
+        }else if (draw_mode == OBJECTTYPES.WATER.id){
+            if (t.energy_object == null){
+                let w = new Water(this);
+                this.world.world_set_energy(w, world_x, world_y);
                 //simulation.active_objects.push(p);
                 this.drawer.paint_fast();
             }else{

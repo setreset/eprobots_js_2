@@ -1,3 +1,5 @@
+var sim;
+
 class Controller {
     constructor() {
         this.running = false;

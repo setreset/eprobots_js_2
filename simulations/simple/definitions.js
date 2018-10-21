@@ -4,18 +4,23 @@ var OBJECTTYPES = {
         color: "rgb(0, 255, 0)",
         drawable: true
     },
-    EPROBOT: {
+    WATER: {
         id: 1,
+        color: "rgb(0, 238, 255)",
+        drawable: true
+    },
+    EPROBOT: {
+        id: 2,
         color: "rgb(255, 0, 0)",
         drawable: false
     },
     BARRIER: {
-        id: 2,
+        id: 3,
         color: "rgb(255, 255, 255)",
         drawable: true
     },
     TRACE: {
-        id: 3,
+        id: 4,
         drawable: false
-    }
+    },
 }

@@ -7,6 +7,7 @@ class Eprobot {
         this.tick = 0;
         this.is_dead = false;
         this.energy = 0;
+        this.water = 0;
 
         this.program = program;
 
@@ -15,6 +16,8 @@ class Eprobot {
 
         this.my_color = tools_random(359);
         this.afterstep_trace = null;
+
+        this.s.stats["eprobots_created"]++;
     }
 
     toJSON(){
@@ -64,7 +67,10 @@ class Eprobot {
     }
 
     get_move_OISC(){
-        tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS);
+        let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS);
+        if (steps>=this.s.settings.PROGRAM_STEPS){
+            this.s.stats["high_stepcounter"]++;
+        }
     }
 
     move(new_pos_x, new_pos_y){
@@ -79,19 +85,24 @@ class Eprobot {
 
     set_input(){
         if (this.t.trace_object){
-            this.working_data[this.s.settings.DATA_LENGTH-6] = this.t.trace_object.get_color()+1;
+            this.working_data[this.s.settings.DATA_LENGTH-7] = this.t.trace_object.get_color()+1;
+        }else{
+            this.working_data[this.s.settings.DATA_LENGTH-7] = 0;
+        }
+
+        if (this.t.energy_object) {
+            if (this.t.energy_object.get_id() == OBJECTTYPES.PLANT.id){
+                this.working_data[this.s.settings.DATA_LENGTH - 6] = 1;
+            } else if (this.t.energy_object.get_id() == OBJECTTYPES.WATER.id){
+                this.working_data[this.s.settings.DATA_LENGTH - 6] = 2;
+            }
         }else{
             this.working_data[this.s.settings.DATA_LENGTH-6] = 0;
         }
 
-        if (this.t.energy_object){
-            this.working_data[this.s.settings.DATA_LENGTH-5] = 1;
-        }else{
-            this.working_data[this.s.settings.DATA_LENGTH-5] = 0;
-        }
-
-        this.working_data[this.s.settings.DATA_LENGTH-4] = this.tick;
-        this.working_data[this.s.settings.DATA_LENGTH-3] = this.energy;
+        this.working_data[this.s.settings.DATA_LENGTH-5] = this.tick;
+        this.working_data[this.s.settings.DATA_LENGTH-4] = this.energy;
+        this.working_data[this.s.settings.DATA_LENGTH-3] = this.water;
         this.working_data[this.s.settings.DATA_LENGTH-2] = this.t.x;
         this.working_data[this.s.settings.DATA_LENGTH-1] = this.t.y;
     }
@@ -105,7 +116,16 @@ class Eprobot {
         if (isFinite(move_val)){
             var moveval = Math.abs(move_val) % (DIRECTIONS.length + 1);
         }else{
-            console.log("Infinite: "+move_val);
+            if (move_val==-Infinity){
+                this.s.stats["infinity_negative"]++;
+            }else if (move_val==Infinity){
+                this.s.stats["infinity_positive"]++;
+            }else if (isNaN(move_val)){
+                this.s.stats["infinity_nan"]++;
+            }else{
+                console.log("Infinite: "+move_val);
+            }
+
             var moveval = this.get_move_random();
         }
 
@@ -120,13 +140,23 @@ class Eprobot {
             if (slot_object == null){
                 let energy_object = t.get_energy_object();
                 if (energy_object){
-                    //slot_object.kill();
-                    this.energy++;
-                    energy_object.energy_count--;
-                    if (energy_object.energy_count==0){
-                        this.s.world.world_unset_energy(movepos_x, movepos_y);
-                        console.log(new Date()+": entferne pflanze");
+                    if (energy_object.get_id()==OBJECTTYPES.PLANT.id){
+                        //slot_object.kill();
+                        this.energy++;
+                        energy_object.energy_count--;
+                        if (energy_object.energy_count==0){
+                            this.s.world.world_unset_energy(movepos_x, movepos_y);
+                            console.log(new Date()+": entferne pflanze");
+                        }
+                    }else if (energy_object.get_id()==OBJECTTYPES.WATER.id){
+                        this.water++;
+                        energy_object.energy_count--;
+                        if (energy_object.energy_count==0){
+                            this.s.world.world_unset_energy(movepos_x, movepos_y);
+                            console.log(new Date()+": entferne wasser");
+                        }
                     }
+
                 }
 
                 this.move(movepos_x, movepos_y);
@@ -152,6 +182,9 @@ class Eprobot {
             new_eprobot = new Eprobot(this.s, new_program, new_data);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
             this.energy = this.energy-1;
+            if (this.water>0){
+                this.water--;
+            }
         }
         return new_eprobot
     }
