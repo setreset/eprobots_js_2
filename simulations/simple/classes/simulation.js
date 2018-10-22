@@ -200,7 +200,7 @@ class Simulation {
             // traces wegräumen
             for (var key in this.trace_objects){
                 let trace = this.trace_objects[key];
-                if (trace.created+500<this.steps){
+                if (trace.created+750<this.steps){
                     //console.log("abgelaufen");
                     this.world.world_unset_trace(trace.t.x, trace.t.y);
                     traces_to_remove.push(key);

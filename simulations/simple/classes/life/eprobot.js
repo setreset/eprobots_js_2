@@ -68,9 +68,30 @@ class Eprobot {
 
     get_move_OISC(){
         let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS);
+
         if (steps>=this.s.settings.PROGRAM_STEPS){
             this.s.stats["high_stepcounter"]++;
         }
+
+        var move_val = this.working_data[0];
+
+        if (isFinite(move_val)){
+            var moveval = Math.abs(move_val) % (DIRECTIONS.length + 1);
+        }else{
+            if (move_val==-Infinity){
+                this.s.stats["infinity_negative"]++;
+            }else if (move_val==Infinity){
+                this.s.stats["infinity_positive"]++;
+            }else if (isNaN(move_val)){
+                this.s.stats["infinity_nan"]++;
+            }else{
+                console.log("Infinite: "+move_val);
+            }
+
+            var moveval = this.get_move_random();
+        }
+
+        return move_val;
     }
 
     move(new_pos_x, new_pos_y){
@@ -110,24 +131,7 @@ class Eprobot {
     step(){
         //let moveval = this.get_move();
         this.afterstep_trace = null;
-        this.get_move_OISC();
-        var move_val = this.working_data[0];
-
-        if (isFinite(move_val)){
-            var moveval = Math.abs(move_val) % (DIRECTIONS.length + 1);
-        }else{
-            if (move_val==-Infinity){
-                this.s.stats["infinity_negative"]++;
-            }else if (move_val==Infinity){
-                this.s.stats["infinity_positive"]++;
-            }else if (isNaN(move_val)){
-                this.s.stats["infinity_nan"]++;
-            }else{
-                console.log("Infinite: "+move_val);
-            }
-
-            var moveval = this.get_move_random();
-        }
+        let moveval = this.get_move_OISC();
 
         // move
         if (moveval<DIRECTIONS.length){

@@ -62,7 +62,7 @@ class Terrain {
                 return this.energy_object.get_color();
             }else{
                 if (this.trace_object){
-                    var color = "hsl("+this.trace_object.get_color()+", 100%, 10%)";
+                    var color = "hsl("+this.trace_object.get_color()+", 50%, 10%)";
                     return color;
                 }else{
                     return this.s.settings.background_color;
