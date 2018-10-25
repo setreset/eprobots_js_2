@@ -11,7 +11,7 @@ class Settings {
         this.sleeptime = 0;
         this.plants_max = 500;
         this.plants_lifetime = 250;
-        this.eprobots_max = 1000;
+        this.eprobots_max = 750;
         this.eprobots_lifetime = 5000;
         this.eprobots_fossiltime = 400;
         this.PROGRAM_LENGTH = 500;

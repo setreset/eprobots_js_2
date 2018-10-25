@@ -91,7 +91,7 @@ class Eprobot {
             var moveval = this.get_move_random();
         }
 
-        return move_val;
+        return moveval;
     }
 
     move(new_pos_x, new_pos_y){
