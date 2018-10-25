@@ -102,7 +102,7 @@ class Simulation {
         };
     }
 
-    init_eprobots(){
+    seed_eprobots(){
         for (let i = 0; i<50;i++){
             var program = [];
             for (var pi = 0; pi < this.settings.PROGRAM_LENGTH; pi++) {
@@ -121,6 +121,17 @@ class Simulation {
                 let ep = new Eprobot(this, program, init_data);
                 this.world.world_set(ep, x, y);
                 this.active_objects.push(ep);
+            }
+        }
+    }
+
+    seed_energy(){
+        for (let i = 0; i<10;i++){
+            let x = this.settings.nest_x+tools_random2(-20,20);
+            let y = this.settings.nest_y+tools_random2(-20,20);
+            if (this.world.get_terrain(x,y).energy_object==null){
+                let p = new Plant(this);
+                this.world.world_set_energy(p, x, y);
             }
         }
     }

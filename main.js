@@ -18,7 +18,8 @@ $(document).ready(function() {
     controls["btn_reset"] = $("#btn_reset");
     controls["btn_start"] = $("#btn_start");
     controls["btn_fullscreen"] = $("#btn_fullscreen");
-    controls["btn_init_eprobots"] = $("#btn_init_eprobots");
+    controls["btn_seed_eprobots"] = $("#btn_seed_eprobots");
+    controls["btn_seed_energy"] = $("#btn_seed_energy");
     controls["simitem-selector"] = $("#simitem-selector");
     controls["btn_load"] = $("#btn_load");
     controls["btn_save"]= $("#btn_save");
@@ -47,7 +48,9 @@ $(document).ready(function() {
 
     controls["btn_reset"].on("click", function(e){controller.reset_simulation()});
 
-    controls["btn_init_eprobots"].on("click", function(e){controller.init_eprobots()});
+    controls["btn_seed_eprobots"].on("click", function(e){controller.seed_eprobots()});
+
+    controls["btn_seed_energy"].on("click", function(e){controller.seed_energy()});
 
     controls["btn_fullscreen"].on("click", function(ev){controller.toggle_fullscreen()});
 
