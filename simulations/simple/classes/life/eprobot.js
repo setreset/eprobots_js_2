@@ -38,6 +38,10 @@ class Eprobot {
         return OBJECTTYPES.EPROBOT.id;
     }
 
+    get_relative_life_time(max){
+        return parseInt(tools_map_range(this.tick, 0, this.s.settings.eprobots_lifetime, 0, max));
+    }
+
     get_color(){
         //var color = "hsl("+parseInt(this.tick/16)%360+", 100%, 48%)";
 
@@ -47,11 +51,11 @@ class Eprobot {
         //var l = parseInt(tools_map_range(this.tick, 0, this.s.settings.eprobots_lifetime, 48, 0));
         //var color = "hsl("+this.my_color+", 100%, "+l+"%, 0.5)";
 
-        var h = parseInt(tools_map_range(this.tick, 0, this.s.settings.eprobots_lifetime, 0, 360));
+        //var h = parseInt(tools_map_range(this.tick, 0, this.s.settings.eprobots_lifetime, 0, 360));
         //var color = "hsl("+h+", 100%, 48%)";
 
-        return h;
-        //return OBJECTTYPES.EPROBOT.color;
+        //return h;
+        return OBJECTTYPES.EPROBOT.color;
     }
 
     get_lifetime(){
@@ -100,7 +104,7 @@ class Eprobot {
 
         this.s.world.world_move(this, old_pos_x, old_pos_y, new_pos_x, new_pos_y);
 
-        this.afterstep_trace = new Trace(this.s, this.get_color());
+        this.afterstep_trace = new Trace(this.s, this.get_relative_life_time(10));
         this.s.world.world_set_trace(this.afterstep_trace, old_pos_x, old_pos_y);
     }
 

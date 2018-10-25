@@ -51,18 +51,19 @@ class Terrain {
 
     get_color(){
         if (this.slot_object){
-            if (this.slot_object.get_id()==OBJECTTYPES.EPROBOT.id){
+            return this.slot_object.get_color();
+            /*if (this.slot_object.get_id()==OBJECTTYPES.EPROBOT.id){
                 var color = "hsl("+this.slot_object.get_color()+", 100%, 48%)";
                 return color;
             }else{
                 return this.slot_object.get_color();
-            }
+            }*/
         }else{
             if (this.energy_object){
                 return this.energy_object.get_color();
             }else{
                 if (this.trace_object){
-                    var color = "hsl("+this.trace_object.get_color()+", 50%, 10%)";
+                    var color = "hsl("+"0"+", 100%, "+(10-this.trace_object.get_color())+"%)";
                     return color;
                 }else{
                     return this.s.settings.background_color;
