@@ -32,6 +32,7 @@ class Simulation {
         this.world = new World(this, this.settings.world_width,this.settings.world_height);
         this.active_objects = [];
         this.trace_objects = {};
+        this.fossil_objects = {};
         this.stats = this.statsinit();
         this.drawer = new Drawer(this, this.canvas, this.canvas2);
     }
@@ -57,6 +58,7 @@ class Simulation {
 
         this.active_objects = [];
         this.trace_objects = {};
+        this.fossil_objects = {};
         this.stats = this.statsinit();
 
         simstate.active_objects.forEach(function(o) {
@@ -166,6 +168,13 @@ class Simulation {
             }else{
                 this.world.world_unset(o.t.x, o.t.y, o.get_id());
                 o.is_dead = true;
+
+                // fossil
+                let f = new Fossil(this);
+                this.world.world_set(f, o.t.x, o.t.y);
+
+                var key = o.t.x.toString()+":"+o.t.y.toString();
+                this.fossil_objects[key] = f;
             }
         }
 
@@ -220,6 +229,22 @@ class Simulation {
 
             for (let trace_to_remove_key of traces_to_remove) {
                 delete this.trace_objects[trace_to_remove_key];
+            }
+
+            var fossils_to_remove = [];
+            //console.log(Object.keys(this.trace_objects).length);
+            // fossils wegräumen
+            for (var key in this.fossil_objects){
+                let fossil = this.fossil_objects[key];
+                if (fossil.created+5000<this.steps){
+                    //console.log("abgelaufen");
+                    this.world.world_unset(fossil.t.x, fossil.t.y, fossil.get_id());
+                    fossils_to_remove.push(key);
+                }
+            }
+
+            for (let fossil_to_remove_key of fossils_to_remove) {
+                delete this.fossil_objects[fossil_to_remove_key];
             }
         }
 

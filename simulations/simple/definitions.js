@@ -23,4 +23,9 @@ var OBJECTTYPES = {
         id: 4,
         drawable: false
     },
+    FOSSIL: {
+        id: 5,
+        drawable: true,
+        color: "rgb(125, 125, 125)"
+    },
 }
