@@ -63,7 +63,12 @@ class Terrain {
                 return this.energy_object.get_color();
             }else{
                 if (this.trace_object){
-                    var color = "hsl("+"0"+", 100%, "+(10-this.trace_object.get_color())+"%)";
+                    if (this.trace_object.get_id()==OBJECTTYPES.TRACE_EPROBOT.id){
+                        var color = "hsl("+"0"+", 100%, "+(10-this.trace_object.get_color())+"%)";
+                    }else if (this.trace_object.get_id()==OBJECTTYPES.TRACE_EPROBOTEATER.id){
+                        var color = "hsl("+"192"+", 100%, "+(10-this.trace_object.get_color())+"%)";
+                    }
+
                     return color;
                 }else{
                     return this.s.settings.background_color;

@@ -13,6 +13,7 @@ class World {
         }
 
         this.counter_eprobot = 0;
+        this.counter_eproboteater = 0;
     }
 
     get_terrain(x, y){
@@ -39,6 +40,8 @@ class World {
 
         if (o.get_id()==OBJECTTYPES.EPROBOT.id){
             this.counter_eprobot++;
+        }else if (o.get_id()==OBJECTTYPES.EPROBOTEATER.id){
+            this.counter_eproboteater++;
         }
 
         this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
@@ -50,6 +53,8 @@ class World {
 
         if (object_class==OBJECTTYPES.EPROBOT.id){
             this.counter_eprobot--;
+        }else if (object_class==OBJECTTYPES.EPROBOTEATER.id){
+            this.counter_eproboteater--;
         }
 
         this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());

@@ -1,4 +1,4 @@
-class Eprobot {
+class EprobotEater {
 
     constructor(s, program, init_data) {
         this.t = null;
@@ -17,7 +17,7 @@ class Eprobot {
         this.my_color = tools_random(359);
         this.afterstep_trace = null;
 
-        this.s.stats["eprobots_created"]++;
+        this.s.stats["eproboteaters_created"]++;
     }
 
     toJSON(){
@@ -35,7 +35,7 @@ class Eprobot {
     }
 
     get_id(){
-        return OBJECTTYPES.EPROBOT.id;
+        return OBJECTTYPES.EPROBOTEATER.id;
     }
 
     get_relative_life_time(max){
@@ -55,7 +55,7 @@ class Eprobot {
         //var color = "hsl("+h+", 100%, 48%)";
 
         //return h;
-        return OBJECTTYPES.EPROBOT.color;
+        return OBJECTTYPES.EPROBOTEATER.color;
     }
 
     get_lifetime(){
@@ -104,7 +104,7 @@ class Eprobot {
 
         this.s.world.world_move(this, old_pos_x, old_pos_y, new_pos_x, new_pos_y);
 
-        this.afterstep_trace = new TraceEprobot(this.s, this.get_relative_life_time(10));
+        this.afterstep_trace = new TraceEprobotEater(this.s, this.get_relative_life_time(10));
         this.s.world.world_set_trace(this.afterstep_trace, old_pos_x, old_pos_y);
     }
 
@@ -152,26 +152,13 @@ class Eprobot {
 
             let t = this.s.world.get_terrain(movepos_x, movepos_y);
             let slot_object = t.get_slot_object();
-            if (slot_object == null){
-                let energy_object = t.get_energy_object();
-                if (energy_object){
-                    if (energy_object.get_id()==OBJECTTYPES.PLANT.id){
-                        //slot_object.kill();
-                        this.energy++;
-                        energy_object.energy_count--;
-                        if (energy_object.energy_count==0){
-                            this.s.world.world_unset_energy(movepos_x, movepos_y);
-                            console.log(new Date()+": entferne pflanze");
-                        }
-                    }else if (energy_object.get_id()==OBJECTTYPES.WATER.id){
-                        this.water++;
-                        energy_object.energy_count--;
-                        if (energy_object.energy_count==0){
-                            this.s.world.world_unset_energy(movepos_x, movepos_y);
-                            console.log(new Date()+": entferne wasser");
-                        }
-                    }
-
+            if (slot_object == null || slot_object.get_id()==OBJECTTYPES.EPROBOT.id){
+                if (slot_object){
+                    //slot_object.kill();
+                    this.s.stats["eprobot_kills"]++;
+                    this.energy++;
+                    slot_object.is_dead=true;
+                    this.s.world.world_unset(movepos_x, movepos_y, slot_object.get_id());
                 }
 
                 this.move(movepos_x, movepos_y);
@@ -194,7 +181,7 @@ class Eprobot {
         if (spreadterrain.slot_object == null){
             var new_program = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program);
             var new_data = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data);
-            new_eprobot = new Eprobot(this.s, new_program, new_data);
+            new_eprobot = new EprobotEater(this.s, new_program, new_data);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
             this.energy = this.energy-1;
             if (this.water>0){

@@ -1,4 +1,4 @@
-class Trace {
+class TraceEprobotEater {
 
     constructor(s, color) {
         this.t = null;
@@ -17,7 +17,7 @@ class Trace {
     }
 
     get_id(){
-        return OBJECTTYPES.TRACE.id;
+        return OBJECTTYPES.TRACE_EPROBOTEATER.id;
     }
 
     get_color(){

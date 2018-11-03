@@ -19,6 +19,7 @@ $(document).ready(function() {
     controls["btn_start"] = $("#btn_start");
     controls["btn_fullscreen"] = $("#btn_fullscreen");
     controls["btn_seed_eprobots"] = $("#btn_seed_eprobots");
+    controls["btn_seed_eproboteaters"] = $("#btn_seed_eproboteaters");
     controls["btn_seed_energy"] = $("#btn_seed_energy");
     controls["simitem-selector"] = $("#simitem-selector");
     controls["btn_load"] = $("#btn_load");
@@ -49,6 +50,8 @@ $(document).ready(function() {
     controls["btn_reset"].on("click", function(e){controller.reset_simulation()});
 
     controls["btn_seed_eprobots"].on("click", function(e){controller.seed_eprobots()});
+
+    controls["btn_seed_eproboteaters"].on("click", function(e){controller.seed_eproboteaters()});
 
     controls["btn_seed_energy"].on("click", function(e){controller.seed_energy()});
 

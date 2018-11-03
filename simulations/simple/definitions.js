@@ -19,7 +19,7 @@ var OBJECTTYPES = {
         color: "rgb(255, 255, 255)",
         drawable: true
     },
-    TRACE: {
+    TRACE_EPROBOT: {
         id: 4,
         drawable: false
     },
@@ -27,5 +27,14 @@ var OBJECTTYPES = {
         id: 5,
         drawable: true,
         color: "rgb(125, 125, 125)"
+    },
+    EPROBOTEATER: {
+        id: 6,
+        drawable: false,
+        color: "rgb(0, 200, 250)"
+    },
+    TRACE_EPROBOTEATER: {
+        id: 7,
+        drawable: false
     },
 }

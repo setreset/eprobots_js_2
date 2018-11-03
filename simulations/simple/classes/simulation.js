@@ -18,8 +18,10 @@ class Simulation {
     statsinit(){
         return {
             "eprobots_created": 0,
+            "eproboteaters_created": 0,
+            "eprobot_kills": 0,
             "high_stepcounter": 0,
-            "fork_water": 0,
+            "fork_eater": 0,
             "fork_normal": 0,
             "infinity_negative": 0,
             "infinity_positive": 0,
@@ -31,6 +33,7 @@ class Simulation {
         this.settings = new Settings();
         this.world = new World(this, this.settings.world_width,this.settings.world_height);
         this.active_objects = [];
+        this.active_objects_eproboteater = [];
         this.trace_objects = {};
         this.fossil_objects = {};
         this.stats = this.statsinit();
@@ -57,6 +60,7 @@ class Simulation {
         }, this);
 
         this.active_objects = [];
+        this.active_objects_eproboteater = [];
         this.trace_objects = {};
         this.fossil_objects = {};
         this.stats = this.statsinit();
@@ -127,6 +131,29 @@ class Simulation {
         }
     }
 
+    seed_eproboteaters(){
+        for (let i = 0; i<50;i++){
+            var program = [];
+            for (var pi = 0; pi < this.settings.PROGRAM_LENGTH; pi++) {
+                var val = tools_random(this.settings.PROGRAM_LENGTH * 10) - this.settings.PROGRAM_LENGTH;
+                program.push(val);
+            }
+
+            var init_data = [];
+            for (var di = 0; di < this.settings.DATA_LENGTH; di++) {
+                var val = tools_random2(-720, 720);
+                init_data.push(val);
+            }
+            let x = this.settings.nest_x+tools_random2(-20,20);
+            let y = this.settings.nest_y+tools_random2(-20,20);
+            if (this.world.get_terrain(x,y).slot_object==null){
+                let ep = new EprobotEater(this, program, init_data);
+                this.world.world_set(ep, x, y);
+                this.active_objects_eproboteater.push(ep);
+            }
+        }
+    }
+
     seed_energy(){
         for (let i = 0; i<10;i++){
             let x = this.settings.nest_x+tools_random2(-20,20);
@@ -140,13 +167,15 @@ class Simulation {
 
     simulation_step(){
         let active_objects_next = [];
+        let active_objects_eproboteater_next = [];
 
-        //this.drawer.paint_fast();
-        let eprobots_with_energy_and_water = [];
         let eprobots_with_energy = [];
-        shuffle(this.active_objects);
+        let eproboteater_with_energy = [];
+        //shuffle(this.active_objects);
+
         for (let o of this.active_objects) {
-            if (o.is_dead) return;
+            //console.log(o);
+            if (o.is_dead) continue;
             if (o.tick < o.get_lifetime()){
                 // INPUT
                 o.set_input();
@@ -158,12 +187,44 @@ class Simulation {
                     this.trace_objects[key] = o.afterstep_trace;
                 }
 
-                if (o.energy >= 1 && o.water >= 1){
-                    eprobots_with_energy_and_water.push(o);
-                } else if (o.energy >= 1){
+
+                if (o.energy >= 1){
                     eprobots_with_energy.push(o);
                 }
                 active_objects_next.push(o);
+
+            }else{
+                this.world.world_unset(o.t.x, o.t.y, o.get_id());
+                o.is_dead = true;
+
+                // fossil
+                let f = new Fossil(this);
+                this.world.world_set(f, o.t.x, o.t.y);
+
+                var key = o.t.x.toString()+":"+o.t.y.toString();
+                this.fossil_objects[key] = f;
+            }
+        }
+
+        for (let o of this.active_objects_eproboteater) {
+            if (o.is_dead) continue;
+            if (o.tick < o.get_lifetime()){
+                // INPUT
+                o.set_input();
+
+                o.step();
+
+                if (o.afterstep_trace){
+                    var key = o.afterstep_trace.t.x.toString()+":"+o.afterstep_trace.t.y.toString();
+                    this.trace_objects[key] = o.afterstep_trace;
+                }
+
+
+                if (o.energy >= 1){
+                    eproboteater_with_energy.push(o);
+
+                }
+                active_objects_eproboteater_next.push(o);
 
             }else{
                 this.world.world_unset(o.t.x, o.t.y, o.get_id());
@@ -182,23 +243,10 @@ class Simulation {
         //this.eprobots_with_energy.sort(function(a, b){return b.energy - a.energy});
         // aufsteigend sortieren
         //this.eprobots_with_energy.sort(function(a, b){return a.energy - b.energy});
-        shuffle(eprobots_with_energy);
-        shuffle(eprobots_with_energy_and_water);
+        //shuffle(eprobots_with_energy);
+        //shuffle(eproboteater_with_energy);
 
         // fork
-        for (let o of eprobots_with_energy_and_water) {
-            this.stats["fork_water"]++;
-            let new_eprobot = null;
-            if (this.world.counter_eprobot<this.settings.eprobots_max){
-                new_eprobot = o.fork();
-                if (new_eprobot){
-                    active_objects_next.push(new_eprobot);
-                }
-            }else{
-                break;
-            }
-        }
-
         for (let o of eprobots_with_energy) {
             this.stats["fork_normal"]++;
             let new_eprobot = null;
@@ -212,7 +260,21 @@ class Simulation {
             }
         }
 
+        for (let o of eproboteater_with_energy) {
+            this.stats["fork_eater"]++;
+            let new_eprobot = null;
+            if (this.world.counter_eproboteater<parseInt(this.settings.eprobots_max/2)){
+                new_eprobot = o.fork();
+                if (new_eprobot){
+                    active_objects_eproboteater_next.push(new_eprobot);
+                }
+            }else{
+                break;
+            }
+        }
+
         this.active_objects = active_objects_next;
+        this.active_objects_eproboteater = active_objects_eproboteater_next;
 
         if (this.steps % 10 == 0){
             var traces_to_remove = [];
@@ -230,7 +292,9 @@ class Simulation {
             for (let trace_to_remove_key of traces_to_remove) {
                 delete this.trace_objects[trace_to_remove_key];
             }
+        }
 
+        if (this.steps % 100 == 0){
             var fossils_to_remove = [];
             //console.log(Object.keys(this.trace_objects).length);
             // fossils wegräumen
