@@ -13,7 +13,8 @@ class Settings {
         this.plants_lifetime = 250;
         this.eprobots_max = 750;
         this.eprobots_lifetime = 5000;
-        this.eprobots_fossiltime = 400;
+        this.eprobots_fossiltime = 5000;
+        this.tracetime = 750;
         this.PROGRAM_LENGTH = 500;
         this.DATA_LENGTH = 20;
         this.PROGRAM_STEPS = 1000;
