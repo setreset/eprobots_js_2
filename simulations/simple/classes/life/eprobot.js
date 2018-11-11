@@ -105,20 +105,19 @@ class Eprobot {
         this.s.world.world_move(this, old_pos_x, old_pos_y, new_pos_x, new_pos_y);
 
         this.afterstep_trace = new TraceEprobot(this.s, this.get_relative_life_time(10));
-        this.s.world.world_set_trace(this.afterstep_trace, old_pos_x, old_pos_y);
+        this.s.world.world_set_trace_eprobot(this.afterstep_trace, old_pos_x, old_pos_y);
     }
 
     set_input(){
-        if (this.t.trace_object){
-            if (this.t.trace_object.get_id()==OBJECTTYPES.TRACE_EPROBOT.id){
-                this.working_data[this.s.settings.DATA_LENGTH-8] = this.t.trace_object.get_color()+1;
-                this.working_data[this.s.settings.DATA_LENGTH-7] = 0;
-            }else if (this.t.trace_object.get_id()==OBJECTTYPES.TRACE_EPROBOTEATER.id){
-                this.working_data[this.s.settings.DATA_LENGTH-8] = 0;
-                this.working_data[this.s.settings.DATA_LENGTH-7] = this.t.trace_object.get_color()+1;
-            }
+        if (this.t.trace_object_eprobot){
+            this.working_data[this.s.settings.DATA_LENGTH-8] = this.t.trace_object_eprobot.get_color()+1;
         }else{
             this.working_data[this.s.settings.DATA_LENGTH-8] = 0;
+        }
+
+        if (this.t.trace_object_eproboteater){
+            this.working_data[this.s.settings.DATA_LENGTH-7] = this.t.trace_object_eproboteater.get_color()+1;
+        }else{
             this.working_data[this.s.settings.DATA_LENGTH-7] = 0;
         }
 

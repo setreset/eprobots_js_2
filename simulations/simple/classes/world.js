@@ -75,17 +75,32 @@ class World {
         this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
     }
 
-    world_set_trace(o, x_pos, y_pos){
+    world_set_trace_eprobot(o, x_pos, y_pos){
         var t = this.get_terrain(x_pos, y_pos);
-        t.set_trace_object(o);
+        t.set_trace_object_eprobot(o);
         o.t = t;
 
         this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
     }
 
-    world_unset_trace(x,y){
+    world_set_trace_eproboteater(o, x_pos, y_pos){
+        var t = this.get_terrain(x_pos, y_pos);
+        t.set_trace_object_eproboteater(o);
+        o.t = t;
+
+        this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
+    }
+
+    world_unset_trace_eprobot(x,y){
         var t = this.get_terrain(x, y);
-        t.set_trace_object(null);
+        t.set_trace_object_eprobot(null);
+
+        this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
+    }
+
+    world_unset_trace_eproboteater(x,y){
+        var t = this.get_terrain(x, y);
+        t.set_trace_object_eproboteater(null);
 
         this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
     }

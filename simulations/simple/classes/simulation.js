@@ -183,7 +183,12 @@ class Simulation {
                 o.step();
 
                 if (o.afterstep_trace){
-                    var key = o.afterstep_trace.t.x.toString()+":"+o.afterstep_trace.t.y.toString();
+                    if (o.get_id()==OBJECTTYPES.EPROBOT.id){
+                        var key = "trace_eprobot " + o.afterstep_trace.t.x.toString()+":"+o.afterstep_trace.t.y.toString();
+                    }else if (o.get_id()==OBJECTTYPES.EPROBOTEATER.id){
+                        var key = "trace_eproboteater " + o.afterstep_trace.t.x.toString()+":"+o.afterstep_trace.t.y.toString();
+                    }
+
                     this.trace_objects[key] = o.afterstep_trace;
                 }
 
@@ -250,7 +255,12 @@ class Simulation {
                 let trace = this.trace_objects[key];
                 if (trace.created+this.settings.tracetime<this.steps){
                     //console.log("abgelaufen");
-                    this.world.world_unset_trace(trace.t.x, trace.t.y);
+                    if (trace.get_id()==OBJECTTYPES.TRACE_EPROBOT.id){
+                        this.world.world_unset_trace_eprobot(trace.t.x, trace.t.y);
+                    }else if(trace.get_id()==OBJECTTYPES.TRACE_EPROBOTEATER.id){
+                        this.world.world_unset_trace_eproboteater(trace.t.x, trace.t.y);
+                    }
+
                     traces_to_remove.push(key);
                 }
             }

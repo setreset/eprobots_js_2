@@ -7,7 +7,8 @@ class Terrain {
 
         this.slot_object = null;
         this.energy_object = null;
-        this.trace_object = null;
+        this.trace_object_eprobot = null;
+        this.trace_object_eproboteater = null;
     }
 
     toJSON(){
@@ -41,12 +42,12 @@ class Terrain {
         return this.energy_object;
     }
 
-    set_trace_object(o){
-        this.trace_object = o;
+    set_trace_object_eprobot(o){
+        this.trace_object_eprobot = o;
     }
 
-    get_trace_object(){
-        return this.trace_object;
+    set_trace_object_eproboteater(o){
+        this.trace_object_eproboteater = o;
     }
 
     get_color(){
@@ -62,14 +63,10 @@ class Terrain {
             if (this.energy_object){
                 return this.energy_object.get_color();
             }else{
-                if (this.trace_object){
-                    if (this.trace_object.get_id()==OBJECTTYPES.TRACE_EPROBOT.id){
-                        var color = "hsl("+"0"+", 100%, "+(10-this.trace_object.get_color())+"%)";
-                    }else if (this.trace_object.get_id()==OBJECTTYPES.TRACE_EPROBOTEATER.id){
-                        var color = "hsl("+"192"+", 100%, "+(10-this.trace_object.get_color())+"%)";
-                    }
-
-                    return color;
+                if (this.trace_object_eprobot){
+                    return "hsl("+"0"+", 100%, "+(10-this.trace_object_eprobot.get_color())+"%)";
+                }else if (this.trace_object_eproboteater){
+                    return "hsl("+"192"+", 100%, "+(10-this.trace_object_eproboteater.get_color())+"%)";
                 }else{
                     return this.s.settings.background_color;
                 }
