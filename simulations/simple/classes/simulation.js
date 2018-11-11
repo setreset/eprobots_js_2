@@ -56,6 +56,10 @@ class Simulation {
             }else if (o.id == OBJECTTYPES.BARRIER.id){
                 let b = new Barrier(this);
                 this.world.world_set(b, o.x_pos, o.y_pos);
+            }else if (o.id == OBJECTTYPES.WATER.id){
+                let w = new Water(this);
+                w.energy_count = o.energy_count;
+                this.world.world_set(w, o.x_pos, o.y_pos);
             }
         }, this);
 
