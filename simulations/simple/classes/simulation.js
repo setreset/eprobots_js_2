@@ -15,17 +15,11 @@ class Simulation {
         }
     }
 
-    statsinit(){
-        return {
-            "eprobots_created": 0,
-            "eproboteaters_created": 0,
-            "eprobot_kills": 0,
-            "high_stepcounter": 0,
-            "fork_eater": 0,
-            "fork_normal": 0,
-            "infinity_negative": 0,
-            "infinity_positive": 0,
-            "infinity_nan": 0
+    stats_incr(key){
+        if (key in this.stats){
+            this.stats[key]++;
+        }else{
+            this.stats[key] = 1;
         }
     }
 
@@ -36,7 +30,7 @@ class Simulation {
         this.active_objects_eproboteater = [];
         this.trace_objects = {};
         this.fossil_objects = {};
-        this.stats = this.statsinit();
+        this.stats = {};
         this.drawer = new Drawer(this, this.canvas, this.canvas2);
     }
 
@@ -67,7 +61,7 @@ class Simulation {
         this.active_objects_eproboteater = [];
         this.trace_objects = {};
         this.fossil_objects = {};
-        this.stats = this.statsinit();
+        this.stats = {};
 
         simstate.active_objects.forEach(function(o) {
             let ep = new Eprobot(this, o.program, o.init_data);
@@ -252,7 +246,7 @@ class Simulation {
 
         // fork
         for (let o of eprobots_with_energy) {
-            this.stats["fork_normal"]++;
+            this.stats_incr("fork_normal");
             let new_eprobot = null;
             if (this.world.counter_eprobot<this.settings.eprobots_max){
                 new_eprobot = o.fork();
@@ -265,7 +259,7 @@ class Simulation {
         }
 
         for (let o of eproboteater_with_energy) {
-            this.stats["fork_eater"]++;
+            this.stats_incr("fork_eater");
             let new_eprobot = null;
             if (this.world.counter_eproboteater<parseInt(this.settings.eprobots_max/2)){
                 new_eprobot = o.fork();

@@ -17,7 +17,7 @@ class EprobotEater {
         this.my_color = tools_random(359);
         this.afterstep_trace = null;
 
-        this.s.stats["eproboteaters_created"]++;
+        this.s.stats_incr("eproboteaters_created");
     }
 
     toJSON(){
@@ -74,7 +74,7 @@ class EprobotEater {
         let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS);
 
         if (steps>=this.s.settings.PROGRAM_STEPS){
-            this.s.stats["high_stepcounter"]++;
+            this.s.stats_incr("high_stepcounter");
         }
 
         var move_val = this.working_data[0];
@@ -83,11 +83,11 @@ class EprobotEater {
             var moveval = Math.abs(move_val) % (DIRECTIONS.length + 1);
         }else{
             if (move_val==-Infinity){
-                this.s.stats["infinity_negative"]++;
+                this.s.stats_incr("infinity_negative");
             }else if (move_val==Infinity){
-                this.s.stats["infinity_positive"]++;
+                this.s.stats_incr("infinity_positive");
             }else if (isNaN(move_val)){
-                this.s.stats["infinity_nan"]++;
+                this.s.stats_incr("infinity_nan");
             }else{
                 console.log("Infinite: "+move_val);
             }
@@ -155,7 +155,7 @@ class EprobotEater {
             if (slot_object == null || slot_object.get_id()==OBJECTTYPES.EPROBOT.id){
                 if (slot_object){
                     //slot_object.kill();
-                    this.s.stats["eprobot_kills"]++;
+                    this.s.stats_incr("eprobot_kills");
                     this.energy++;
                     slot_object.is_dead=true;
                     this.s.world.world_unset(movepos_x, movepos_y, slot_object.get_id());

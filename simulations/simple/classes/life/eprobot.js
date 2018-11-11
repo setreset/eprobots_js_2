@@ -17,7 +17,7 @@ class Eprobot {
         this.my_color = tools_random(359);
         this.afterstep_trace = null;
 
-        this.s.stats["eprobots_created"]++;
+        this.s.stats_incr("eprobots_created");
     }
 
     toJSON(){
@@ -74,7 +74,7 @@ class Eprobot {
         let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS);
 
         if (steps>=this.s.settings.PROGRAM_STEPS){
-            this.s.stats["high_stepcounter"]++;
+            this.s.stats_incr("high_stepcounter");
         }
 
         var move_val = this.working_data[0];
@@ -83,11 +83,11 @@ class Eprobot {
             var moveval = Math.abs(move_val) % (DIRECTIONS.length + 1);
         }else{
             if (move_val==-Infinity){
-                this.s.stats["infinity_negative"]++;
+                this.s.stats_incr("infinity_negative");
             }else if (move_val==Infinity){
-                this.s.stats["infinity_positive"]++;
+                this.s.stats_incr("infinity_positive");
             }else if (isNaN(move_val)){
-                this.s.stats["infinity_nan"]++;
+                this.s.stats_incr("infinity_nan");
             }else{
                 console.log("Infinite: "+move_val);
             }
