@@ -28,7 +28,7 @@ class Simulation {
         this.world = new World(this, this.settings.world_width,this.settings.world_height);
         this.active_objects = [];
         this.trace_objects = {};
-        this.fossil_objects = {};
+        this.fossil_objects = [];
         this.stats = {};
         this.drawer = new Drawer(this, this.canvas, this.canvas2);
     }
@@ -58,7 +58,7 @@ class Simulation {
 
         this.active_objects = [];
         this.trace_objects = {};
-        this.fossil_objects = {};
+        this.fossil_objects = [];
         this.stats = {};
 
         simstate.active_objects.forEach(function(o) {
@@ -201,8 +201,7 @@ class Simulation {
                 let f = new Fossil(this);
                 this.world.world_set(f, o.t.x, o.t.y);
 
-                var key = o.t.x.toString()+":"+o.t.y.toString();
-                this.fossil_objects[key] = f;
+                this.fossil_objects.push(f);
             }
         }
 
@@ -262,21 +261,19 @@ class Simulation {
         }
 
         if (this.steps % 100 == 0){
-            var fossils_to_remove = [];
+            var fossils_next = [];
             //console.log(Object.keys(this.trace_objects).length);
             // fossils wegräumen
-            for (var key in this.fossil_objects){
-                let fossil = this.fossil_objects[key];
+            for (let fossil of this.fossil_objects){
                 if (fossil.created+this.settings.eprobots_fossiltime<this.steps){
                     //console.log("abgelaufen");
                     this.world.world_unset(fossil.t.x, fossil.t.y, fossil.get_id());
-                    fossils_to_remove.push(key);
+                }else{
+                    fossils_next.push(fossil);
                 }
             }
 
-            for (let fossil_to_remove_key of fossils_to_remove) {
-                delete this.fossil_objects[fossil_to_remove_key];
-            }
+            this.fossil_objects = fossils_next;
         }
 
         this.steps++;
