@@ -11,7 +11,8 @@ class Fossil {
         return {
             id: this.get_id(),
             x_pos: this.t.x,
-            y_pos: this.t.y
+            y_pos: this.t.y,
+            created: this.created
         };
     }
 

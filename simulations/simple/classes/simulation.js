@@ -34,6 +34,8 @@ class Simulation {
     }
 
     loadState(simstate){
+        this.steps = simstate.steps;
+
         this.settings = new Settings();
         this.settings.loadState(simstate.settings);
 
@@ -76,6 +78,29 @@ class Simulation {
             this.active_objects.push(ep);
         }, this);
 
+        for (var key in simstate.trace_objects){
+            let trace_obj = simstate.trace_objects[key];
+            if (trace_obj.id == OBJECTTYPES.TRACE_EPROBOT.id){
+                let trace = new TraceEprobot(this, trace_obj.color);
+                trace.created = trace_obj.created;
+                this.world.world_set_trace_eprobot(trace, trace_obj.x_pos, trace_obj.y_pos);
+                this.trace_objects[key] = trace;
+            }else if (trace_obj.id == OBJECTTYPES.TRACE_EPROBOTEATER.id){
+                let trace = new TraceEprobotEater(this, trace_obj.color);
+                trace.created = trace_obj.created;
+                this.world.world_set_trace_eproboteater(trace, trace_obj.x_pos, trace_obj.y_pos);
+                this.trace_objects[key] = trace;
+            }
+        }
+
+        for (let f_object of simstate.fossil_objects) {
+            let f = new Fossil(this);
+            f.created = f_object.created;
+            this.world.world_set(f, f_object.x_pos, f_object.y_pos);
+
+            this.fossil_objects.push(f);
+        }
+
         //
         //eprobots_h = [];
         //eprobots_c = [];
@@ -104,9 +129,12 @@ class Simulation {
         }
 
         return {
+            steps: this.steps,
             settings: this.settings,
             world_objects: world_objects,
-            active_objects: this.active_objects
+            active_objects: this.active_objects,
+            trace_objects: this.trace_objects,
+            fossil_objects: this.fossil_objects
         };
     }
 
