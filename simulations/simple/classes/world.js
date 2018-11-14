@@ -14,6 +14,7 @@ class World {
 
         this.counter_eprobot = 0;
         this.counter_eproboteater = 0;
+        this.eprobots_created = 0;
     }
 
     get_terrain(x, y){
@@ -40,6 +41,7 @@ class World {
 
         if (o.get_id()==OBJECTTYPES.EPROBOT.id){
             this.counter_eprobot++;
+            this.eprobots_created++;
         }else if (o.get_id()==OBJECTTYPES.EPROBOTEATER.id){
             this.counter_eproboteater++;
         }

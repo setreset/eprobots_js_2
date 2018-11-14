@@ -197,6 +197,7 @@ class Simulation {
 
     simulation_prestep(){
         if (this.world.counter_eprobot == 0 && this.world.counter_eproboteater == 0) {
+            this.world.eprobots_created = 0;
             this.seed_eprobots();
 
             //console.log("died");
@@ -205,7 +206,7 @@ class Simulation {
             //console.log("steps: "+this.simulation.steps);
             //this.stop_simulation();
             //return;
-        }else if (this.world.counter_eprobot > 300 && this.world.counter_eproboteater == 0){
+        }else if (this.world.eprobots_created > this.settings.eprobots_max * 2 && this.world.counter_eproboteater == 0){
             this.seed_eproboteaters();
         }
     }
