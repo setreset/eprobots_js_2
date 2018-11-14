@@ -30,17 +30,7 @@ class Controller {
     simulation_loop(){
         let steptime_start = new Date().getTime();
 
-        if (this.simulation.world.counter_eprobot == 0){
-            //this.simulation.init_eprobots();
-
-            //console.log("died");
-            //var duration = (new Date()-this.time_start)/1000;
-            //console.log("duration seconds: "+duration);
-            //console.log("steps: "+this.simulation.steps);
-            //this.stop_simulation();
-            //return;
-        }
-
+        this.simulation.simulation_prestep();
         this.simulation.simulation_step();
 
         let steptime_end = new Date().getTime();

@@ -139,7 +139,7 @@ class Simulation {
     }
 
     seed_eprobots(){
-        for (let i = 0; i<50;i++){
+        for (let i = 0; i<75;i++){
             var program = [];
             for (var pi = 0; pi < this.settings.PROGRAM_LENGTH; pi++) {
                 var val = tools_random(this.settings.PROGRAM_LENGTH * 10) - this.settings.PROGRAM_LENGTH;
@@ -162,7 +162,7 @@ class Simulation {
     }
 
     seed_eproboteaters(){
-        for (let i = 0; i<50;i++){
+        for (let i = 0; i<75;i++){
             var program = [];
             for (var pi = 0; pi < this.settings.PROGRAM_LENGTH; pi++) {
                 var val = tools_random(this.settings.PROGRAM_LENGTH * 10) - this.settings.PROGRAM_LENGTH;
@@ -192,6 +192,21 @@ class Simulation {
                 let p = new Plant(this);
                 this.world.world_set_energy(p, x, y);
             }
+        }
+    }
+
+    simulation_prestep(){
+        if (this.world.counter_eprobot == 0 && this.world.counter_eproboteater == 0) {
+            this.seed_eprobots();
+
+            //console.log("died");
+            //var duration = (new Date()-this.time_start)/1000;
+            //console.log("duration seconds: "+duration);
+            //console.log("steps: "+this.simulation.steps);
+            //this.stop_simulation();
+            //return;
+        }else if (this.world.counter_eprobot > 300 && this.world.counter_eproboteater == 0){
+            this.seed_eproboteaters();
         }
     }
 
