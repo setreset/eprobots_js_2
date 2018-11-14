@@ -16,7 +16,8 @@ class Settings {
         this.eprobots_fossiltime = 5000;
         this.tracetime = 350;
         this.PROGRAM_LENGTH = 500;
-        this.DATA_LENGTH = 20;
+        this.DATA_LENGTH = 500;
+        this.DATA_INOUT_INTERVAL = 20;
         this.PROGRAM_STEPS = 1000;
         this.MUTATE_POSSIBILITY = 0.01;
         this.MUTATE_STRENGTH = 400;

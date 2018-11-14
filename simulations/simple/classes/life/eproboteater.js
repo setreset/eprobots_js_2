@@ -79,6 +79,11 @@ class EprobotEater {
 
         var move_val = this.working_data[0];
 
+        var amount = this.s.settings.DATA_LENGTH / this.s.settings.DATA_INOUT_INTERVAL;
+        for (let i=1;i<amount;i++){
+            move_val = move_val ^ this.working_data[i*this.s.settings.DATA_INOUT_INTERVAL];
+        }
+
         if (isFinite(move_val)){
             var moveval = Math.abs(move_val) % (DIRECTIONS.length + 1);
         }else{
@@ -109,33 +114,38 @@ class EprobotEater {
     }
 
     set_input(){
-        if (this.t.trace_object_eprobot){
-            this.working_data[this.s.settings.DATA_LENGTH-8] = this.t.trace_object_eprobot.get_color()+1;
-        }else{
-            this.working_data[this.s.settings.DATA_LENGTH-8] = 0;
-        }
+        var amount = this.s.settings.DATA_LENGTH / this.s.settings.DATA_INOUT_INTERVAL;
+        for (let i=0;i<amount;i++){
+            var current_frame_end = (i+1)*this.s.settings.DATA_INOUT_INTERVAL;
 
-        if (this.t.trace_object_eproboteater){
-            this.working_data[this.s.settings.DATA_LENGTH-7] = this.t.trace_object_eproboteater.get_color()+1;
-        }else{
-            this.working_data[this.s.settings.DATA_LENGTH-7] = 0;
-        }
-
-        if (this.t.energy_object) {
-            if (this.t.energy_object.get_id() == OBJECTTYPES.PLANT.id){
-                this.working_data[this.s.settings.DATA_LENGTH - 6] = 1;
-            } else if (this.t.energy_object.get_id() == OBJECTTYPES.WATER.id){
-                this.working_data[this.s.settings.DATA_LENGTH - 6] = 2;
+            if (this.t.trace_object_eprobot){
+                this.working_data[current_frame_end-8] = this.t.trace_object_eprobot.get_color()+1;
+            }else{
+                this.working_data[current_frame_end-8] = 0;
             }
-        }else{
-            this.working_data[this.s.settings.DATA_LENGTH-6] = 0;
-        }
 
-        this.working_data[this.s.settings.DATA_LENGTH-5] = this.tick;
-        this.working_data[this.s.settings.DATA_LENGTH-4] = this.energy;
-        this.working_data[this.s.settings.DATA_LENGTH-3] = this.water;
-        this.working_data[this.s.settings.DATA_LENGTH-2] = this.t.x;
-        this.working_data[this.s.settings.DATA_LENGTH-1] = this.t.y;
+            if (this.t.trace_object_eproboteater){
+                this.working_data[current_frame_end-7] = this.t.trace_object_eproboteater.get_color()+1;
+            }else{
+                this.working_data[current_frame_end-7] = 0;
+            }
+
+            if (this.t.energy_object) {
+                if (this.t.energy_object.get_id() == OBJECTTYPES.PLANT.id){
+                    this.working_data[current_frame_end - 6] = 1;
+                } else if (this.t.energy_object.get_id() == OBJECTTYPES.WATER.id){
+                    this.working_data[current_frame_end - 6] = 2;
+                }
+            }else{
+                this.working_data[current_frame_end-6] = 0;
+            }
+
+            this.working_data[current_frame_end-5] = this.tick;
+            this.working_data[current_frame_end-4] = this.energy;
+            this.working_data[current_frame_end-3] = this.water;
+            this.working_data[current_frame_end-2] = this.t.x;
+            this.working_data[current_frame_end-1] = this.t.y;
+        }
     }
 
     step(){
