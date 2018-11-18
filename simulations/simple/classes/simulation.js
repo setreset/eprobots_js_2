@@ -247,10 +247,10 @@ class Simulation {
                 o.is_dead = true;
 
                 // fossil
-                let f = new Fossil(this);
-                this.world.world_set(f, o.t.x, o.t.y);
+                //let f = new Fossil(this);
+                //this.world.world_set(f, o.t.x, o.t.y);
 
-                this.fossil_objects.push(f);
+                //this.fossil_objects.push(f);
             }
         }
 
@@ -272,18 +272,18 @@ class Simulation {
                         active_objects_next.push(new_eprobot);
                     }
                 }else{
-                    break;
+                    //break;
                 }
             }else if (o.get_id()==OBJECTTYPES.EPROBOTEATER.id){
                 this.stats_incr("fork_eater");
                 let new_eprobot = null;
-                if (this.world.counter_eproboteater<parseInt(this.settings.eprobots_max/2)){
+                if (this.world.counter_eproboteater<parseInt(this.settings.eprobots_max/1)){
                     new_eprobot = o.fork();
                     if (new_eprobot){
                         active_objects_next.push(new_eprobot);
                     }
                 }else{
-                    break;
+                    //break;
                 }
             }
 
