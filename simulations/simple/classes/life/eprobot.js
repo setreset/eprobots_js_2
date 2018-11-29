@@ -7,6 +7,7 @@ class Eprobot {
         this.tick = 0;
         this.is_dead = false;
         this.energy = 0;
+        this.life_counter = s.settings.eprobots_lifetime;
 
         this.program = program;
 
@@ -63,7 +64,17 @@ class Eprobot {
     }
 
     get_move_OISC(){
-        tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS);
+        let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS);
+        if (steps >= this.s.settings.PROGRAM_STEPS){
+            console.log("high stepcounter: " + steps);
+            if (steps>100){
+                //if (Math.random()>0.5){
+                    this.life_counter--;
+                    console.log("Strafe");
+                //}
+
+            }
+        }
 
         var move_val = this.working_data[0];
 
@@ -113,6 +124,7 @@ class Eprobot {
         }
 
         this.tick++;
+        this.life_counter--;
     }
 
     fork(){

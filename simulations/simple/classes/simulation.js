@@ -112,10 +112,10 @@ class Simulation {
 
         //this.drawer.paint_fast();
         let eprobots_with_energy = [];
-        shuffle(this.active_objects);
+        //shuffle(this.active_objects);
         for (let o of this.active_objects) {
             if (o.is_dead) return;
-            if (o.tick < o.get_lifetime()){
+            if (o.life_counter > 0){
                 let x_pos_before = o.t.x;
                 let y_pos_before = o.t.y;
 
@@ -160,7 +160,7 @@ class Simulation {
         //this.eprobots_with_energy.sort(function(a, b){return b.energy - a.energy});
         // aufsteigend sortieren
         //this.eprobots_with_energy.sort(function(a, b){return a.energy - b.energy});
-        shuffle(eprobots_with_energy);
+        //shuffle(eprobots_with_energy);
 
         // fork
         for (let o of eprobots_with_energy) {
