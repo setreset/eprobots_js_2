@@ -4,7 +4,7 @@ class Plant {
         this.t = null;
 
         this.s = s;
-        this.energy_count = 150000; //1000;
+        this.energy_count = 180000; //1000;
     }
 
     toJSON(){

@@ -65,16 +65,12 @@ class Eprobot {
 
     get_move_OISC(){
         let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS);
-        if (steps >= this.s.settings.PROGRAM_STEPS){
+        /*if (steps >= this.s.settings.PROGRAM_STEPS){
             console.log("high stepcounter: " + steps);
-            if (steps>100){
-                //if (Math.random()>0.5){
-                    this.life_counter--;
-                    console.log("Strafe");
-                //}
-
-            }
-        }
+        }*/
+        let penalty = parseInt(steps/100);
+        this.life_counter = this.life_counter - penalty;
+        //console.log("Strafe");
 
         var move_val = this.working_data[0];
 
