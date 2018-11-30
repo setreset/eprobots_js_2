@@ -44,6 +44,7 @@ class Simulation {
         simstate.active_objects.forEach(function(o) {
             let ep = new Eprobot(this, o.program, o.init_data);
             ep.tick = o.tick;
+            ep.life_counter = o.life_counter;
             ep.energy = o.energy;
             ep.working_data = o.working_data;
             this.world.world_set(ep, o.x_pos, o.y_pos);

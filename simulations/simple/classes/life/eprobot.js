@@ -21,6 +21,7 @@ class Eprobot {
         return {
             id: this.get_id(),
             tick: this.tick,
+            life_counter: this.life_counter,
             energy: this.energy,
             x_pos: this.t.x,
             y_pos: this.t.y,
