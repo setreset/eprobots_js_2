@@ -220,7 +220,7 @@ class Simulation {
         for (let o of this.active_objects) {
             //console.log(o);
             if (o.is_dead) continue;
-            if (o.tick < o.get_lifetime()){
+            if (o.life_counter > 0){
                 // INPUT
                 o.set_input();
 

@@ -8,6 +8,7 @@ class Eprobot {
         this.is_dead = false;
         this.energy = 0;
         this.water = 0;
+        this.life_counter = s.settings.eprobots_lifetime;
 
         this.program = program;
 
@@ -188,6 +189,7 @@ class Eprobot {
         }
 
         this.tick++;
+        this.life_counter--;
     }
 
     fork(){
