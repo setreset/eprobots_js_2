@@ -92,6 +92,24 @@ class Eprobot {
         this.s.world.world_move(this, old_pos_x, old_pos_y, new_pos_x, new_pos_y);
     }
 
+    set_input(){
+        var amount = this.s.settings.DATA_LENGTH / this.s.settings.DATA_INOUT_INTERVAL;
+        for (let i=0;i<amount;i++){
+            var current_frame_end = (i+1)*this.s.settings.DATA_INOUT_INTERVAL;
+
+            if (this.t.energy_object){
+                this.working_data[current_frame_end-5] = 1;
+            }else{
+                this.working_data[current_frame_end-5] = 0;
+            }
+
+            this.working_data[current_frame_end-4] = this.tick;
+            this.working_data[current_frame_end-3] = this.energy;
+            this.working_data[current_frame_end-2] = this.t.x;
+            this.working_data[current_frame_end-1] = this.t.y;
+        }
+    }
+
     step(){
         //let moveval = this.get_move();
         let moveval = this.get_move_OISC();

@@ -121,30 +121,8 @@ class Simulation {
                 let y_pos_before = o.t.y;
 
                 // INPUT
-                if (o.t.energy_object){
-                    o.working_data[this.settings.DATA_LENGTH-7] = 1;
-                }else{
-                    o.working_data[this.settings.DATA_LENGTH-7] = 0;
-                }
-
-                o.working_data[this.settings.DATA_LENGTH-6] = o.tick;
-                o.working_data[this.settings.DATA_LENGTH-5] = o.energy;
-                o.working_data[this.settings.DATA_LENGTH-4] = o.t.x;
-                o.working_data[this.settings.DATA_LENGTH-3] = o.t.y;
-
+                o.set_input();
                 o.step();
-
-                // INPUT after step
-                if (x_pos_before != o.t.x){
-                    o.working_data[this.settings.DATA_LENGTH-2] = 1;
-                }else{
-                    o.working_data[this.settings.DATA_LENGTH-2] = 0;
-                }
-                if (y_pos_before != o.t.y){
-                    o.working_data[this.settings.DATA_LENGTH-1] = 1;
-                }else{
-                    o.working_data[this.settings.DATA_LENGTH-1] = 0;
-                }
 
                 if (o.energy >= 1){
                     eprobots_with_energy.push(o);
