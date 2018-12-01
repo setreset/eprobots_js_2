@@ -75,6 +75,11 @@ class Eprobot {
 
         var move_val = this.working_data[0];
 
+        var amount = this.s.settings.DATA_LENGTH / this.s.settings.DATA_INOUT_INTERVAL;
+        for (let i=1;i<amount;i++){
+            move_val = move_val ^ this.working_data[i*this.s.settings.DATA_INOUT_INTERVAL];
+        }
+
         if (isFinite(move_val)){
             var move = Math.abs(move_val) % (DIRECTIONS.length + 1);
         }else{
