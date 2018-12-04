@@ -4,6 +4,7 @@ class Controller {
     constructor() {
         this.running = false;
         this.draw_mode = 0;
+        this.mouse_down = false;
         this.init_simulation();
     }
 
@@ -109,6 +110,7 @@ class Controller {
     }
 
     click_canvas(e){
+        console.log("click");
 
         let canvas_rect = controls["simulation_canvas"][0].getBoundingClientRect();
         var mousePos = this._get_mouse_pos(canvas_rect, e);
@@ -126,6 +128,39 @@ class Controller {
             this.simulation.click_world(world_x, world_y, this.draw_mode);
         }
 
+    }
+
+    mousemove_canvas(e){
+        //console.log("mousemove");
+        if (this.mouse_down){
+            this.mousedown_canvas(e);
+        }
+    }
+
+    mouseup_canvas(e){
+        console.log("mouseup");
+        this.mouse_down = false;
+    }
+
+    mousedown_canvas(e){
+        console.log("mousedown");
+        this.mouse_down=true;
+
+        let canvas_rect = controls["simulation_canvas"][0].getBoundingClientRect();
+        var mousePos = this._get_mouse_pos(canvas_rect, e);
+
+        // hot corner
+        if (mousePos.x>=canvas_rect.width-30 && mousePos.y>=canvas_rect.height-30){
+            this.toggle_fullscreen();
+        }else if(mousePos.x>=canvas_rect.width-30 && mousePos.y<=30) {
+            this.toggle_run();
+        }
+        else{
+            let world_x = parseInt(tools_map_range(mousePos.x,0,canvas_rect.width, 0, this.simulation.settings.world_width));
+            let world_y = parseInt(tools_map_range(mousePos.y,0,canvas_rect.height, 0, this.simulation.settings.world_height));
+            //console.log("x_world:" + world_x + " y_world:" + world_y);
+            this.simulation.click_world(world_x, world_y, this.draw_mode);
+        }
     }
 
     click_simitem_selector(id){
