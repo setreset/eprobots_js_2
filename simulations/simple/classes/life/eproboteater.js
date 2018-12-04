@@ -79,7 +79,10 @@ class EprobotEater {
             this.s.stats_incr("high_stepcounter");
         }
 
-        let penalty = parseInt(steps/100);
+        //let penalty = parseInt(steps/100);
+        //this.life_counter = this.life_counter - penalty;
+
+        let penalty = parseInt(steps/10);
         this.life_counter = this.life_counter - penalty;
 
         var move_val = this.working_data[0];

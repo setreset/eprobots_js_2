@@ -79,7 +79,15 @@ class Eprobot {
             this.s.stats_incr("high_stepcounter");
         }
 
-        let penalty = parseInt(steps/100);
+        /*this.s.stats_add("mean_sum", steps);
+        this.s.stats_incr("mean_amount");
+        if (Math.random()>0.9999){
+            console.log("Steps: "+steps);
+            console.log("Steps mean: "+this.s.stats["mean_sum"]/this.s.stats["mean_amount"]);
+        }*/
+
+
+        let penalty = parseInt(steps/10);
         this.life_counter = this.life_counter - penalty;
 
         var move_val = this.working_data[0];

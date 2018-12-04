@@ -23,6 +23,14 @@ class Simulation {
         }
     }
 
+    stats_add(key, val){
+        if (key in this.stats){
+            this.stats[key] = this.stats[key] + val;
+        }else{
+            this.stats[key] = val;
+        }
+    }
+
     init(){
         this.settings = new Settings();
         this.world = new World(this, this.settings.world_width,this.settings.world_height);
