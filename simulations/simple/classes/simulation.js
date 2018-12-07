@@ -34,7 +34,8 @@ class Simulation {
     init(){
         this.settings = new Settings();
         this.world = new World(this, this.settings.world_width,this.settings.world_height);
-        this.active_objects = [];
+        this.list_eprobots = [];
+        this.list_eproboteaters = [];
         this.trace_objects = {};
         this.fossil_objects = [];
         this.stats = {};
@@ -165,7 +166,7 @@ class Simulation {
             if (this.world.get_terrain(x,y).slot_object==null){
                 let ep = new Eprobot(this, program, init_data);
                 this.world.world_set(ep, x, y);
-                this.active_objects.push(ep);
+                this.list_eprobots.push(ep);
             }
         }
     }
@@ -188,7 +189,7 @@ class Simulation {
             if (this.world.get_terrain(x,y).slot_object==null){
                 let ep = new EprobotEater(this, program, init_data);
                 this.world.world_set(ep, x, y);
-                this.active_objects.push(ep);
+                this.list_eproboteaters.push(ep);
             }
         }
     }
@@ -221,13 +222,14 @@ class Simulation {
     }
 
     simulation_step(){
-        let active_objects_next = [];
+        let list_eprobots_next = [];
+        let list_eproboteaters_next = [];
 
         let eprobots_with_energy = [];
+        let eproboteaters_with_energy = [];
         //shuffle(this.active_objects);
 
-        for (let o of this.active_objects) {
-            //console.log(o);
+        for (let o of this.list_eprobots) {
             if (o.is_dead) continue;
             if (o.life_counter > 0){
                 // INPUT
@@ -235,31 +237,33 @@ class Simulation {
 
                 o.step();
 
-                if (o.afterstep_trace){
-                    if (o.get_id()==OBJECTTYPES.EPROBOT.id){
-                        var key = "trace_eprobot " + o.afterstep_trace.t.x.toString()+":"+o.afterstep_trace.t.y.toString();
-                    }else if (o.get_id()==OBJECTTYPES.EPROBOTEATER.id){
-                        var key = "trace_eproboteater " + o.afterstep_trace.t.x.toString()+":"+o.afterstep_trace.t.y.toString();
-                    }
-
-                    this.trace_objects[key] = o.afterstep_trace;
-                }
-
-
                 if (o.energy >= 1){
                     eprobots_with_energy.push(o);
                 }
-                active_objects_next.push(o);
+                list_eprobots_next.push(o);
 
             }else{
                 this.world.world_unset(o.t.x, o.t.y, o.get_id());
                 o.is_dead = true;
+            }
+        }
 
-                // fossil
-                //let f = new Fossil(this);
-                //this.world.world_set(f, o.t.x, o.t.y);
+        for (let o of this.list_eproboteaters) {
+            if (o.is_dead) continue;
+            if (o.life_counter > 0){
+                // INPUT
+                o.set_input();
 
-                //this.fossil_objects.push(f);
+                o.step();
+
+                if (o.energy >= 1){
+                    eproboteaters_with_energy.push(o);
+                }
+                list_eproboteaters_next.push(o);
+
+            }else{
+                this.world.world_unset(o.t.x, o.t.y, o.get_id());
+                o.is_dead = true;
             }
         }
 
@@ -272,72 +276,33 @@ class Simulation {
 
         // fork
         for (let o of eprobots_with_energy) {
-            if (o.get_id()==OBJECTTYPES.EPROBOT.id){
-                this.stats_incr("fork_normal");
-                let new_eprobot = null;
-                if (this.world.counter_eprobot<this.settings.eprobots_max){
-                    new_eprobot = o.fork();
-                    if (new_eprobot){
-                        active_objects_next.push(new_eprobot);
-                    }
-                }else{
-                    //break;
+            this.stats_incr("fork_normal");
+            let new_eprobot = null;
+            if (this.world.counter_eprobot<this.settings.eprobots_max){
+                new_eprobot = o.fork();
+                if (new_eprobot){
+                    list_eprobots_next.push(new_eprobot);
                 }
-            }else if (o.get_id()==OBJECTTYPES.EPROBOTEATER.id){
-                this.stats_incr("fork_eater");
-                let new_eprobot = null;
-                if (this.world.counter_eproboteater<parseInt(this.settings.eprobots_max/1)){
-                    new_eprobot = o.fork();
-                    if (new_eprobot){
-                        active_objects_next.push(new_eprobot);
-                    }
-                }else{
-                    //break;
-                }
-            }
-
-        }
-
-        this.active_objects = active_objects_next;
-
-        if (this.steps % 10 == 0){
-            var traces_to_remove = [];
-            //console.log(Object.keys(this.trace_objects).length);
-            // traces wegräumen
-            for (var key in this.trace_objects){
-                let trace = this.trace_objects[key];
-                if (trace.created+this.settings.tracetime<this.steps){
-                    //console.log("abgelaufen");
-                    if (trace.get_id()==OBJECTTYPES.TRACE_EPROBOT.id){
-                        this.world.world_unset_trace_eprobot(trace.t.x, trace.t.y);
-                    }else if(trace.get_id()==OBJECTTYPES.TRACE_EPROBOTEATER.id){
-                        this.world.world_unset_trace_eproboteater(trace.t.x, trace.t.y);
-                    }
-
-                    traces_to_remove.push(key);
-                }
-            }
-
-            for (let trace_to_remove_key of traces_to_remove) {
-                delete this.trace_objects[trace_to_remove_key];
+            }else{
+                break;
             }
         }
 
-        if (this.steps % 100 == 0){
-            var fossils_next = [];
-            //console.log(Object.keys(this.trace_objects).length);
-            // fossils wegräumen
-            for (let fossil of this.fossil_objects){
-                if (fossil.created+this.settings.eprobots_fossiltime<this.steps){
-                    //console.log("abgelaufen");
-                    this.world.world_unset(fossil.t.x, fossil.t.y, fossil.get_id());
-                }else{
-                    fossils_next.push(fossil);
+        for (let o of eproboteaters_with_energy) {
+            this.stats_incr("fork_eater");
+            let new_eprobot = null;
+            if (this.world.counter_eproboteater<this.settings.eprobots_max){
+                new_eprobot = o.fork();
+                if (new_eprobot){
+                    list_eproboteaters_next.push(new_eprobot);
                 }
+            }else{
+                break;
             }
-
-            this.fossil_objects = fossils_next;
         }
+
+        this.list_eprobots = list_eprobots_next;
+        this.list_eproboteaters = list_eproboteaters_next;
 
         this.steps++;
     }
