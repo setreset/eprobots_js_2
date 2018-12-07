@@ -4,10 +4,18 @@ class Settings {
     // kleiner monitor: 1440x900 | 360x225
     // großer monitor: 1920x1080 | 480x270
     constructor() {
+        let screensize_width = window.screen.width; // * window.devicePixelRatio;
+        let screensize_height = window.screen.height; // * window.devicePixelRatio;
+        console.log("devicePixelRatio: "+window.devicePixelRatio);
+        console.log("resolution: "+screensize_width+"x"+screensize_height);
+        let world_width = screensize_width/2;
+        let world_height = screensize_height/2;
+        console.log("world dimensions: "+world_width+"x"+world_height);
+
         this.background_color = "#000000";
         this.beam_at_borders = false;
-        this.world_width = 960;
-        this.world_height = 540;
+        this.world_width = world_width;
+        this.world_height = world_height;
         this.sleeptime = 0;
         this.plants_max = 500;
         this.plants_lifetime = 250;
