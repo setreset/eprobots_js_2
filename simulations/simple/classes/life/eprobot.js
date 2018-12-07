@@ -122,8 +122,8 @@ class Eprobot {
 
         this.s.world.world_move(this, old_pos_x, old_pos_y, new_pos_x, new_pos_y);
 
-        this.afterstep_trace = new TraceEprobot(this.s, this.get_relative_life_time(10));
-        this.s.world.world_set_trace_eprobot(this.afterstep_trace, old_pos_x, old_pos_y);
+        //this.afterstep_trace = new TraceEprobot(this.s, this.get_relative_life_time(10));
+        //this.s.world.world_set_trace_eprobot(this.afterstep_trace, old_pos_x, old_pos_y);
     }
 
     set_input(){
