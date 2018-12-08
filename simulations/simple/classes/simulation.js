@@ -67,26 +67,32 @@ class Simulation {
             }
         }, this);
 
-        this.active_objects = [];
+        this.list_eprobots = [];
+        this.list_eproboteaters = [];
+
         this.trace_objects = {};
         this.fossil_objects = [];
         this.stats = {};
 
-        simstate.active_objects.forEach(function(o) {
-            let ep = null;
-            if (o.id == OBJECTTYPES.EPROBOT.id){
-                ep = new Eprobot(this, o.program, o.init_data);
-            }else if (o.id == OBJECTTYPES.EPROBOTEATER.id){
-                ep = new EprobotEater(this, o.program, o.init_data);
-            }
-
+        for (let o of simstate.list_eprobots) {
+            let ep = new Eprobot(this, o.program, o.init_data);
             ep.tick = o.tick;
             ep.life_counter = o.life_counter;
             ep.energy = o.energy;
             ep.working_data = o.working_data;
             this.world.world_set(ep, o.x_pos, o.y_pos);
-            this.active_objects.push(ep);
-        }, this);
+            this.list_eprobots.push(ep);
+        }
+
+        for (let o of simstate.list_eproboteaters) {
+            let ep = new EprobotEater(this, o.program, o.init_data);
+            ep.tick = o.tick;
+            ep.life_counter = o.life_counter;
+            ep.energy = o.energy;
+            ep.working_data = o.working_data;
+            this.world.world_set(ep, o.x_pos, o.y_pos);
+            this.list_eproboteaters.push(ep);
+        }
 
         for (var key in simstate.trace_objects){
             let trace_obj = simstate.trace_objects[key];
@@ -142,7 +148,8 @@ class Simulation {
             steps: this.steps,
             settings: this.settings,
             world_objects: world_objects,
-            active_objects: this.active_objects,
+            list_eprobots: this.list_eprobots,
+            list_eproboteaters: this.list_eproboteaters,
             trace_objects: this.trace_objects,
             fossil_objects: this.fossil_objects
         };
