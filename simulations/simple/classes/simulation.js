@@ -245,7 +245,7 @@ class Simulation {
                 o.step();
 
                 if (o.afterstep_trace){
-                    var key = "trace_eprobot " + o.afterstep_trace.t.x.toString()+":"+o.afterstep_trace.t.y.toString();
+                    var key = "trace_eprobot " + o.afterstep_trace.x.toString()+":"+o.afterstep_trace.y.toString();
                     this.trace_objects[key] = o.afterstep_trace;
                 }
 
@@ -270,7 +270,7 @@ class Simulation {
                 o.step();
 
                 if (o.afterstep_trace){
-                    var key = "trace_eproboteater " + o.afterstep_trace.t.x.toString()+":"+o.afterstep_trace.t.y.toString();
+                    var key = "trace_eproboteater " + o.afterstep_trace.x.toString()+":"+o.afterstep_trace.y.toString();
                     this.trace_objects[key] = o.afterstep_trace;
                 }
 
@@ -325,19 +325,26 @@ class Simulation {
         if (this.steps % 10 == 0){
             var traces_to_remove = [];
             //console.log(Object.keys(this.trace_objects).length);
+
             // traces wegräumen
             for (var key in this.trace_objects){
-                let trace = this.trace_objects[key];
-                if (trace.created+this.settings.tracetime<this.steps){
-                    //console.log("abgelaufen");
-                    if (trace.get_id()==OBJECTTYPES.TRACE_EPROBOT.id){
-                        this.world.world_unset_trace_eprobot(trace.t.x, trace.t.y);
-                    }else if(trace.get_id()==OBJECTTYPES.TRACE_EPROBOTEATER.id){
-                        this.world.world_unset_trace_eproboteater(trace.t.x, trace.t.y);
+                let terrain_trace = this.trace_objects[key];
+                if (key.startsWith("trace_eprobot ")){
+                    terrain_trace.trace_eprobot-=100;
+                    if (terrain_trace.trace_eprobot<=0){
+                        terrain_trace.trace_eprobot=0;
+                        this.drawer.refresh_paintobj(terrain_trace.x, terrain_trace.y, terrain_trace.get_color());
+                        traces_to_remove.push(key);
                     }
-
-                    traces_to_remove.push(key);
+                }else{
+                    terrain_trace.trace_eproboteater-=100;
+                    if (terrain_trace.trace_eproboteater<=0){
+                        terrain_trace.trace_eproboteater=0;
+                        this.drawer.refresh_paintobj(terrain_trace.x, terrain_trace.y, terrain_trace.get_color());
+                        traces_to_remove.push(key);
+                    }
                 }
+
             }
 
             for (let trace_to_remove_key of traces_to_remove) {
