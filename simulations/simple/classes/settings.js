@@ -17,7 +17,7 @@ class Settings {
         this.world_width = world_width;
         this.world_height = world_height;
         this.sleeptime = 0;
-        this.plants_max = 500;
+        this.plants_max = 350;
         this.plants_lifetime = 250;
         this.eprobots_max = 500;
         this.eprobots_lifetime = 2500;

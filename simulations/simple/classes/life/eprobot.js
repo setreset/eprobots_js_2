@@ -173,9 +173,10 @@ class Eprobot {
                     if (energy_object.get_id()==OBJECTTYPES.PLANT.id){
                         //slot_object.kill();
                         this.energy++;
-                        //energy_object.energy_count--;
+                        energy_object.energy_count--;
                         if (energy_object.energy_count==0){
-                            this.s.world.world_unset_energy(movepos_x, movepos_y);
+                            energy_object.is_dead=true;
+                            this.s.world.world_unset_energy(movepos_x, movepos_y, OBJECTTYPES.PLANT.id);
                             console.log(new Date()+": entferne pflanze");
                         }
                     }else if (energy_object.get_id()==OBJECTTYPES.WATER.id){

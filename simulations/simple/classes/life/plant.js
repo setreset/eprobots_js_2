@@ -4,7 +4,9 @@ class Plant {
         this.t = null;
 
         this.s = s;
-        this.energy_count = 260000; //1000;
+        this.tick = 0;
+        this.is_dead = false;
+        this.energy_count = 150; //1000;
     }
 
     toJSON(){
@@ -34,22 +36,30 @@ class Plant {
     //    this.is_dead = true;
     //}
     //
-    //step(){
-    //    let new_plant = null;
-    //    //console.log(this.s.world.counter_plant);
-    //    if (this.s.world.counter_plant<this.s.settings.plants_max){
-    //        let spreadval = tools_random(8);
-    //        let vec = DIRECTIONS[spreadval];
-    //        let spreadpos_x = this.s.correct_pos_width(this.x_pos + vec.x);
-    //        let spreadpos_y = this.s.correct_pos_height(this.y_pos + vec.y);
-    //        let t = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
-    //        if (t.slot_object == null){
-    //            new_plant = new Plant(this.s, spreadpos_x, spreadpos_y);
-    //        }
-    //    }
-    //
-    //
-    //    this.tick++;
-    //    return new_plant;
-    //}
+
+    step(){
+        this.tick++;
+    }
+
+    fork(){
+        console.log("plant fork");
+        let new_plant = null;
+        //let spreadval = tools_random(8);
+        //let vec = DIRECTIONS[spreadval];
+        let spread_max = 5;
+        if (Math.random()>0.990){
+            spread_max = 300;
+        }
+
+        let spreadoffset_x = tools_random2(-spread_max,spread_max);
+        let spreadoffset_y = tools_random2(-spread_max,spread_max);
+        let spreadpos_x = this.s.correct_pos_width(this.t.x + spreadoffset_x);
+        let spreadpos_y = this.s.correct_pos_height(this.t.y + spreadoffset_y);
+        let t = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
+        if (t.energy_object == null){
+            new_plant = new Plant(this.s);
+            this.s.world.world_set_energy(new_plant, spreadpos_x, spreadpos_y);
+        }
+        return new_plant;
+    }
 }

@@ -36,6 +36,7 @@ class Simulation {
         this.world = new World(this, this.settings.world_width,this.settings.world_height);
         this.list_eprobots = [];
         this.list_eproboteaters = [];
+        this.list_plants = [];
         this.trace_objects = {};
         this.fossil_objects = [];
         this.stats = {};
@@ -208,6 +209,7 @@ class Simulation {
             if (this.world.get_terrain(x,y).energy_object==null){
                 let p = new Plant(this);
                 this.world.world_set_energy(p, x, y);
+                this.list_plants.push(p);
             }
         }
     }
@@ -234,6 +236,9 @@ class Simulation {
 
         let eprobots_with_energy = [];
         let eproboteaters_with_energy = [];
+
+        let list_plants_next = [];
+
         //shuffle(this.active_objects);
 
         for (let o of this.list_eprobots) {
@@ -321,6 +326,28 @@ class Simulation {
 
         this.list_eprobots = list_eprobots_next;
         this.list_eproboteaters = list_eproboteaters_next;
+
+        if ((this.steps+5) % 10 == 0){
+            shuffle(this.list_plants);
+
+            // plants
+            for (let plant of this.list_plants) {
+                if (plant.is_dead) continue;
+
+                let new_plant = null;
+                if (this.world.counter_plant<this.settings.plants_max){
+                    new_plant = plant.fork();
+                    if (new_plant){
+                        list_plants_next.push(new_plant);
+                    }
+                }
+
+                list_plants_next.push(plant);
+            }
+
+            this.list_plants = list_plants_next;
+        }
+
 
         if (this.steps % 10 == 0){
             var traces_to_remove = [];
@@ -419,6 +446,7 @@ class Simulation {
             if (t.energy_object == null){
                 let p = new Plant(this);
                 this.world.world_set_energy(p, world_x, world_y);
+                this.list_plants.push(p);
                 //simulation.active_objects.push(p);
                 this.drawer.paint_fast();
             }else{
