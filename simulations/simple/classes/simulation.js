@@ -94,7 +94,6 @@ class Simulation {
 
         for (let o of simstate.list_plants) {
             let p = new Plant(this);
-            p.tick = o.tick;
             p.is_dead = o.is_dead;
             p.energy_count = o.energy_count;
 

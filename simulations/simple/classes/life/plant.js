@@ -4,7 +4,6 @@ class Plant {
         this.t = null;
 
         this.s = s;
-        this.tick = 0;
         this.is_dead = false;
         this.energy_count = 150; //1000;
     }
@@ -12,7 +11,6 @@ class Plant {
     toJSON(){
         return {
             id: this.get_id(),
-            tick: this.tick,
             x_pos: this.t.x,
             y_pos: this.t.y,
             is_dead: this.is_dead,
