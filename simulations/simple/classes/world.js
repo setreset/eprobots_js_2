@@ -14,6 +14,8 @@ class World {
 
         this.counter_eprobot = 0;
         this.counter_eproboteater = 0;
+        this.counter_plant = 0;
+
         this.eprobots_created = 0;
     }
 
@@ -67,12 +69,20 @@ class World {
         t.set_energy_object(o);
         o.t = t;
 
+        if (o.get_id()==OBJECTTYPES.PLANT.id){
+            this.counter_plant++;
+        }
+
         this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
     }
 
-    world_unset_energy(x,y){
+    world_unset_energy(x,y, object_class){
         var t = this.get_terrain(x, y);
         t.set_energy_object(null);
+
+        if (object_class==OBJECTTYPES.PLANT.id){
+            this.counter_plant--;
+        }
 
         this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
     }
