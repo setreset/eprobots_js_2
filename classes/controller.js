@@ -169,7 +169,7 @@ class Controller {
     }
 
     on_fullscreen_change() {
-        console.log("fullscreen change");
+        //console.log("fullscreen change");
         this.simulation.drawer.init_canvas();
         this.simulation.drawer.paint_full();
     }
