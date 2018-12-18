@@ -37,7 +37,7 @@ class Simulation {
         this.list_eprobots = [];
         this.list_eproboteaters = [];
         this.list_plants = [];
-        this.trace_objects = {};
+        this.list_traces = [];
         this.fossil_objects = [];
         this.stats = {};
         this.drawer = new Drawer(this, this.canvas, this.canvas2);
@@ -258,8 +258,7 @@ class Simulation {
                 o.step();
 
                 if (o.afterstep_trace){
-                    var key = "trace_eprobot " + o.afterstep_trace.t.x.toString()+":"+o.afterstep_trace.t.y.toString();
-                    this.trace_objects[key] = o.afterstep_trace;
+                    this.list_traces.push(o.afterstep_trace);
                 }
 
 
@@ -283,8 +282,7 @@ class Simulation {
                 o.step();
 
                 if (o.afterstep_trace){
-                    var key = "trace_eproboteater " + o.afterstep_trace.t.x.toString()+":"+o.afterstep_trace.t.y.toString();
-                    this.trace_objects[key] = o.afterstep_trace;
+                    this.list_traces.push(o.afterstep_trace);
                 }
 
                 if (o.energy >= 1){
@@ -358,11 +356,10 @@ class Simulation {
 
 
         if (this.steps % 10 == 0){
-            var traces_to_remove = [];
-            //console.log(Object.keys(this.trace_objects).length);
+
             // traces wegräumen
-            for (var key in this.trace_objects){
-                let trace = this.trace_objects[key];
+            let splitval = 0;
+            for (let trace of this.list_traces){
                 if (trace.created+this.settings.tracetime<this.steps){
                     //console.log("abgelaufen");
                     if (trace.get_id()==OBJECTTYPES.TRACE_EPROBOT.id){
@@ -370,14 +367,13 @@ class Simulation {
                     }else if(trace.get_id()==OBJECTTYPES.TRACE_EPROBOTEATER.id){
                         this.world.world_unset_trace_eproboteater(trace.t.x, trace.t.y);
                     }
-
-                    traces_to_remove.push(key);
+                }else{
+                    break
                 }
+                splitval++;
             }
 
-            for (let trace_to_remove_key of traces_to_remove) {
-                delete this.trace_objects[trace_to_remove_key];
-            }
+            this.list_traces = this.list_traces.slice(splitval);
         }
 
         if (this.steps % 100 == 0){
