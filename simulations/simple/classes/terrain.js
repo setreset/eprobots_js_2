@@ -20,9 +20,19 @@ class Terrain {
                 }
             }
         }
+
+        var energy_object = this.energy_object;
+        if (energy_object != null){
+            if (energy_object.get_id() == OBJECTTYPES.PLANT.id){
+                energy_object = {
+                    id: energy_object.get_id()
+                }
+            }
+        }
+
         return {
             slot_object: slot_object,
-            energy_object: this.energy_object
+            energy_object: energy_object
         };
     }
 

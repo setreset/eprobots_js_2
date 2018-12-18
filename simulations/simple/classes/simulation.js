@@ -54,11 +54,7 @@ class Simulation {
         this.drawer = new Drawer(this, this.canvas, this.canvas2);
 
         simstate.world_objects.forEach(function(o) {
-            if (o.id == OBJECTTYPES.PLANT.id){
-                let p = new Plant(this);
-                p.energy_count = o.energy_count;
-                this.world.world_set_energy(p, o.x_pos, o.y_pos);
-            }else if (o.id == OBJECTTYPES.BARRIER.id){
+            if (o.id == OBJECTTYPES.BARRIER.id){
                 let b = new Barrier(this);
                 this.world.world_set(b, o.x_pos, o.y_pos);
             }else if (o.id == OBJECTTYPES.WATER.id){
@@ -70,6 +66,7 @@ class Simulation {
 
         this.list_eprobots = [];
         this.list_eproboteaters = [];
+        this.list_plants = [];
 
         this.trace_objects = {};
         this.fossil_objects = [];
@@ -93,6 +90,16 @@ class Simulation {
             ep.working_data = o.working_data;
             this.world.world_set(ep, o.x_pos, o.y_pos);
             this.list_eproboteaters.push(ep);
+        }
+
+        for (let o of simstate.list_plants) {
+            let p = new Plant(this);
+            p.tick = o.tick;
+            p.is_dead = o.is_dead;
+            p.energy_count = o.energy_count;
+
+            this.world.world_set_energy(p, o.x_pos, o.y_pos);
+            this.list_plants.push(p);
         }
 
         for (var key in simstate.trace_objects){
@@ -151,6 +158,7 @@ class Simulation {
             world_objects: world_objects,
             list_eprobots: this.list_eprobots,
             list_eproboteaters: this.list_eproboteaters,
+            list_plants: this.list_plants,
             trace_objects: this.trace_objects,
             fossil_objects: this.fossil_objects
         };
