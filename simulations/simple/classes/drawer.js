@@ -16,7 +16,7 @@ class Drawer {
     }
 
     init_canvas(){
-        console.log("init_canvas");
+        //console.log("init_canvas");
         let rect = this.canvas.getBoundingClientRect();
         //console.log(rect);
         let c_w = rect.width;
