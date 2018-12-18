@@ -34,10 +34,10 @@ $(document).ready(function() {
     document.addEventListener('mozfullscreenchange', function(ev){controller.on_fullscreen_change();});
     document.addEventListener('webkitfullscreenchange', function(ev){controller.on_fullscreen_change();});
 
-    //controls["simulation_canvas"].on("click", function(ev){controller.click_canvas(ev)});
-    controls["simulation_canvas"].on("mousemove", function(ev){controller.mousemove_canvas(ev)});
-    controls["simulation_canvas"].on("mouseup", function(ev){controller.mouseup_canvas(ev)});
-    controls["simulation_canvas"].on("mousedown", function(ev){controller.mousedown_canvas(ev)});
+    controls["simulation_canvas"].on("click", function(ev){controller.click_canvas(ev)});
+    //controls["simulation_canvas"].on("mousemove", function(ev){controller.mousemove_canvas(ev)});
+    //controls["simulation_canvas"].on("mouseup", function(ev){controller.mouseup_canvas(ev)});
+    //controls["simulation_canvas"].on("mousedown", function(ev){controller.mousedown_canvas(ev)});
 
     controls["simitem-selector"].on("click", "span", function(e){
         console.log("simitem-selector span");
