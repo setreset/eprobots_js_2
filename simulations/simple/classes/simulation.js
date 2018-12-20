@@ -354,7 +354,7 @@ class Simulation {
         }
 
 
-        if (this.steps % 10 == 0){
+        //if (this.steps % 10 == 0){
 
             // traces wegräumen
             let splitval = 0;
@@ -373,7 +373,7 @@ class Simulation {
             }
 
             this.list_traces = this.list_traces.slice(splitval);
-        }
+        //}
 
         if (this.steps % 100 == 0){
             var fossils_next = [];

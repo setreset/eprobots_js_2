@@ -22,7 +22,7 @@ class Settings {
         this.eprobots_max = 500;
         this.eprobots_lifetime = 2500;
         this.eprobots_fossiltime = 5000;
-        this.tracetime = 350;
+        this.tracetime = 25;
         this.PROGRAM_LENGTH = 500;
         this.DATA_LENGTH = 500;
         this.DATA_INOUT_INTERVAL = 20;
