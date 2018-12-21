@@ -55,6 +55,12 @@ class Plant {
         let spreadoffset_y = tools_random2(-spread_max,spread_max);
         let spreadpos_x = this.s.correct_pos_width(this.t.x + spreadoffset_x);
         let spreadpos_y = this.s.correct_pos_height(this.t.y + spreadoffset_y);
+
+        spreadpos_x = Math.max(spreadpos_x, 10);
+        spreadpos_x = Math.min(spreadpos_x, this.s.settings.world_width-10);
+        spreadpos_y = Math.max(spreadpos_y, 10);
+        spreadpos_y = Math.min(spreadpos_y, this.s.settings.world_height-10);
+
         let t = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
         if (t.energy_object == null){
             new_plant = new Plant(this.s);
