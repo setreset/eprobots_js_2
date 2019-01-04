@@ -372,7 +372,8 @@ class Simulation {
                 splitval++;
             }
 
-            this.list_traces = this.list_traces.slice(splitval);
+            this.list_traces.splice(0, splitval);
+            //this.list_traces = this.list_traces.slice(splitval);
         //}
 
         if (this.steps % 100 == 0){
