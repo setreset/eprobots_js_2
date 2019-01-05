@@ -37,7 +37,8 @@ class Simulation {
         this.list_eprobots = [];
         this.list_eproboteaters = [];
         this.list_plants = [];
-        this.list_traces = [];
+        this.traces_set_eprobots = new Set();
+        this.traces_set_eproboteaters = new Set();
         this.fossil_objects = [];
         this.stats = {};
         this.drawer = new Drawer(this, this.canvas, this.canvas2);
@@ -257,7 +258,7 @@ class Simulation {
                 o.step();
 
                 if (o.afterstep_trace){
-                    this.list_traces.push(o.afterstep_trace);
+                    this.traces_set_eprobots.add(o.afterstep_trace);
                 }
 
 
@@ -281,7 +282,7 @@ class Simulation {
                 o.step();
 
                 if (o.afterstep_trace){
-                    this.list_traces.push(o.afterstep_trace);
+                    this.traces_set_eproboteaters.add(o.afterstep_trace);
                 }
 
                 if (o.energy >= 1){
@@ -354,27 +355,49 @@ class Simulation {
         }
 
 
-        //if (this.steps % 10 == 0){
 
-            // traces wegräumen
-            let splitval = 0;
-            for (let trace of this.list_traces){
-                if (trace.created+this.settings.tracetime<this.steps){
-                    //console.log("abgelaufen");
-                    if (trace.get_id()==OBJECTTYPES.TRACE_EPROBOT.id){
-                        this.world.world_unset_trace_eprobot(trace.t.x, trace.t.y);
-                    }else if(trace.get_id()==OBJECTTYPES.TRACE_EPROBOTEATER.id){
-                        this.world.world_unset_trace_eproboteater(trace.t.x, trace.t.y);
+        // traces wegräumen
+
+        if (this.traces_set_eprobots.size>0){
+            let trace_cnt = 0;
+            let traces_list = [...this.traces_set_eprobots];
+            let num_tries = traces_list.length/100;
+            while(trace_cnt<num_tries){
+                let cand_index = tools_random(traces_list.length);
+                let cand_trace = traces_list[cand_index];
+                if (cand_trace.trace_eprobot>0){
+                    cand_trace.trace_eprobot -= 200;
+                    if (cand_trace.trace_eprobot<=0){
+                        cand_trace.trace_eprobot = 0;
+
+                        this.traces_set_eprobots.delete(cand_trace);
                     }
-                }else{
-                    break
+                    this.drawer.refresh_paintobj(cand_trace.x, cand_trace.y, cand_trace.get_color());
                 }
-                splitval++;
+                trace_cnt++;
             }
+        }
 
-            this.list_traces.splice(0, splitval);
-            //this.list_traces = this.list_traces.slice(splitval);
-        //}
+        if (this.traces_set_eproboteaters.size>0){
+            let trace_cnt = 0;
+            let traces_list = [...this.traces_set_eproboteaters];
+            let num_tries = traces_list.length/100;
+            while(trace_cnt<num_tries){
+                let cand_index = tools_random(traces_list.length);
+                let cand_trace = traces_list[cand_index];
+                if (cand_trace.trace_eproboteater>0){
+                    cand_trace.trace_eproboteater -= 200;
+                    if (cand_trace.trace_eproboteater<=0){
+                        cand_trace.trace_eproboteater = 0;
+
+                        this.traces_set_eproboteaters.delete(cand_trace);
+                    }
+                    this.drawer.refresh_paintobj(cand_trace.x, cand_trace.y, cand_trace.get_color());
+                }
+                trace_cnt++;
+            }
+        }
+
 
         if (this.steps % 100 == 0){
             var fossils_next = [];

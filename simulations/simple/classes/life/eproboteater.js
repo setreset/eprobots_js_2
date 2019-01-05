@@ -112,13 +112,14 @@ class EprobotEater {
     }
 
     move(new_pos_x, new_pos_y){
+        let old_t = this.t;
         let old_pos_x = this.t.x;
         let old_pos_y = this.t.y;
 
         this.s.world.world_move(this, old_pos_x, old_pos_y, new_pos_x, new_pos_y);
 
-        this.afterstep_trace = new TraceEprobotEater(this.s, this.get_relative_life_time(10));
-        this.s.world.world_set_trace_eproboteater(this.afterstep_trace, old_pos_x, old_pos_y);
+        this.afterstep_trace = old_t;
+        this.s.world.world_set_trace_eproboteater(200, old_pos_x, old_pos_y);
     }
 
     set_input(){
@@ -126,17 +127,8 @@ class EprobotEater {
         for (let i=0;i<amount;i++){
             var current_frame_end = (i+1)*this.s.settings.DATA_INOUT_INTERVAL;
 
-            if (this.t.trace_object_eprobot){
-                this.working_data[current_frame_end-8] = this.t.trace_object_eprobot.get_color()+1;
-            }else{
-                this.working_data[current_frame_end-8] = 0;
-            }
-
-            if (this.t.trace_object_eproboteater){
-                this.working_data[current_frame_end-7] = this.t.trace_object_eproboteater.get_color()+1;
-            }else{
-                this.working_data[current_frame_end-7] = 0;
-            }
+            this.working_data[current_frame_end-8] = this.t.trace_eprobot;
+            this.working_data[current_frame_end-7] = this.t.trace_eproboteater;
 
             if (this.t.energy_object) {
                 if (this.t.energy_object.get_id() == OBJECTTYPES.PLANT.id){

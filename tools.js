@@ -4,13 +4,15 @@ function tools_map_range(value, low1, high1, low2, high2){
 
 // liefert ganzzahlen von 0 bis max-1
 function tools_random(max){
-    return Math.floor(Math.random()*max);
+    return max * Math.random() << 0;
+    //return Math.floor(Math.random()*max);
 }
 
 // liefert ganzzahlen von min bis max-1
 function tools_random2(min, max){
     var delta = max - min;
-    return Math.floor(Math.random()*delta)+min;
+    //return Math.floor(Math.random()*delta)+min;
+    return (delta * Math.random() << 0) + min;
 }
 
 // subleq: https://en.wikipedia.org/wiki/One_instruction_set_computer

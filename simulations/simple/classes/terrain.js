@@ -7,8 +7,8 @@ class Terrain {
 
         this.slot_object = null;
         this.energy_object = null;
-        this.trace_object_eprobot = null;
-        this.trace_object_eproboteater = null;
+        this.trace_eprobot = 0;
+        this.trace_eproboteater = 0;
     }
 
     toJSON(){
@@ -73,10 +73,14 @@ class Terrain {
             if (this.energy_object){
                 return this.energy_object.get_color();
             }else{
-                if (this.trace_object_eprobot){
-                    return "hsl("+"0"+", 100%, "+(10-this.trace_object_eprobot.get_color())+"%)";
-                }else if (this.trace_object_eproboteater){
-                    return "hsl("+"192"+", 100%, "+(10-this.trace_object_eproboteater.get_color())+"%)";
+                if (this.trace_eprobot > 0){
+                    let l = parseInt(tools_map_range(this.trace_eprobot, 0, this.s.settings.eprobots_lifetime, 0, 7));
+                    l = Math.min(l, 7);
+                    return "hsl("+"0"+", 100%, "+l+"%)";
+                }else if (this.trace_eproboteater > 0){
+                    let l = parseInt(tools_map_range(this.trace_eproboteater, 0, this.s.settings.eprobots_lifetime, 0, 7));
+                    l = Math.min(l, 7);
+                    return "hsl("+"192"+", 100%, "+l+"%)";
                 }else{
                     return this.s.settings.background_color;
                 }
