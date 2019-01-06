@@ -267,8 +267,6 @@ class Simulation {
         let eprobots_with_energy = [];
         let eproboteaters_with_energy = [];
 
-        let list_plants_next = [];
-
         //shuffle(this.active_objects);
 
         for (let o of this.list_eprobots) {
@@ -355,25 +353,25 @@ class Simulation {
         this.list_eprobots = list_eprobots_next;
         this.list_eproboteaters = list_eproboteaters_next;
 
-        if ((this.steps+5) % 10 == 0){
-            shuffle(this.list_plants);
-
-            // plants
-            for (let plant of this.list_plants) {
-                if (plant.is_dead) continue;
-
-                let new_plant = null;
-                if (this.world.counter_plant<this.settings.plants_max){
-                    new_plant = plant.fork();
+        if (this.world.counter_plant > 0 && this.world.counter_plant < this.settings.plants_max){
+            let list_plants_next = [];
+            let plant_cnt = 0;
+            let num_tries = this.settings.plants_max / 10;
+            while(plant_cnt < num_tries && this.world.counter_plant < this.settings.plants_max){
+                let cand_index = tools_random(this.list_plants.length);
+                let cand_plant = this.list_plants[cand_index];
+                if (cand_plant.is_dead){
+                    this.list_plants.splice(cand_index, 1);
+                }else{
+                    let new_plant = cand_plant.fork();
                     if (new_plant){
                         list_plants_next.push(new_plant);
                     }
                 }
 
-                list_plants_next.push(plant);
+                plant_cnt++;
             }
-
-            this.list_plants = list_plants_next;
+            this.list_plants.push(...list_plants_next);
         }
 
         // traces wegräumen
