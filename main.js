@@ -69,13 +69,12 @@ $(document).ready(function() {
     controls["btn_save_to_localstorage"].on("click", function(e){controller.click_save_to_ls()});
 
     // setup simitem-selector
-    Object.entries(controller.get_object_types()).forEach(function(o) {
-        //console.log(o[0]+" "+o[1]);
-
-        let object_value = o[1];
+    let o_types = controller.get_object_types();
+    for (let key in o_types){
+        let object_value = o_types[key];
         if (object_value['drawable']){
             let span = '<span id="colorpicker-'+object_value['id']+'" style="width:20px; height:15px; background-color: '+object_value['color']+'; display: inline-block; margin-right: 4px"></span>';
             controls["simitem-selector"].append(span);
         }
-    }, this);
+    }
 });

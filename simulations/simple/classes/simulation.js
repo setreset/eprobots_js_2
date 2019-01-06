@@ -54,7 +54,7 @@ class Simulation {
 
         this.drawer = new Drawer(this, this.canvas, this.canvas2);
 
-        simstate.world_objects.forEach(function(o) {
+        for (let o of simstate.world_objects) {
             if (o.id == OBJECTTYPES.BARRIER.id){
                 let b = new Barrier(this);
                 this.world.world_set(b, o.x_pos, o.y_pos);
@@ -63,7 +63,7 @@ class Simulation {
                 w.energy_count = o.energy_count;
                 this.world.world_set(w, o.x_pos, o.y_pos);
             }
-        }, this);
+        }
 
         this.list_eprobots = [];
         this.list_eproboteaters = [];

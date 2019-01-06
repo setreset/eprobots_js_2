@@ -64,12 +64,6 @@ class Drawer {
             ctx.fillStyle = el.color;
             ctx.fillRect(el.x_pos * this.x_step, el.y_pos * this.y_step, this.x_step, this.y_step);
         }
-
-        //this.s.world.paintlist.forEach(function(el) {
-        //    ctx.fillStyle = el.color;
-        //    ctx.fillRect(el.x_pos * this.x_step, el.y_pos * this.y_step, this.x_step, this.y_step);
-        //}, this);
-        //
     }
 
 

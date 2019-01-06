@@ -17,7 +17,7 @@ class Settings {
         this.world_width = world_width;
         this.world_height = world_height;
         this.sleeptime = 0;
-        this.plants_max = 350;
+        this.plants_max = 450;
         this.plants_lifetime = 250;
         this.eprobots_max = 500;
         this.eprobots_lifetime = 2500;
@@ -34,16 +34,18 @@ class Settings {
     }
 
     loadState(settingsstate){
-        Object.entries(settingsstate).forEach(function(o) {
-            this[o[0]] = o[1];
-        }, this);
+        for (let key in settingsstate){
+            this[key] = settingsstate[key];
+        }
     }
 
     toJSON(){
         var settings_o = {};
-        Object.entries(this).forEach(function(o) {
-            settings_o[o[0]] = o[1];
-        }, this);
+
+        for (let key in this){
+            settings_o[key] = this[key];
+        }
+
         return settings_o;
     }
 }
