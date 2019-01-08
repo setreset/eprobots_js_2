@@ -260,16 +260,13 @@ class Simulation {
         }
     }
 
-    simulation_step(){
+    process_eprobots(list_eprobots, traces_set_eprobots){
         let list_eprobots_next = [];
-        let list_eproboteaters_next = [];
-
         let eprobots_with_energy = [];
-        let eproboteaters_with_energy = [];
 
         //shuffle(this.active_objects);
 
-        for (let o of this.list_eprobots) {
+        for (let o of list_eprobots) {
             if (o.is_dead) continue;
             if (o.life_counter > 0){
                 // INPUT
@@ -278,7 +275,7 @@ class Simulation {
                 o.step();
 
                 if (o.afterstep_trace){
-                    this.traces_set_eprobots.add(o.afterstep_trace);
+                    traces_set_eprobots.add(o.afterstep_trace);
                 }
 
 
@@ -293,28 +290,34 @@ class Simulation {
             }
         }
 
-        for (let o of this.list_eproboteaters) {
-            if (o.is_dead) continue;
-            if (o.life_counter > 0){
-                // INPUT
-                o.set_input();
+        return {
+            "list_eprobots_next": list_eprobots_next,
+            "eprobots_with_energy": eprobots_with_energy
+        };
+    }
 
-                o.step();
-
-                if (o.afterstep_trace){
-                    this.traces_set_eproboteaters.add(o.afterstep_trace);
+    fork_eprobots(eprobots_with_energy, counter_eprobot, list_eprobots_next){
+        for (let o of eprobots_with_energy) {
+            let new_eprobot = null;
+            if (this.world[counter_eprobot]<this.settings.eprobots_max){
+                new_eprobot = o.fork();
+                if (new_eprobot){
+                    list_eprobots_next.push(new_eprobot);
                 }
-
-                if (o.energy >= 1){
-                    eproboteaters_with_energy.push(o);
-                }
-                list_eproboteaters_next.push(o);
-
             }else{
-                this.world.world_unset(o.t.x, o.t.y, o.get_id());
-                o.is_dead = true;
+                break;
             }
         }
+    }
+
+    simulation_step(){
+        let r_eprobots = this.process_eprobots(this.list_eprobots, this.traces_set_eprobots);
+        let eprobots_with_energy = r_eprobots.eprobots_with_energy;
+        let list_eprobots_next = r_eprobots.list_eprobots_next;
+
+        let r_eproboteaters = this.process_eprobots(this.list_eproboteaters, this.traces_set_eproboteaters);
+        let eproboteaters_with_energy = r_eproboteaters.eprobots_with_energy;
+        let list_eproboteaters_next = r_eproboteaters.list_eprobots_next;
 
         // absteigend sortieren
         //this.eprobots_with_energy.sort(function(a, b){return b.energy - a.energy});
@@ -324,31 +327,8 @@ class Simulation {
         //shuffle(eproboteater_with_energy);
 
         // fork
-        for (let o of eprobots_with_energy) {
-            this.stats_incr("fork_normal");
-            let new_eprobot = null;
-            if (this.world.counter_eprobot<this.settings.eprobots_max){
-                new_eprobot = o.fork();
-                if (new_eprobot){
-                    list_eprobots_next.push(new_eprobot);
-                }
-            }else{
-                break;
-            }
-        }
-
-        for (let o of eproboteaters_with_energy) {
-            this.stats_incr("fork_eater");
-            let new_eprobot = null;
-            if (this.world.counter_eproboteater<this.settings.eprobots_max){
-                new_eprobot = o.fork();
-                if (new_eprobot){
-                    list_eproboteaters_next.push(new_eprobot);
-                }
-            }else{
-                break;
-            }
-        }
+        this.fork_eprobots(eprobots_with_energy, "counter_eprobot", list_eprobots_next)
+        this.fork_eprobots(eproboteaters_with_energy, "counter_eproboteater", list_eproboteaters_next)
 
         this.list_eprobots = list_eprobots_next;
         this.list_eproboteaters = list_eproboteaters_next;
