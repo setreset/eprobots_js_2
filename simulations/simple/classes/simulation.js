@@ -327,8 +327,8 @@ class Simulation {
         //shuffle(eproboteater_with_energy);
 
         // fork
-        this.fork_eprobots(eprobots_with_energy, "counter_eprobot", list_eprobots_next)
-        this.fork_eprobots(eproboteaters_with_energy, "counter_eproboteater", list_eproboteaters_next)
+        this.fork_eprobots(eprobots_with_energy, "counter_eprobot", list_eprobots_next);
+        this.fork_eprobots(eproboteaters_with_energy, "counter_eproboteater", list_eproboteaters_next);
 
         this.list_eprobots = list_eprobots_next;
         this.list_eproboteaters = list_eproboteaters_next;
