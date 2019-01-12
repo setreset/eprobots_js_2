@@ -9,6 +9,8 @@ class Terrain {
         this.energy_object = null;
         this.trace_eprobot = 0;
         this.trace_eproboteater = 0;
+        this.tail_eprobot = 0;
+        this.tail_eproboteater = 0;
     }
 
     toJSON(){
@@ -73,7 +75,12 @@ class Terrain {
             if (this.energy_object){
                 return this.energy_object.get_color();
             }else{
-                if (this.trace_eprobot > 0){
+                if (this.tail_eprobot>0){
+                    return "hsl("+"0"+", 100%, 10%)";
+                }else if (this.tail_eproboteater>0){
+                    return "hsl("+"192"+", 100%, 10%)";
+                }
+                else if (this.trace_eprobot > 0){
                     let l = parseInt(tools_map_range(this.trace_eprobot, 0, this.s.settings.eprobots_lifetime, 0, 7));
                     l = Math.min(l, 7);
                     return "hsl("+"0"+", 100%, "+l+"%)";

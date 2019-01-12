@@ -18,6 +18,8 @@ class Eprobot {
         this.my_color = tools_random(359);
         this.afterstep_trace = null;
 
+        this.tail = [];
+
         this.s.stats_incr("eprobots_created");
     }
 
@@ -123,8 +125,13 @@ class Eprobot {
 
         this.s.world.world_move(this, old_pos_x, old_pos_y, new_pos_x, new_pos_y);
 
+        old_t.trace_eprobot += 200;
         this.afterstep_trace = old_t;
-        this.s.world.world_set_trace_eprobot(200, old_pos_x, old_pos_y);
+
+        old_t.tail_eprobot += 1;
+        this.tail.push({"t": old_t, "rt": this.tick+25});
+
+        this.s.drawer.refresh_paintobj(old_t.x, old_t.y, old_t.get_color());
     }
 
     set_input(){
@@ -194,6 +201,15 @@ class Eprobot {
             }
         }
 
+        if (this.tail.length>0){
+            if (this.tail[0].rt<=this.tick){
+                let to = this.tail.shift();
+                let t = to.t;
+                t.tail_eprobot = Math.max(t.tail_eprobot-1, 0);
+                this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
+            }
+        }
+
         this.tick++;
         this.life_counter--;
     }
@@ -219,5 +235,14 @@ class Eprobot {
             }
         }
         return new_eprobot
+    }
+
+    kill(){
+        this.is_dead=true;
+        for (let to of this.tail) {
+            let t = to.t;
+            t.tail_eprobot = Math.max(t.tail_eprobot-1, 0);
+            this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
+        }
     }
 }

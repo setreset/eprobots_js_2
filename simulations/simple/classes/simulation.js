@@ -286,7 +286,7 @@ class Simulation {
 
             }else{
                 this.world.world_unset(o.t.x, o.t.y, o.get_id());
-                o.is_dead = true;
+                o.kill();
             }
         }
 
