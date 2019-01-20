@@ -177,8 +177,10 @@ class Simulation {
                 var val = tools_random2(-720, 720);
                 init_data.push(val);
             }
-            let x = this.settings.nest_x+tools_random2(-20,20);
-            let y = this.settings.nest_y+tools_random2(-20,20);
+            //let x = this.settings.nest_x+tools_random2(-20,20);
+            //let y = this.settings.nest_y+tools_random2(-20,20);
+            let x = tools_random(this.settings.world_width);
+            let y = tools_random(this.settings.world_height);
             if (this.world.get_terrain(x,y).slot_object==null){
                 let ep = new Eprobot(this, program, init_data);
                 this.world.world_set(ep, x, y);
@@ -200,8 +202,10 @@ class Simulation {
                 var val = tools_random2(-720, 720);
                 init_data.push(val);
             }
-            let x = this.settings.nest_x+tools_random2(-20,20);
-            let y = this.settings.nest_y+tools_random2(-20,20);
+            //let x = this.settings.nest_x+tools_random2(-20,20);
+            //let y = this.settings.nest_y+tools_random2(-20,20);
+            let x = tools_random(this.settings.world_width);
+            let y = tools_random(this.settings.world_height);
             if (this.world.get_terrain(x,y).slot_object==null){
                 let ep = new EprobotEater(this, program, init_data);
                 this.world.world_set(ep, x, y);
@@ -247,7 +251,7 @@ class Simulation {
                 let cand_index = tools_random(traces_list.length);
                 let cand_trace = traces_list[cand_index];
                 if (cand_trace[terrain_propertie_name]>0){
-                    cand_trace[terrain_propertie_name] -= 200;
+                    cand_trace[terrain_propertie_name] -= 100;
                     if (cand_trace[terrain_propertie_name]<=0){
                         cand_trace[terrain_propertie_name] = 0;
 
