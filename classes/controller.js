@@ -35,12 +35,26 @@ class Controller {
         this.simulation.simulation_step();
 
         let steptime_end = new Date().getTime();
-        let frame_time = steptime_end - steptime_start;
+        let current_frame_time = steptime_end - steptime_start;
 
         this.simulation.drawer.paint_fast();
 
         if (this.running) {
-            let st = this.simulation.settings.sleeptime - frame_time;
+            let st = this.frame_time - current_frame_time;
+            if (this.simulation.steps % 100 == 0){
+                console.log("st: "+st);
+                if (st > 2){
+                    this.simulation.settings.eprobots_max += 5;
+                    console.log("increase eprobots_max: "+this.simulation.settings.eprobots_max);
+                }else if(st < 1 && this.simulation.settings.eprobots_max > 0){
+                    this.simulation.settings.eprobots_max -= 5;
+                    if (this.simulation.settings.eprobots_max < 0){
+                        this.simulation.settings.eprobots_max = 0;
+                    }
+                    console.log("reduce eprobots_max: "+this.simulation.settings.eprobots_max);
+                }
+            }
+
             setTimeout(()=>{this.simulation_loop()}, st);
         }
     }
@@ -55,6 +69,9 @@ class Controller {
         //this.simulation.prepare();
         //this.simulation.seed_eprobots();
         this.simulation.drawer.paint_fast();
+
+        this.frame_time = 1000 / this.simulation.settings.fps;
+        console.log("frame_time: "+this.frame_time);
     }
 
     seed_eprobots(){

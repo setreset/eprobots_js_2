@@ -16,7 +16,7 @@ class Settings {
         this.beam_at_borders = false;
         this.world_width = world_width;
         this.world_height = world_height;
-        this.sleeptime = 0;
+        this.fps = 100;
         this.plants_max = 450;
         this.plants_lifetime = 250;
         this.eprobots_max = 500;
