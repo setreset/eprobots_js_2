@@ -37,8 +37,6 @@ class Simulation {
         this.list_eprobots = [];
         this.list_eproboteaters = [];
         this.list_plants = [];
-        this.traces_set_eprobots = new Set();
-        this.traces_set_eproboteaters = new Set();
         this.fossil_objects = [];
         this.stats = {};
         this.drawer = new Drawer(this, this.canvas, this.canvas2);
@@ -216,8 +214,8 @@ class Simulation {
 
     seed_energy(){
         for (let i = 0; i<10;i++){
-            let x = this.settings.nest_x+tools_random2(-20,20);
-            let y = this.settings.nest_y+tools_random2(-20,20);
+            let x = tools_random(this.settings.world_width);
+            let y = tools_random(this.settings.world_height);
             if (this.world.get_terrain(x,y).energy_object==null){
                 let p = new Plant(this);
                 this.world.world_set_energy(p, x, y);
@@ -242,29 +240,78 @@ class Simulation {
         }
     }
 
-    reduce_traces(trace_set, terrain_propertie_name){
-        if (trace_set.size>0){
+    reduce_traces(trace_set, trace_list){
+        let tl = trace_list.length;
+        if (tl > 0){
             let trace_cnt = 0;
-            let traces_list = [...trace_set];
-            let num_tries = traces_list.length/100;
-            while(trace_cnt<num_tries){
-                let cand_index = tools_random(traces_list.length);
-                let cand_trace = traces_list[cand_index];
-                if (cand_trace[terrain_propertie_name]>0){
-                    cand_trace[terrain_propertie_name] -= 100;
-                    if (cand_trace[terrain_propertie_name]<=0){
-                        cand_trace[terrain_propertie_name] = 0;
+            //let traces_list = [...trace_set];
+            let num_tries = Math.min(tl / 100,5);
 
-                        trace_set.delete(cand_trace);
-                    }
-                    this.drawer.refresh_paintobj(cand_trace.x, cand_trace.y, cand_trace.get_color());
+            while(trace_cnt<num_tries){
+                let cand_index = tools_random(tl);
+                let cand_trace = trace_list[cand_index];
+
+                if (cand_trace.trace_eprobot>0){
+                    cand_trace.trace_eprobot = 0;
+                    /*cand_trace.trace_eprobot -= 2000;
+                    if (cand_trace.trace_eprobot<=0){
+                        cand_trace.trace_eprobot = 0;
+                    }*/
                 }
+
+                if (cand_trace.trace_eproboteater>0){
+                    cand_trace.trace_eproboteater = 0;
+                    /*cand_trace.trace_eproboteater -= 2000;
+                    if (cand_trace.trace_eproboteater<=0){
+                        cand_trace.trace_eproboteater = 0;
+                    }*/
+                }
+
+                this.drawer.refresh_paintobj(cand_trace.x, cand_trace.y, cand_trace.get_color());
+
+                if (cand_trace.trace_eprobot == 0 && cand_trace.trace_eproboteater == 0){
+                    trace_set.delete(cand_trace);
+                    trace_list.splice(cand_index, 1);
+                    tl--;
+                    if (tl==0){
+                        break;
+                    }
+                }
+
                 trace_cnt++;
             }
         }
     }
 
-    process_eprobots(list_eprobots, traces_set_eprobots){
+    reduce_traces_fast(){
+        for (let i=0;i<1000;i++){
+            let x = tools_random(this.settings.world_width);
+            let y = tools_random(this.settings.world_height);
+            let cand_terrain = this.world.get_terrain(x,y);
+            let reduced = false;
+            if (cand_terrain.trace_eprobot>0){
+                cand_terrain.trace_eprobot -= 1000;
+                if (cand_terrain.trace_eprobot<=0){
+                    cand_terrain.trace_eprobot = 0;
+                }
+                reduced = true;
+            }
+
+            if (cand_terrain.trace_eproboteater>0){
+                cand_terrain.trace_eproboteater -= 1000;
+                if (cand_terrain.trace_eproboteater<=0){
+                    cand_terrain.trace_eproboteater = 0;
+                }
+                reduced = true;
+            }
+
+            if (reduced){
+                this.drawer.refresh_paintobj(cand_terrain.x, cand_terrain.y, cand_terrain.get_color());
+            }
+        }
+    }
+
+    process_eprobots(list_eprobots){
         let list_eprobots_next = [];
         let eprobots_with_energy = [];
 
@@ -277,11 +324,6 @@ class Simulation {
                 o.set_input();
 
                 o.step();
-
-                if (o.afterstep_trace){
-                    traces_set_eprobots.add(o.afterstep_trace);
-                }
-
 
                 if (o.energy >= 1){
                     eprobots_with_energy.push(o);
@@ -315,11 +357,11 @@ class Simulation {
     }
 
     simulation_step(){
-        let r_eprobots = this.process_eprobots(this.list_eprobots, this.traces_set_eprobots);
+        let r_eprobots = this.process_eprobots(this.list_eprobots);
         let eprobots_with_energy = r_eprobots.eprobots_with_energy;
         let list_eprobots_next = r_eprobots.list_eprobots_next;
 
-        let r_eproboteaters = this.process_eprobots(this.list_eproboteaters, this.traces_set_eproboteaters);
+        let r_eproboteaters = this.process_eprobots(this.list_eproboteaters);
         let eproboteaters_with_energy = r_eproboteaters.eprobots_with_energy;
         let list_eproboteaters_next = r_eproboteaters.list_eprobots_next;
 
@@ -359,8 +401,9 @@ class Simulation {
         }
 
         // traces wegräumen
-        this.reduce_traces(this.traces_set_eprobots, "trace_eprobot");
-        this.reduce_traces(this.traces_set_eproboteaters, "trace_eproboteater");
+        //this.reduce_traces(this.traces_set_eprobots, this.traces_list_eprobots);
+        //this.reduce_traces(this.traces_set_eproboteaters, "trace_eproboteater", this.traces_list_eproboteaters);
+        this.reduce_traces_fast();
 
         if (this.steps % 100 == 0){
             var fossils_next = [];
