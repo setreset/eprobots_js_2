@@ -33,6 +33,12 @@ class Simulation {
 
     init(){
         this.settings = new Settings();
+        this.frame_time = 1000 / this.settings.fps;
+        console.log("frame_time: "+this.frame_time);
+
+        this.reduce_traces_tries = parseInt((this.settings.world_width * this.settings.world_height)/518);
+        console.log("reduce_traces_tries: "+this.reduce_traces_tries);
+
         this.world = new World(this, this.settings.world_width,this.settings.world_height);
         this.list_eprobots = [];
         this.list_eproboteaters = [];
@@ -284,7 +290,7 @@ class Simulation {
     }
 
     reduce_traces_fast(){
-        for (let i=0;i<1000;i++){
+        for (let i=0;i<this.reduce_traces_tries;i++){
             let x = tools_random(this.settings.world_width);
             let y = tools_random(this.settings.world_height);
             let cand_terrain = this.world.get_terrain(x,y);

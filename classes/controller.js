@@ -40,7 +40,7 @@ class Controller {
         this.simulation.drawer.paint_fast();
 
         if (this.running) {
-            let st = this.frame_time - current_frame_time;
+            let st = this.simulation.frame_time - current_frame_time;
             if (this.simulation.steps % 100 == 0){
                 console.log("st: "+st);
                 if (st > 2){
@@ -69,9 +69,6 @@ class Controller {
         //this.simulation.prepare();
         //this.simulation.seed_eprobots();
         this.simulation.drawer.paint_fast();
-
-        this.frame_time = 1000 / this.simulation.settings.fps;
-        console.log("frame_time: "+this.frame_time);
     }
 
     seed_eprobots(){
