@@ -33,8 +33,6 @@ class Simulation {
 
     init(){
         this.settings = new Settings();
-        this.frame_time = 1000 / this.settings.fps;
-        console.log("frame_time: "+this.frame_time);
 
         this.reduce_traces_tries = parseInt((this.settings.world_width * this.settings.world_height)/518);
         console.log("reduce_traces_tries: "+this.reduce_traces_tries);
@@ -409,7 +407,9 @@ class Simulation {
         // traces wegräumen
         //this.reduce_traces(this.traces_set_eprobots, this.traces_list_eprobots);
         //this.reduce_traces(this.traces_set_eproboteaters, "trace_eproboteater", this.traces_list_eproboteaters);
-        this.reduce_traces_fast();
+        if (this.settings.traces){
+            this.reduce_traces_fast();
+        }
 
         if (this.steps % 100 == 0){
             var fossils_next = [];
@@ -473,6 +473,7 @@ class Simulation {
 
     click_world(world_x, world_y, draw_mode){
         let t = this.world.get_terrain(world_x, world_y);
+        console.log(t);
 
         if (draw_mode == OBJECTTYPES.PLANT.id){
             if (t.energy_object == null){

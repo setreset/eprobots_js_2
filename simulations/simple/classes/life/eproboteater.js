@@ -120,11 +120,13 @@ class EprobotEater {
 
         this.s.world.world_move(this, old_pos_x, old_pos_y, new_pos_x, new_pos_y);
 
-        old_t.trace_eproboteater += 200;
-        this.afterstep_trace = old_t;
+        if (this.s.settings.trace){
+            old_t.trace_eproboteater = Math.min(old_t.trace_eproboteater+200,2500);
+            this.afterstep_trace = old_t;
+        }
 
         old_t.tail_eproboteater += 1;
-        this.tail.push({"t": old_t, "rt": this.tick+25});
+        this.tail.push({"t": old_t, "rt": this.tick+20});
 
         this.s.drawer.refresh_paintobj(old_t.x, old_t.y, old_t.get_color());
     }
@@ -133,6 +135,9 @@ class EprobotEater {
         var amount = this.s.settings.DATA_LENGTH / this.s.settings.DATA_INOUT_INTERVAL;
         for (let i=0;i<amount;i++){
             var current_frame_end = (i+1)*this.s.settings.DATA_INOUT_INTERVAL;
+
+            this.working_data[current_frame_end-10] = this.t.tail_eprobot;
+            this.working_data[current_frame_end-9] = this.t.tail_eproboteater;
 
             this.working_data[current_frame_end-8] = this.t.trace_eprobot;
             this.working_data[current_frame_end-7] = this.t.trace_eproboteater;

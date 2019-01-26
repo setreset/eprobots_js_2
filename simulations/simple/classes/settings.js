@@ -16,7 +16,7 @@ class Settings {
         this.beam_at_borders = false;
         this.world_width = world_width;
         this.world_height = world_height;
-        this.fps = 100;
+        this.frame_time = 10; //1000/100;
         this.plants_max = 450;
         this.plants_lifetime = 250;
         this.eprobots_max = 500;
@@ -31,6 +31,7 @@ class Settings {
         this.MUTATE_STRENGTH = 400;
         this.nest_x = parseInt(this.world_width/2);
         this.nest_y = parseInt(this.world_height/2);
+        this.traces = false;
     }
 
     loadState(settingsstate){

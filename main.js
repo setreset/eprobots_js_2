@@ -1,4 +1,5 @@
 var controls = {};
+var con;
 
 $(document).ready(function() {
     console.log("ready");
@@ -29,6 +30,7 @@ $(document).ready(function() {
     controls["btn_save_to_localstorage"] = $("#btn_save_to_localstorage");
 
     var controller = new Controller();
+    con = controller;
 
     document.addEventListener('fullscreenchange', function(ev){controller.on_fullscreen_change();});
     document.addEventListener('mozfullscreenchange', function(ev){controller.on_fullscreen_change();});
@@ -44,7 +46,12 @@ $(document).ready(function() {
         console.log($(this).attr("id"));
 
         let elem_id = $(this).attr("id");
-        let object_id = elem_id.split("-")[1];
+        let objects_id_string = elem_id.split("-")[1];
+        let object_id = null;
+        if (objects_id_string!="none"){
+            object_id = parseInt(objects_id_string);
+        }
+
         controller.click_simitem_selector(object_id);
     });
 
@@ -69,6 +76,11 @@ $(document).ready(function() {
     controls["btn_save_to_localstorage"].on("click", function(e){controller.click_save_to_ls()});
 
     // setup simitem-selector
+
+    // null value
+    let span = '<span id="colorpicker-none" style="width:20px; height:15px; background-color: #000000; display: inline-block; margin-right: 4px"></span>';
+    controls["simitem-selector"].append(span);
+
     let o_types = controller.get_object_types();
     for (let key in o_types){
         let object_value = o_types[key];

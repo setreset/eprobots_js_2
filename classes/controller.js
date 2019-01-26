@@ -3,7 +3,7 @@ var sim;
 class Controller {
     constructor() {
         this.running = false;
-        this.draw_mode = 0;
+        this.draw_mode = null;
         this.mouse_down = false;
         this.init_simulation();
     }
@@ -34,24 +34,21 @@ class Controller {
         this.simulation.simulation_prestep();
         this.simulation.simulation_step();
 
+        this.simulation.drawer.paint_fast();
+
         let steptime_end = new Date().getTime();
         let current_frame_time = steptime_end - steptime_start;
 
-        this.simulation.drawer.paint_fast();
-
         if (this.running) {
-            let st = this.simulation.frame_time - current_frame_time;
+            let st = this.simulation.settings.frame_time - current_frame_time;
             if (this.simulation.steps % 100 == 0){
-                console.log("st: "+st);
+                //console.log("st: "+st);
                 if (st > 2){
-                    this.simulation.settings.eprobots_max += 5;
-                    console.log("increase eprobots_max: "+this.simulation.settings.eprobots_max);
+                    this.simulation.settings.eprobots_max = Math.min(this.simulation.settings.eprobots_max+5, 1000);
+                    //console.log("increase eprobots_max: "+this.simulation.settings.eprobots_max);
                 }else if(st < 1 && this.simulation.settings.eprobots_max > 0){
-                    this.simulation.settings.eprobots_max -= 5;
-                    if (this.simulation.settings.eprobots_max < 0){
-                        this.simulation.settings.eprobots_max = 0;
-                    }
-                    console.log("reduce eprobots_max: "+this.simulation.settings.eprobots_max);
+                    this.simulation.settings.eprobots_max = Math.max(this.simulation.settings.eprobots_max-5, 100);
+                    //console.log("reduce eprobots_max: "+this.simulation.settings.eprobots_max);
                 }
             }
 
