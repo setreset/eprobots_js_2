@@ -329,7 +329,7 @@ class Simulation {
 
                 o.step();
 
-                if (o.energy >= 1){
+                if (o.energy >= o.get_fork_energy()){
                     eprobots_with_energy.push(o);
                 }
                 list_eprobots_next.push(o);
@@ -349,7 +349,7 @@ class Simulation {
     fork_eprobots(eprobots_with_energy, counter_eprobot, list_eprobots_next){
         for (let o of eprobots_with_energy) {
             let new_eprobot = null;
-            if (this.world[counter_eprobot]<this.settings.eprobots_max){
+            if (this.world[counter_eprobot]< o.get_individuum_max()){
                 new_eprobot = o.fork();
                 if (new_eprobot){
                     list_eprobots_next.push(new_eprobot);

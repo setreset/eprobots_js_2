@@ -38,6 +38,14 @@ class Eprobot {
         };
     }
 
+    get_individuum_max() {
+        return this.s.settings.eprobots_max;
+    }
+
+    get_fork_energy() {
+        return 1;
+    }
+
     get_id(){
         return OBJECTTYPES.EPROBOT.id;
     }
@@ -125,7 +133,7 @@ class Eprobot {
 
         this.s.world.world_move(this, old_pos_x, old_pos_y, new_pos_x, new_pos_y);
 
-        if (this.s.settings.trace){
+        if (this.s.settings.traces){
             old_t.trace_eprobot = Math.min(old_t.trace_eprobot+200,2500);
             this.afterstep_trace = old_t;
         }
@@ -233,7 +241,7 @@ class Eprobot {
             var new_data = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data);
             new_eprobot = new Eprobot(this.s, new_program, new_data);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
-            this.energy = this.energy-1;
+            this.energy = this.energy - this.get_fork_energy();
             if (this.water>0){
                 this.water--;
             }
