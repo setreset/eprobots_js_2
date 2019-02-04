@@ -438,13 +438,7 @@ class Simulation {
                 return this.settings.world_width - (Math.abs(x_pos) % this.settings.world_width);
             }
         }else{
-            if (x_pos >= this.settings.world_width){
-                return this.settings.world_width - 1;
-            }else if (x_pos < 0){
-                return 0;
-            }else{
-                return x_pos;
-            }
+            return Math.min(Math.max(0,x_pos), this.settings.world_width-1);
         }
 
     }
@@ -457,13 +451,7 @@ class Simulation {
                 return this.settings.world_height - (Math.abs(y_pos) % this.settings.world_height);
             }
         }else{
-            if (y_pos >= this.settings.world_height){
-                return this.settings.world_height - 1;
-            }else if (y_pos < 0){
-                return 0;
-            }else{
-                return y_pos;
-            }
+            return Math.min(Math.max(0,y_pos), this.settings.world_height-1);
         }
     }
 

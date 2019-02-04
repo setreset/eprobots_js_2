@@ -28,6 +28,19 @@ class Controller {
         this.simulation_loop();
     }
 
+    control_simulation_size(st){
+        if (this.simulation.steps % 100 == 0){
+            console.log("st: "+st);
+            if (st > 2){
+                this.simulation.settings.eprobots_max = Math.min(this.simulation.settings.eprobots_max+5, 1000);
+                console.log("increase eprobots_max: "+this.simulation.settings.eprobots_max);
+            }else if(st < 1){
+                this.simulation.settings.eprobots_max = Math.max(this.simulation.settings.eprobots_max-5, 100);
+                console.log("reduce eprobots_max: "+this.simulation.settings.eprobots_max);
+            }
+        }
+    }
+
     simulation_loop(){
         let steptime_start = new Date().getTime();
 
@@ -41,16 +54,8 @@ class Controller {
 
         if (this.running) {
             let st = this.simulation.settings.frame_time - current_frame_time;
-            if (this.simulation.steps % 100 == 0){
-                //console.log("st: "+st);
-                if (st > 2){
-                    this.simulation.settings.eprobots_max = Math.min(this.simulation.settings.eprobots_max+5, 1000);
-                    //console.log("increase eprobots_max: "+this.simulation.settings.eprobots_max);
-                }else if(st < 1 && this.simulation.settings.eprobots_max > 0){
-                    this.simulation.settings.eprobots_max = Math.max(this.simulation.settings.eprobots_max-5, 100);
-                    //console.log("reduce eprobots_max: "+this.simulation.settings.eprobots_max);
-                }
-            }
+
+            //this.control_simulation_size(st);
 
             setTimeout(()=>{this.simulation_loop()}, st);
         }
