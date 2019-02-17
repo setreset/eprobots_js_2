@@ -11,6 +11,7 @@ class Terrain {
         this.trace_eproboteater = 0;
         this.tail_eprobot = 0;
         this.tail_eproboteater = 0;
+        this.special_object = null;
     }
 
     toJSON(){
@@ -88,6 +89,8 @@ class Terrain {
                     let l = parseInt(tools_map_range(this.trace_eproboteater, 0, this.s.settings.eprobots_lifetime, 0, 7));
                     l = Math.min(l, 7);
                     return "hsl("+"192"+", 100%, "+l+"%)";
+                }else if (this.special_object) {
+                    return this.special_object.get_color();
                 }else{
                     return this.s.settings.background_color;
                 }
