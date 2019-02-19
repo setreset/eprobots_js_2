@@ -407,7 +407,7 @@ class Simulation {
         // traces wegräumen
         //this.reduce_traces(this.traces_set_eprobots, this.traces_list_eprobots);
         //this.reduce_traces(this.traces_set_eproboteaters, "trace_eproboteater", this.traces_list_eproboteaters);
-        if (this.settings.traces){
+        if (this.settings.feature_traces){
             this.reduce_traces_fast();
         }
 

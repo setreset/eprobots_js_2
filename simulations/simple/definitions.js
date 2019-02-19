@@ -40,6 +40,6 @@ var OBJECTTYPES = {
     POISON: {
         id: 8,
         drawable: true,
-        color: "rgb(245, 0, 220)"
+        color: "rgb(46, 0, 41)"
     },
 }

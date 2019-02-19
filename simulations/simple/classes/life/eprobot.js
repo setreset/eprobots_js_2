@@ -12,6 +12,25 @@ class Eprobot extends EprobotBase{
         return OBJECTTYPES.EPROBOT.color;
     }
 
+    get_output_OISC(){
+        let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS);
+
+        if (steps>=this.s.settings.PROGRAM_STEPS){
+            this.s.stats_incr("high_stepcounter");
+        }
+
+        let penalty = parseInt(steps/10);
+        this.life_counter = this.life_counter - penalty;
+
+        let moveval_raw = this.get_output_val(0);
+        let moveval = this.map_output_val(moveval_raw, DIRECTIONS.length);
+
+        let poison_raw = this.get_output_val(1);
+        let poisonval = this.map_output_val(poison_raw, 1);
+
+        return [moveval, poisonval];
+    }
+
     move(new_pos_x, new_pos_y){
         let old_t = this.t;
         let old_pos_x = this.t.x;
@@ -19,7 +38,7 @@ class Eprobot extends EprobotBase{
 
         this.s.world.world_move(this, old_pos_x, old_pos_y, new_pos_x, new_pos_y);
 
-        if (this.s.settings.traces){
+        if (this.s.settings.feature_traces){
             old_t.trace_eprobot = Math.min(old_t.trace_eprobot+200,2500);
             this.afterstep_trace = old_t;
         }
@@ -35,6 +54,7 @@ class Eprobot extends EprobotBase{
         this.afterstep_trace = null;
         let output = this.get_output_OISC();
         let moveval = output[0];
+        let poisonval = output[1];
 
         // move
         if (moveval<DIRECTIONS.length){
@@ -69,6 +89,16 @@ class Eprobot extends EprobotBase{
 
                 this.move(movepos_x, movepos_y);
             }
+        }
+
+        if (poisonval==1 && this.s.settings.feature_poison){
+            if (this.t.special_object==null){
+                this.t.special_object = new Poison(this.s)
+            }else{
+                this.t.special_object.energy_count++;
+            }
+
+            this.life_counter -= 20;
         }
 
         if (this.tail.length>0){

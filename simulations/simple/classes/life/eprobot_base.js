@@ -76,26 +76,17 @@ class EprobotBase {
         return out_val;
     }
 
-    get_output_OISC(){
-        let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS);
-
-        if (steps>=this.s.settings.PROGRAM_STEPS){
-            this.s.stats_incr("high_stepcounter");
-        }
-
-        let penalty = parseInt(steps/10);
-        this.life_counter = this.life_counter - penalty;
-
-        let moveval_raw = this.get_output_val(0);
-        let moveval = this.map_output_val(moveval_raw, DIRECTIONS.length);
-
-        return [moveval];
-    }
-
     set_input(){
         var amount = this.s.settings.DATA_LENGTH / this.s.settings.DATA_INOUT_INTERVAL;
         for (let i=0;i<amount;i++){
             var current_frame_end = (i+1)*this.s.settings.DATA_INOUT_INTERVAL;
+
+            if (this.t.special_object){
+                this.working_data[current_frame_end-11] = this.t.special_object.energy_count;
+            }else{
+                this.working_data[current_frame_end-11] = 0;
+            }
+
 
             this.working_data[current_frame_end-10] = this.t.tail_eprobot;
             this.working_data[current_frame_end-9] = this.t.tail_eproboteater;
