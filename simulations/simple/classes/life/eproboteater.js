@@ -36,7 +36,7 @@ class EprobotEater extends EprobotBase{
         this.s.world.world_move(this, old_pos_x, old_pos_y, new_pos_x, new_pos_y);
 
         if (this.s.settings.feature_traces){
-            old_t.trace_eproboteater = Math.min(old_t.trace_eproboteater+200,2500);
+            old_t.trace_eproboteater = Math.min(old_t.trace_eproboteater+200,5000);
             this.afterstep_trace = old_t;
         }
 

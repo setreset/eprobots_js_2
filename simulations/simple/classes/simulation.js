@@ -294,7 +294,7 @@ class Simulation {
             let cand_terrain = this.world.get_terrain(x,y);
             let reduced = false;
             if (cand_terrain.trace_eprobot>0){
-                cand_terrain.trace_eprobot -= 1000;
+                cand_terrain.trace_eprobot -= 200;
                 if (cand_terrain.trace_eprobot<=0){
                     cand_terrain.trace_eprobot = 0;
                 }
@@ -302,7 +302,7 @@ class Simulation {
             }
 
             if (cand_terrain.trace_eproboteater>0){
-                cand_terrain.trace_eproboteater -= 1000;
+                cand_terrain.trace_eproboteater -= 200;
                 if (cand_terrain.trace_eproboteater<=0){
                     cand_terrain.trace_eproboteater = 0;
                 }

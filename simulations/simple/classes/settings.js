@@ -32,8 +32,8 @@ class Settings {
         this.nest_x = parseInt(this.world_width/2);
         this.nest_y = parseInt(this.world_height/2);
 
-        this.feature_traces = false;
-        this.feature_poison = false;
+        this.feature_traces = true;
+        this.feature_poison = true;
     }
 
     loadState(settingsstate){
