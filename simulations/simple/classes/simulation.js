@@ -41,7 +41,6 @@ class Simulation {
         this.list_eprobots = [];
         this.list_eproboteaters = [];
         this.list_plants = [];
-        this.fossil_objects = [];
         this.stats = {};
         this.drawer = new Drawer(this, this.canvas, this.canvas2);
     }
