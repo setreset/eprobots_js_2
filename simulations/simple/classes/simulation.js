@@ -60,10 +60,6 @@ class Simulation {
             if (o.id == OBJECTTYPES.BARRIER.id){
                 let b = new Barrier(this);
                 this.world.world_set(b, o.x_pos, o.y_pos);
-            }else if (o.id == OBJECTTYPES.WATER.id){
-                let w = new Water(this);
-                w.energy_count = o.energy_count;
-                this.world.world_set(w, o.x_pos, o.y_pos);
             }
         }
 
@@ -72,7 +68,6 @@ class Simulation {
         this.list_plants = [];
 
         this.trace_objects = {};
-        this.fossil_objects = [];
         this.stats = {};
 
         for (let o of simstate.list_eprobots) {
@@ -103,40 +98,6 @@ class Simulation {
             this.world.world_set_energy(p, o.x_pos, o.y_pos);
             this.list_plants.push(p);
         }
-
-        for (var key in simstate.trace_objects){
-            let trace_obj = simstate.trace_objects[key];
-            if (trace_obj.id == OBJECTTYPES.TRACE_EPROBOT.id){
-                let trace = new TraceEprobot(this, trace_obj.color);
-                trace.created = trace_obj.created;
-                this.world.world_set_trace_eprobot(trace, trace_obj.x_pos, trace_obj.y_pos);
-                this.trace_objects[key] = trace;
-            }else if (trace_obj.id == OBJECTTYPES.TRACE_EPROBOTEATER.id){
-                let trace = new TraceEprobotEater(this, trace_obj.color);
-                trace.created = trace_obj.created;
-                this.world.world_set_trace_eproboteater(trace, trace_obj.x_pos, trace_obj.y_pos);
-                this.trace_objects[key] = trace;
-            }
-        }
-
-        for (let f_object of simstate.fossil_objects) {
-            let f = new Fossil(this);
-            f.created = f_object.created;
-            this.world.world_set(f, f_object.x_pos, f_object.y_pos);
-
-            this.fossil_objects.push(f);
-        }
-
-        //
-        //eprobots_h = [];
-        //eprobots_c = [];
-        //
-        //for (var i = 0; i< simstate.eprobots_h.length; i++){
-        //    var e_state = simstate.eprobots_h[i];
-        //    var e = new Herbivore(sim, e_state.x_pos, e_state.y_pos, e_state.init_programm);
-        //    e.loadState(e_state);
-        //    eprobots_h.push(e);
-        //}
     }
 
     toJSON(){
@@ -161,8 +122,7 @@ class Simulation {
             list_eprobots: this.list_eprobots,
             list_eproboteaters: this.list_eproboteaters,
             list_plants: this.list_plants,
-            trace_objects: this.trace_objects,
-            fossil_objects: this.fossil_objects
+            trace_objects: this.trace_objects
         };
     }
 
@@ -411,22 +371,6 @@ class Simulation {
             this.reduce_traces_fast();
         }
 
-        if (this.steps % 100 == 0){
-            var fossils_next = [];
-            //console.log(Object.keys(this.trace_objects).length);
-            // fossils wegräumen
-            for (let fossil of this.fossil_objects){
-                if (fossil.created+this.settings.eprobots_fossiltime<this.steps){
-                    //console.log("abgelaufen");
-                    this.world.world_unset(fossil.t.x, fossil.t.y, fossil.get_id());
-                }else{
-                    fossils_next.push(fossil);
-                }
-            }
-
-            this.fossil_objects = fossils_next;
-        }
-
         this.steps++;
     }
 
@@ -468,15 +412,6 @@ class Simulation {
                 let p = new Plant(this);
                 this.world.world_set_energy(p, world_x, world_y);
                 this.list_plants.push(p);
-                //simulation.active_objects.push(p);
-                this.drawer.paint_fast();
-            }else{
-                console.log("besetzt");
-            }
-        }else if (draw_mode == OBJECTTYPES.WATER.id){
-            if (t.energy_object == null){
-                let w = new Water(this);
-                this.world.world_set_energy(w, world_x, world_y);
                 //simulation.active_objects.push(p);
                 this.drawer.paint_fast();
             }else{
