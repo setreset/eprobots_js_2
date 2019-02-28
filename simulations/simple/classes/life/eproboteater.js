@@ -79,12 +79,8 @@ class EprobotEater extends EprobotBase{
                 this.move(movepos_x, movepos_y);
             }
 
-            if (this.t.special_object){
-                this.t.special_object.energy_count--;
-                if (this.t.special_object.energy_count<=0){
-                    this.t.special_object=null;
-                }
-
+            if (this.t.poison > 0){
+                this.t.poison--;
                 this.life_counter -= 10;
                 //this.kill();
                 //this.s.world.world_unset(this.t.x, this.t.y, this.get_id());

@@ -99,12 +99,7 @@ class Eprobot extends EprobotBase{
         }
 
         if (poisonval==1 && this.s.settings.feature_poison){
-            if (this.t.special_object==null){
-                this.t.special_object = new Poison(this.s)
-            }else{
-                this.t.special_object.energy_count++;
-            }
-
+            this.t.poison++;
             this.life_counter -= 20;
         }
 
