@@ -30,10 +30,10 @@ class Eprobot extends EprobotBase{
         this.life_counter = this.life_counter - penalty;
 
         let moveval_raw = this.get_output_val(0);
-        let moveval = this.map_output_val(moveval_raw, DIRECTIONS.length);
+        let moveval = this.map_output_val(moveval_raw, DIRECTIONS.length + 1);
 
         let poison_raw = this.get_output_val(1);
-        let poisonval = this.map_output_val(poison_raw, 1);
+        let poisonval = this.map_output_val(poison_raw, 2);
 
         return [moveval, poisonval];
     }

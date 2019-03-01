@@ -42,13 +42,9 @@ class EprobotBase {
         return 1;
     }
 
-    get_move_random(){
-        return tools_random(DIRECTIONS.length+1);
-    }
-
-    map_output_val(val, max){
+    map_output_val(val, number_of_values){
         if (isFinite(val)){
-            var mapped_val = Math.abs(val) % (max + 1);
+            var mapped_val = Math.abs(val) % (number_of_values);
         }else{
             if (val==-Infinity){
                 this.s.stats_incr("infinity_negative");
@@ -60,7 +56,7 @@ class EprobotBase {
                 console.log("Infinite: "+val);
             }
 
-            var mapped_val = this.get_move_random();
+            var mapped_val = tools_random(number_of_values);
         }
         return mapped_val;
     }
