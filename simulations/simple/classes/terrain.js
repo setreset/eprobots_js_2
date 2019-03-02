@@ -9,10 +9,15 @@ class Terrain {
         this.energy_object = null;
 
         this.trace_eprobot = 0;
+        this.trace_eprobot_expiry = null;
         this.trace_eproboteater = 0;
+        this.trace_eproboteater_expiry = null;
         this.tail_eprobot = 0;
         this.tail_eproboteater = 0;
         this.poison = 0;
+        this.poison_expiry = null;
+        this.info = 0;
+        this.info_expiry = null;
     }
 
     toJSON(){
@@ -78,19 +83,22 @@ class Terrain {
                 return this.energy_object.get_color();
             }else{
                 if (this.tail_eprobot > 0){
-                    return "hsl("+"0"+", 100%, 10%)";
+                    return "hsl(0, 100%, 10%)";
                 }else if (this.tail_eproboteater>0){
-                    return "hsl("+"192"+", 100%, 10%)";
+                    return "hsl(192, 100%, 10%)";
                 }else if (this.poison > 0) {
                     return "rgb(46, 0, 41)";
                 }else if (this.trace_eprobot > 0){
                     let l = parseInt(tools_map_range(this.trace_eprobot, 0, this.s.settings.eprobots_lifetime, 0, 7));
                     l = Math.min(l, 7);
-                    return "hsl("+"0"+", 100%, "+l+"%)";
+                    return "hsl(0, 100%, "+l+"%)";
                 }else if (this.trace_eproboteater > 0){
                     let l = parseInt(tools_map_range(this.trace_eproboteater, 0, this.s.settings.eprobots_lifetime, 0, 7));
                     l = Math.min(l, 7);
-                    return "hsl("+"192"+", 100%, "+l+"%)";
+                    return "hsl(192, 100%, "+l+"%)";
+                }else if (this.info > 0){
+                    let c = parseInt(tools_map_range(this.info, 0, 9, 0, 360));
+                    return "hsl("+c+", 100%, 7%)";
                 }else{
                     return this.s.settings.background_color;
                 }

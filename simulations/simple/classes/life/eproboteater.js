@@ -32,7 +32,10 @@ class EprobotEater extends EprobotBase{
         let moveval_raw = this.get_output_val(0);
         let moveval = this.map_output_val(moveval_raw, DIRECTIONS.length + 1);
 
-        return [moveval];
+        let info_raw = this.get_output_val(1);
+        let infoval = this.map_output_val(info_raw, 11);
+
+        return [moveval, infoval];
     }
 
     move(new_pos_x, new_pos_y){
@@ -44,6 +47,7 @@ class EprobotEater extends EprobotBase{
 
         if (this.s.settings.feature_traces){
             old_t.trace_eproboteater = Math.min(old_t.trace_eproboteater+200,5000);
+            old_t.trace_eproboteater_expiry = this.s.steps + 1000;
             this.afterstep_trace = old_t;
         }
 
@@ -58,6 +62,7 @@ class EprobotEater extends EprobotBase{
         this.afterstep_trace = null;
         let output = this.get_output_OISC();
         let moveval = output[0];
+        let infoval = output[1];
 
         // move
         if (moveval<DIRECTIONS.length){
@@ -81,10 +86,15 @@ class EprobotEater extends EprobotBase{
 
             if (this.t.poison > 0){
                 this.t.poison--;
-                this.life_counter -= 10;
+                this.life_counter -= 15;
                 //this.kill();
                 //this.s.world.world_unset(this.t.x, this.t.y, this.get_id());
             }
+        }
+
+        if (this.s.settings.feature_info && infoval < 10){
+            this.t.info = infoval;
+            this.t.info_expiry = this.s.steps + 1000;
         }
 
         if (this.tail.length>0){

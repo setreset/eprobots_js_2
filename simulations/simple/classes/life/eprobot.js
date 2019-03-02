@@ -35,7 +35,10 @@ class Eprobot extends EprobotBase{
         let poison_raw = this.get_output_val(1);
         let poisonval = this.map_output_val(poison_raw, 2);
 
-        return [moveval, poisonval];
+        let info_raw = this.get_output_val(2);
+        let infoval = this.map_output_val(info_raw, 11);
+
+        return [moveval, poisonval, infoval];
     }
 
     move(new_pos_x, new_pos_y){
@@ -47,6 +50,7 @@ class Eprobot extends EprobotBase{
 
         if (this.s.settings.feature_traces){
             old_t.trace_eprobot = Math.min(old_t.trace_eprobot+200,5000);
+            old_t.trace_eprobot_expiry = this.s.steps + 1000;
             this.afterstep_trace = old_t;
         }
 
@@ -62,6 +66,7 @@ class Eprobot extends EprobotBase{
         let output = this.get_output_OISC();
         let moveval = output[0];
         let poisonval = output[1];
+        let infoval = output[2];
 
         // move
         if (moveval<DIRECTIONS.length){
@@ -100,7 +105,14 @@ class Eprobot extends EprobotBase{
 
         if (poisonval==1 && this.s.settings.feature_poison){
             this.t.poison++;
+            this.t.poison_expiry = this.s.steps + 10000;
             this.life_counter -= 20;
+        }
+
+        if (this.s.settings.feature_info && infoval < 10){
+            console.log("info");
+            this.t.info = infoval;
+            this.t.info_expiry = this.s.steps + 1000;
         }
 
         if (this.tail.length>0){

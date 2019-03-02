@@ -77,6 +77,7 @@ class EprobotBase {
         for (let i=0;i<amount;i++){
             var current_frame_end = (i+1)*this.s.settings.DATA_INOUT_INTERVAL;
 
+            this.working_data[current_frame_end-12] = this.t.info;
             this.working_data[current_frame_end-11] = this.t.poison;
             this.working_data[current_frame_end-10] = this.t.tail_eprobot;
             this.working_data[current_frame_end-9] = this.t.tail_eproboteater;

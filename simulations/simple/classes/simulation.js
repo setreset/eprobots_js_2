@@ -203,56 +203,58 @@ class Simulation {
         }
     }
 
-    reduce_traces(trace_set, trace_list){
-        let tl = trace_list.length;
-        if (tl > 0){
-            let trace_cnt = 0;
-            //let traces_list = [...trace_set];
-            let num_tries = Math.min(tl / 100,5);
-
-            while(trace_cnt<num_tries){
-                let cand_index = tools_random(tl);
-                let cand_trace = trace_list[cand_index];
-
-                if (cand_trace.trace_eprobot>0){
-                    cand_trace.trace_eprobot = 0;
-                    /*cand_trace.trace_eprobot -= 2000;
-                    if (cand_trace.trace_eprobot<=0){
-                        cand_trace.trace_eprobot = 0;
-                    }*/
-                }
-
-                if (cand_trace.trace_eproboteater>0){
-                    cand_trace.trace_eproboteater = 0;
-                    /*cand_trace.trace_eproboteater -= 2000;
-                    if (cand_trace.trace_eproboteater<=0){
-                        cand_trace.trace_eproboteater = 0;
-                    }*/
-                }
-
-                this.drawer.refresh_paintobj(cand_trace.x, cand_trace.y, cand_trace.get_color());
-
-                if (cand_trace.trace_eprobot == 0 && cand_trace.trace_eproboteater == 0){
-                    trace_set.delete(cand_trace);
-                    trace_list.splice(cand_index, 1);
-                    tl--;
-                    if (tl==0){
-                        break;
-                    }
-                }
-
-                trace_cnt++;
-            }
-        }
-    }
+    //reduce_traces(trace_set, trace_list){
+    //    let tl = trace_list.length;
+    //    if (tl > 0){
+    //        let trace_cnt = 0;
+    //        //let traces_list = [...trace_set];
+    //        let num_tries = Math.min(tl / 100,5);
+    //
+    //        while(trace_cnt<num_tries){
+    //            let cand_index = tools_random(tl);
+    //            let cand_trace = trace_list[cand_index];
+    //
+    //            if (cand_trace.trace_eprobot>0){
+    //                cand_trace.trace_eprobot = 0;
+    //                /*cand_trace.trace_eprobot -= 2000;
+    //                if (cand_trace.trace_eprobot<=0){
+    //                    cand_trace.trace_eprobot = 0;
+    //                }*/
+    //            }
+    //
+    //            if (cand_trace.trace_eproboteater>0){
+    //                cand_trace.trace_eproboteater = 0;
+    //                /*cand_trace.trace_eproboteater -= 2000;
+    //                if (cand_trace.trace_eproboteater<=0){
+    //                    cand_trace.trace_eproboteater = 0;
+    //                }*/
+    //            }
+    //
+    //            this.drawer.refresh_paintobj(cand_trace.x, cand_trace.y, cand_trace.get_color());
+    //
+    //            if (cand_trace.trace_eprobot == 0 && cand_trace.trace_eproboteater == 0){
+    //                trace_set.delete(cand_trace);
+    //                trace_list.splice(cand_index, 1);
+    //                tl--;
+    //                if (tl==0){
+    //                    break;
+    //                }
+    //            }
+    //
+    //            trace_cnt++;
+    //        }
+    //    }
+    //}
 
     reduce_traces_fast(){
         for (let i=0;i<this.reduce_traces_tries;i++){
             let x = tools_random(this.settings.world_width);
             let y = tools_random(this.settings.world_height);
             let cand_terrain = this.world.get_terrain(x,y);
+
             let reduced = false;
-            if (cand_terrain.trace_eprobot>0){
+
+            if (cand_terrain.trace_eprobot > 0 && cand_terrain.trace_eprobot_expiry < this.steps){
                 cand_terrain.trace_eprobot -= 200;
                 if (cand_terrain.trace_eprobot<=0){
                     cand_terrain.trace_eprobot = 0;
@@ -260,11 +262,21 @@ class Simulation {
                 reduced = true;
             }
 
-            if (cand_terrain.trace_eproboteater>0){
+            if (cand_terrain.trace_eproboteater > 0 && cand_terrain.trace_eproboteater_expiry < this.steps){
                 cand_terrain.trace_eproboteater -= 200;
                 if (cand_terrain.trace_eproboteater<=0){
                     cand_terrain.trace_eproboteater = 0;
                 }
+                reduced = true;
+            }
+
+            if (cand_terrain.poison > 0 && cand_terrain.poison_expiry < this.steps){
+                cand_terrain.poison = 0;
+                reduced = true;
+            }
+
+            if (cand_terrain.info > 0 && cand_terrain.info_expiry < this.steps){
+                cand_terrain.info = 0;
                 reduced = true;
             }
 
@@ -366,7 +378,7 @@ class Simulation {
         // traces wegräumen
         //this.reduce_traces(this.traces_set_eprobots, this.traces_list_eprobots);
         //this.reduce_traces(this.traces_set_eproboteaters, "trace_eproboteater", this.traces_list_eproboteaters);
-        if (this.settings.feature_traces){
+        if (this.settings.feature_traces || this.settings.feature_poison || this.settings.feature_info){
             this.reduce_traces_fast();
         }
 
