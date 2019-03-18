@@ -49,7 +49,7 @@ class Plant {
 
         let spreadpos_x, spreadpos_y;
 
-        if (Math.random()>0.990){
+        if (Math.random()<1/50){
             spreadpos_x = tools_random(this.s.settings.world_width);
             spreadpos_y = tools_random(this.s.settings.world_height);
         }else{
@@ -58,12 +58,12 @@ class Plant {
             let spreadoffset_y = tools_random2(-spread_max,spread_max);
             spreadpos_x = this.s.correct_pos_width(this.t.x + spreadoffset_x);
             spreadpos_y = this.s.correct_pos_height(this.t.y + spreadoffset_y);
-
-            //spreadpos_x = Math.max(spreadpos_x, 30);
-            //spreadpos_x = Math.min(spreadpos_x, this.s.settings.world_width-30);
-            //spreadpos_y = Math.max(spreadpos_y, 30);
-            //spreadpos_y = Math.min(spreadpos_y, this.s.settings.world_height-30);
         }
+
+        spreadpos_x = Math.max(spreadpos_x, 50);
+        spreadpos_x = Math.min(spreadpos_x, this.s.settings.world_width-50);
+        spreadpos_y = Math.max(spreadpos_y, 50);
+        spreadpos_y = Math.min(spreadpos_y, this.s.settings.world_height-50);
 
         let t = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
         if (t.energy_object == null){
