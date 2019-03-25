@@ -31,11 +31,13 @@ class Drawer {
         this.canvas2.width = c_w;
         this.canvas2.height = c_h;
 
-        this.canvas_ctx.fillStyle = this.s.settings.background_color;
-        this.canvas_ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.canvas_ctx.fillStyle = this.s.settings.background_color[this.s.settings.colortheme];
+        this.canvas_ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        //this.canvas_ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        this.canvas2_ctx.fillStyle = this.s.settings.background_color;
-        this.canvas2_ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.canvas2_ctx.fillStyle = this.s.settings.background_color[this.s.settings.colortheme];
+        this.canvas2_ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        //this.canvas2_ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
     refresh_paintobj(x, y, color){

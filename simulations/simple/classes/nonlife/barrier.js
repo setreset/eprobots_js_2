@@ -19,6 +19,6 @@ class Barrier {
     }
 
     get_color(){
-        return OBJECTTYPES.BARRIER.color;
+        return OBJECTTYPES.BARRIER.color[this.s.settings.colortheme];
     }
 }

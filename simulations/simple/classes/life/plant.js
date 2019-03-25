@@ -23,7 +23,7 @@ class Plant {
     }
 
     get_color(){
-        return OBJECTTYPES.PLANT.color;
+        return OBJECTTYPES.PLANT.color[this.s.settings.colortheme];
     }
 
     //get_lifetime(){

@@ -9,7 +9,7 @@ class Eprobot extends EprobotBase{
     }
 
     get_color(){
-        return OBJECTTYPES.EPROBOT.color;
+        return OBJECTTYPES.EPROBOT.color[this.s.settings.colortheme];
     }
 
     get_output_OISC(){

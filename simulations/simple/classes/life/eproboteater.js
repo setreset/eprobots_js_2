@@ -9,7 +9,7 @@ class EprobotEater extends EprobotBase{
     }
 
     get_color(){
-        return OBJECTTYPES.EPROBOTEATER.color;
+        return OBJECTTYPES.EPROBOTEATER.color[this.s.settings.colortheme];
     }
 
     get_output_OISC(){

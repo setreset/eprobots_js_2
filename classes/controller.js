@@ -241,4 +241,8 @@ class Controller {
     get_object_types(){
         return this.simulation.get_object_types();
     }
+
+    get_colortheme(){
+        return this.simulation.settings.colortheme;
+    }
 }

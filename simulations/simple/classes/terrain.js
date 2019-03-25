@@ -83,24 +83,48 @@ class Terrain {
                 return this.energy_object.get_color();
             }else{
                 if (this.tail_eprobot > 0){
-                    return "hsl(0, 100%, 10%)";
+                    if (this.s.settings.colortheme=="dark"){
+                        return "hsl(0, 100%, 10%)";
+                    }else if (this.s.settings.colortheme=="bright"){
+                        return "hsl(0, 100%, 70%)";
+                    }
                 }else if (this.tail_eproboteater>0){
-                    return "hsl(192, 100%, 10%)";
+                    if (this.s.settings.colortheme=="dark"){
+                        return "hsl(192, 100%, 10%)";
+                    }else if (this.s.settings.colortheme=="bright"){
+                        return "hsl(192, 100%, 40%)";
+                    }
                 }else if (this.poison > 0) {
-                    return "rgb(46, 0, 41)";
+                    if (this.s.settings.colortheme=="dark") {
+                        return "rgb(46, 0, 41)";
+                    }else if(this.s.settings.colortheme=="bright"){
+                        return "rgb(245, 0, 216)";
+                    }
                 }else if (this.trace_eprobot > 0){
-                    let l = parseInt(tools_map_range(this.trace_eprobot, 0, this.s.settings.eprobots_lifetime, 0, 7));
-                    l = Math.min(l, 7);
+                    let l;
+                    if (this.s.settings.colortheme=="dark") {
+                        l = parseInt(tools_map_range(this.trace_eprobot, 0, this.s.settings.eprobots_lifetime, 0, 7));
+                        l = Math.min(l, 7);
+                    }else if(this.s.settings.colortheme=="bright"){
+                        l = parseInt(tools_map_range(this.trace_eprobot, 0, this.s.settings.eprobots_lifetime, 100, 80));
+                        l = Math.max(l, 0);
+                    }
                     return "hsl(0, 100%, "+l+"%)";
                 }else if (this.trace_eproboteater > 0){
-                    let l = parseInt(tools_map_range(this.trace_eproboteater, 0, this.s.settings.eprobots_lifetime, 0, 7));
-                    l = Math.min(l, 7);
+                    let l;
+                    if (this.s.settings.colortheme=="dark") {
+                        l = parseInt(tools_map_range(this.trace_eproboteater, 0, this.s.settings.eprobots_lifetime, 0, 7));
+                        l = Math.min(l, 7);
+                    }else if(this.s.settings.colortheme=="bright"){
+                        l = parseInt(tools_map_range(this.trace_eproboteater, 0, this.s.settings.eprobots_lifetime, 100, 80));
+                        l = Math.max(l, 85);
+                    }
                     return "hsl(192, 100%, "+l+"%)";
                 }else if (this.info > 0){
                     let c = parseInt(tools_map_range(this.info, 0, 9, 0, 360));
                     return "hsl("+c+", 100%, 7%)";
                 }else{
-                    return this.s.settings.background_color;
+                    return this.s.settings.background_color[this.s.settings.colortheme];
                 }
             }
         }

@@ -78,14 +78,19 @@ $(document).ready(function() {
     // setup simitem-selector
 
     // null value
+    let colortheme = controller.get_colortheme();
     let span = '<span id="colorpicker-none" style="width:20px; height:15px; background-color: #000000; display: inline-block; margin-right: 4px"></span>';
+    if(colortheme=="bright"){
+        span = '<span id="colorpicker-none" style="width:20px; height:15px; background-color: #ffffff; display: inline-block; margin-right: 4px"></span>';
+    }
+
     controls["simitem-selector"].append(span);
 
     let o_types = controller.get_object_types();
     for (let key in o_types){
         let object_value = o_types[key];
         if (object_value['drawable']){
-            let span = '<span id="colorpicker-'+object_value['id']+'" style="width:20px; height:15px; background-color: '+object_value['color']+'; display: inline-block; margin-right: 4px"></span>';
+            let span = '<span id="colorpicker-'+object_value['id']+'" style="width:20px; height:15px; background-color: '+object_value['color'][colortheme]+'; display: inline-block; margin-right: 4px"></span>';
             controls["simitem-selector"].append(span);
         }
     }
