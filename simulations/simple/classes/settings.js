@@ -12,7 +12,7 @@ class Settings {
         let world_height = screensize_height/2;
         console.log("world dimensions: "+world_width+"x"+world_height);
 
-        this.colortheme = "bright";
+        this.colortheme = "dark";
         this.background_color = {
             dark: "#000000",
             bright: "#ffffff"
