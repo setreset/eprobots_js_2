@@ -96,3 +96,24 @@ function shuffle(a) {
     }
     return a;
 }
+
+Date.prototype.timeNow = function () {
+    return ((this.getHours() < 10)?"0":"") + this.getHours() +":"+ ((this.getMinutes() < 10)?"0":"") + this.getMinutes() +":"+ ((this.getSeconds() < 10)?"0":"") + this.getSeconds();
+};
+
+Date.prototype.today = function () {
+    let part_date = ((this.getDate() < 10)?"0":"") + this.getDate();
+    let part_month = (((this.getMonth()+1) < 10)?"0":"") + (this.getMonth()+1);
+
+    return part_date+"."+part_month+"."+this.getFullYear();
+};
+
+
+function get_current_datetime_str(){
+    var newDate = new Date();
+    return newDate.today() + " " + newDate.timeNow();
+}
+
+function log(msg){
+    console.log(get_current_datetime_str()+" " + msg);
+}
