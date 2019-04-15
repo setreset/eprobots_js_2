@@ -1,9 +1,7 @@
 var controls = {};
 var con;
 
-$(document).ready(function() {
-    console.log("ready");
-
+function main() {
     if (typeof Math.seedrandom === "function") {
         console.log("Math.seedrandom vorhanden");
         //var seed = makeid(8);
@@ -94,4 +92,9 @@ $(document).ready(function() {
             controls["simitem-selector"].append(span);
         }
     }
+}
+
+$(document).ready(function() {
+    console.log("ready");
+    setTimeout(function(){ main(); }, 3000);
 });
