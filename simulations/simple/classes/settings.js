@@ -23,7 +23,7 @@ class Settings {
         this.frame_time = 10; //1000/100;
         this.plants_max = 450;
         this.plants_lifetime = 250;
-        this.eprobots_max = 500;
+        this.eprobots_max = 250;
         this.eprobots_lifetime = 2500;
         this.eprobots_fossiltime = 5000;
         this.tracetime = 25;
