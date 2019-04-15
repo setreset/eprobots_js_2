@@ -1,0 +1,87 @@
+<html>
+<head>
+    <title>Eprobots JS</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <script src="lib/jquery-2.1.3.js"></script>
+    <script src="lib/lz-string.js"></script>
+    <!--<script src="lib/seedrandom.js"></script>-->
+
+    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="tools.js"></script>
+    <script type="text/javascript" src="definitions.js"></script>
+    <script type="text/javascript" src="classes/controller.js"></script>
+
+    <script type="text/javascript" src="simulations/simple/definitions.js"></script>
+    <script type="text/javascript" src="simulations/simple/classes/simulation.js"></script>
+    <script type="text/javascript" src="simulations/simple/classes/world.js"></script>
+    <script type="text/javascript" src="simulations/simple/classes/terrain.js"></script>
+    <script type="text/javascript" src="simulations/simple/classes/drawer.js"></script>
+    <script type="text/javascript" src="simulations/simple/classes/settings.js"></script>
+    <script type="text/javascript" src="simulations/simple/classes/life/eprobot_base.js"></script>
+    <script type="text/javascript" src="simulations/simple/classes/life/eprobot.js"></script>
+    <script type="text/javascript" src="simulations/simple/classes/life/eproboteater.js"></script>
+    <script type="text/javascript" src="simulations/simple/classes/life/plant.js"></script>
+    <script type="text/javascript" src="simulations/simple/classes/nonlife/barrier.js"></script>
+</head>
+<body style="background-color:#999999">
+<div class="container">
+    <h2>Eprobots JS</h2>
+    <div class="row" style="margin-top:10px">
+        <div class="col-md-12">
+            <canvas id="canvas" style="background-color:#ffffff; width:100%; height:400px;"></canvas>
+            <canvas id="canvas2" style="background-color:#ffffff; width:100%; height:400px; margin-top:20px; display: none"></canvas>
+
+            <div class="row" style="margin-top:10px">
+                <div class="col-md-12">
+                    <button id="btn_start" class="btn btn-default">Start</button>
+                    <button id="btn_fullscreen" class="btn btn-default">Fullscreen</button>
+                    <button id="btn_reset" class="btn btn-default">Reset simulation</button>
+                    <button id="btn_seed_eprobots" class="btn btn-default">Seed Eprobots</button>
+                    <button id="btn_seed_eproboteaters" class="btn btn-default">Seed EprobotEaters</button>
+                    <button id="btn_seed_energy" class="btn btn-default">Seed Energy</button>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top:10px">
+                <div id="simitem-selector" class="col-md-12">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--<div class="row" >
+        <div class="col-md-12">
+            <h3>Load/Save</h3>
+        </div>
+
+        <div class="col-md-12" style="margin-top:10px">
+            <button id="btn_load_from_localstorage" class="btn btn-default">Load from local storage</button>
+            <button id="btn_save_to_localstorage" class="btn btn-default">Save to local storage</button>
+        </div>
+
+        <div class="col-md-12" style="margin-top:10px">
+            <textarea id="simsavestate" style="width:100%; height:100px;"></textarea>
+        </div>
+        <div class="col-md-12" style="margin-top:10px">
+            <button id="btn_load" class="btn btn-default">Load</button>
+            <button id="btn_save" class="btn btn-default">Save</button>
+        </div>
+    </div>-->
+
+    <div class="row" style="margin-top:10px">
+        <div class="col-md-12">
+            <b>Please click "Seed Energy", "Start" and "Fullscreen". You can click into the Canvas to seed more energy.</b>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top:10px">
+        <div class="col-md-12">
+            Copyright Christian Wehr 2019 / <a href="https://thewehr.wordpress.com">thewehr.wordpress.com</a>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
