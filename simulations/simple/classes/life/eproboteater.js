@@ -121,9 +121,13 @@ class EprobotEater extends EprobotBase{
         //let spreadpos_y = this.s.settings.nest_y+tools_random2(-20,20);
         let spreadterrain = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
         if (spreadterrain.slot_object == null){
-            var new_program = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program);
-            var new_data = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data);
-            new_eprobot = new EprobotEater(this.s, new_program, new_data);
+            var new_program = tools_mutate(this.m_pos, this.s.settings.MUTATE_STRENGTH, this.program);
+            var new_data = tools_mutate(this.m_pos, this.s.settings.MUTATE_STRENGTH, this.init_data);
+            var m_pos_offset = (Math.random()-0.5)/100;
+            var new_m_pos = this.m_pos; //Math.max(this.m_pos + m_pos_offset, 0);
+            var m_strength_offset = tools_random2(-10,10);
+            var new_m_strength = this.m_strength; //Math.max(this.m_strength + m_strength_offset, 0);
+            new_eprobot = new EprobotEater(this.s, new_program, new_data, new_m_pos, new_m_strength);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
             this.energy = this.energy - this.get_fork_energy();
             if (this.water>0){

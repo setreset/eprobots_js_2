@@ -1,6 +1,6 @@
 class EprobotBase {
 
-    constructor(s, program, init_data) {
+    constructor(s, program, init_data, m_pos, m_strength) {
         this.t = null;
 
         this.s = s;
@@ -21,6 +21,8 @@ class EprobotBase {
         this.tail = [];
 
         this.s.stats_incr("eprobots_created");
+        this.m_pos = m_pos;
+        this.m_strength = m_strength;
     }
 
     toJSON(){
