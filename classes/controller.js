@@ -6,6 +6,10 @@ class Controller {
         this.draw_mode = null;
         this.mouse_down = false;
         this.init_simulation();
+
+        // autostart
+        this.seed_energy();
+        this.toggle_run();
     }
 
     toggle_run(){
