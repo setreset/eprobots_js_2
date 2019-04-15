@@ -86,7 +86,7 @@ class EprobotEater extends EprobotBase{
 
             if (this.t.poison > 0){
                 this.t.poison--;
-                this.life_counter -= 15;
+                this.life_counter -= 20;
                 //this.kill();
                 //this.s.world.world_unset(this.t.x, this.t.y, this.get_id());
             }
