@@ -82,6 +82,7 @@ class Eprobot extends EprobotBase{
                     if (energy_object.get_id()==OBJECTTYPES.PLANT.id){
                         //slot_object.kill();
                         this.energy++;
+                        this.life_counter+=10;
                         energy_object.energy_count--;
                         if (energy_object.energy_count==0){
                             energy_object.is_dead=true;
