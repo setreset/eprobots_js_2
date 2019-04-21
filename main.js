@@ -2,16 +2,16 @@ var controls = {};
 var con;
 
 $(document).ready(function() {
-    console.log("ready");
+    log("ready");
 
     if (typeof Math.seedrandom === "function") {
-        console.log("Math.seedrandom vorhanden");
+        log("Math.seedrandom vorhanden");
         //var seed = makeid(8);
         var seed="abc";
-        console.log("seedRandom: "+ seed);
+        log("seedRandom: "+ seed);
         Math.seedrandom(seed);
     }else{
-        console.log("Math.seedrandom nicht vorhanden");
+        log("Math.seedrandom nicht vorhanden");
     }
 
     controls["simulation_canvas"] = $("#canvas");
@@ -42,8 +42,8 @@ $(document).ready(function() {
     //controls["simulation_canvas"].on("mousedown", function(ev){controller.mousedown_canvas(ev)});
 
     controls["simitem-selector"].on("click", "span", function(e){
-        console.log("simitem-selector span");
-        console.log($(this).attr("id"));
+        log("simitem-selector span");
+        log($(this).attr("id"));
 
         let elem_id = $(this).attr("id");
         let objects_id_string = elem_id.split("-")[1];

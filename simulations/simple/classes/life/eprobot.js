@@ -94,7 +94,7 @@ class Eprobot extends EprobotBase{
                         //energy_object.energy_count--;
                         if (energy_object.energy_count==0){
                             this.s.world.world_unset_energy(movepos_x, movepos_y);
-                            console.log(new Date()+": entferne wasser");
+                            log(new Date()+": entferne wasser");
                         }
                     }
 
@@ -111,7 +111,7 @@ class Eprobot extends EprobotBase{
         }
 
         if (this.s.settings.feature_info && infoval < 10){
-            console.log("info");
+            log("info");
             this.t.info = infoval;
             this.t.info_expiry = this.s.steps + 1000;
         }

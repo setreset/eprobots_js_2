@@ -55,7 +55,7 @@ class EprobotBase {
             }else if (isNaN(val)){
                 this.s.stats_incr("infinity_nan");
             }else{
-                console.log("Infinite: "+val);
+                log("Infinite: "+val);
             }
 
             var mapped_val = tools_random(number_of_values);

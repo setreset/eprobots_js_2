@@ -35,7 +35,7 @@ class Simulation {
         this.settings = new Settings();
 
         this.reduce_traces_tries = parseInt((this.settings.world_width * this.settings.world_height)/518);
-        console.log("reduce_traces_tries: "+this.reduce_traces_tries);
+        log("reduce_traces_tries: "+this.reduce_traces_tries);
 
         this.world = new World(this, this.settings.world_width,this.settings.world_height);
         this.list_eprobots = [];
@@ -126,6 +126,7 @@ class Simulation {
     }
 
     seed_eprobots(){
+        log("seed_eprobots");
         for (let i = 0; i<75;i++){
             var program = [];
             for (var pi = 0; pi < this.settings.PROGRAM_LENGTH; pi++) {
@@ -151,6 +152,7 @@ class Simulation {
     }
 
     seed_eproboteaters(){
+        log("seed_eproboteaters");
         for (let i = 0; i<75;i++){
             var program = [];
             for (var pi = 0; pi < this.settings.PROGRAM_LENGTH; pi++) {
@@ -418,6 +420,7 @@ class Simulation {
 
     click_world(world_x, world_y, draw_mode){
         let t = this.world.get_terrain(world_x, world_y);
+        log("click_world");
         console.log(t);
 
         if (draw_mode == OBJECTTYPES.PLANT.id){
@@ -428,7 +431,7 @@ class Simulation {
                 //simulation.active_objects.push(p);
                 this.drawer.paint_fast();
             }else{
-                console.log("besetzt");
+                log("besetzt");
             }
         }else if (draw_mode == OBJECTTYPES.BARRIER.id){
             if (t.slot_object == null){
@@ -437,7 +440,7 @@ class Simulation {
                 //simulation.active_objects.push(p);
                 this.drawer.paint_fast();
             }else{
-                console.log("besetzt");
+                log("besetzt");
             }
         }
     }

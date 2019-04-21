@@ -21,6 +21,7 @@ class Controller {
     }
 
     start_simulation(){
+        log("controller: start_simulation");
         this.time_start = new Date();
 
         this.running = true;
@@ -30,13 +31,13 @@ class Controller {
 
     control_simulation_size(st){
         if (this.simulation.steps % 100 == 0){
-            console.log("st: "+st);
+            log("st: "+st);
             if (st > 2){
                 this.simulation.settings.eprobots_max = Math.min(this.simulation.settings.eprobots_max+5, 1000);
-                console.log("increase eprobots_max: "+this.simulation.settings.eprobots_max);
+                log("increase eprobots_max: "+this.simulation.settings.eprobots_max);
             }else if(st < 1){
                 this.simulation.settings.eprobots_max = Math.max(this.simulation.settings.eprobots_max-5, 100);
-                console.log("reduce eprobots_max: "+this.simulation.settings.eprobots_max);
+                log("reduce eprobots_max: "+this.simulation.settings.eprobots_max);
             }
         }
     }
@@ -62,6 +63,7 @@ class Controller {
     }
 
     stop_simulation(){
+        log("controller: stop_simulation");
         this.running = false;
     }
 
@@ -84,11 +86,13 @@ class Controller {
     }
 
     seed_energy(){
+        log("controller: seed_energy");
         this.simulation.seed_energy();
         this.simulation.drawer.paint_fast();
     }
 
     reset_simulation(){
+        log("controller: reset_simulation");
         this.init_simulation();
     }
 
@@ -126,7 +130,7 @@ class Controller {
     }
 
     click_canvas(e){
-        console.log("click");
+        log("click");
 
         let canvas_rect = controls["simulation_canvas"][0].getBoundingClientRect();
         var mousePos = this._get_mouse_pos(canvas_rect, e);
@@ -154,12 +158,12 @@ class Controller {
     }
 
     mouseup_canvas(e){
-        console.log("mouseup");
+        log("mouseup");
         this.mouse_down = false;
     }
 
     mousedown_canvas(e){
-        console.log("mousedown");
+        log("mousedown");
         this.mouse_down=true;
 
         let canvas_rect = controls["simulation_canvas"][0].getBoundingClientRect();
@@ -180,7 +184,7 @@ class Controller {
     }
 
     click_simitem_selector(id){
-        console.log(id + " selektiert");
+        log(id + " selektiert");
         this._set_draw_mode(id);
     }
 
@@ -227,9 +231,9 @@ class Controller {
 
     click_save_to_ls(){
         var simsavestate = JSON.stringify(this.simulation);
-        console.log(simsavestate.length);
+        log(simsavestate.length);
         var simsavestate_compressed = LZString.compress(simsavestate);
-        console.log(simsavestate_compressed.length);
+        log(simsavestate_compressed.length);
         try{
             localStorage.setItem("simsavestate_compressed", simsavestate_compressed);
         }catch(err){

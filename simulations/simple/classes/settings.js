@@ -6,11 +6,11 @@ class Settings {
     constructor() {
         let screensize_width = window.screen.width; // * window.devicePixelRatio;
         let screensize_height = window.screen.height; // * window.devicePixelRatio;
-        console.log("devicePixelRatio: "+window.devicePixelRatio);
-        console.log("resolution: "+screensize_width+"x"+screensize_height);
+        log("devicePixelRatio: "+window.devicePixelRatio);
+        log("resolution: "+screensize_width+"x"+screensize_height);
         let world_width = screensize_width/2;
         let world_height = screensize_height/2;
-        console.log("world dimensions: "+world_width+"x"+world_height);
+        log("world dimensions: "+world_width+"x"+world_height);
 
         this.colortheme = "dark";
         this.background_color = {
