@@ -295,10 +295,6 @@ class Simulation {
         for (let o of list_eprobots) {
             if (o.is_dead) continue;
             let living = o.life_counter > 0 && o.tick <= this.settings.eprobots_lifetime*2;
-            let teen_age = 500;
-            if (o.tick == teen_age && o.energy == 0){
-                living = false;
-            }
 
             if (living){
                 // INPUT
@@ -306,7 +302,7 @@ class Simulation {
 
                 o.step();
 
-                if (o.energy >= o.get_fork_energy() && o.tick > teen_age){
+                if (o.energy >= o.get_fork_energy()){
                     eprobots_with_energy.push(o);
                 }
                 list_eprobots_next.push(o);
