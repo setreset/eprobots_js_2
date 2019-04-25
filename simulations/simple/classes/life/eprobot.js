@@ -38,7 +38,10 @@ class Eprobot extends EprobotBase{
         let info_raw = this.get_output_val(2);
         let infoval = this.map_output_val(info_raw, 11);
 
-        return [moveval, poisonval, infoval];
+        let sfs_raw = this.get_output_val(3);
+        let sfsval = this.map_output_val(sfs_raw, 3);
+
+        return [moveval, poisonval, infoval, sfsval];
     }
 
     move(new_pos_x, new_pos_y){
@@ -67,6 +70,7 @@ class Eprobot extends EprobotBase{
         let moveval = output[0];
         let poisonval = output[1];
         let infoval = output[2];
+        let sfsval = output[3];
 
         // move
         if (moveval<DIRECTIONS.length){
@@ -114,6 +118,22 @@ class Eprobot extends EprobotBase{
             log("info");
             this.t.info = infoval;
             this.t.info_expiry = this.s.steps + 1000;
+        }
+
+        if (this.s.settings.feature_shared_food_storage && sfsval == 1){
+            this.s.stats_incr("storage_put");
+            if (this.energy>0){
+                this.s.world.shared_food_storage++;
+                this.energy--;
+            }
+        }
+
+        if (this.s.settings.feature_shared_food_storage && sfsval == 2){
+            this.s.stats_incr("storage_get");
+            if (this.s.world.shared_food_storage>0){
+                this.energy++;
+                this.s.world.shared_food_storage--;
+            }
         }
 
         if (this.tail.length>0){

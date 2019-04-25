@@ -17,6 +17,7 @@ class World {
         this.counter_plant = 0;
 
         this.eprobots_created = 0;
+        this.shared_food_storage = 0;
     }
 
     get_terrain(x, y){

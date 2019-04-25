@@ -39,6 +39,7 @@ class Settings {
         this.feature_traces = true;
         this.feature_poison = true;
         this.feature_info = false;
+        this.feature_shared_food_storage = true;
     }
 
     loadState(settingsstate){
