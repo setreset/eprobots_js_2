@@ -76,7 +76,7 @@ class EprobotEater extends EprobotBase{
                 if (slot_object){
                     //slot_object.kill();
                     this.s.stats_incr("eprobot_kills");
-                    this.energy++;
+                    this.energy+=slot_object.energy+1;
                     this.life_counter+=10;
                     slot_object.kill();
                     this.s.world.world_unset(movepos_x, movepos_y, slot_object.get_id());
