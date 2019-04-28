@@ -29,7 +29,7 @@ class Settings {
         this.tracetime = 25;
         this.PROGRAM_LENGTH = 500;
         this.DATA_LENGTH = 500;
-        this.DATA_INOUT_INTERVAL = 25;
+        this.DATA_INOUT_INTERVAL = 50;
         this.PROGRAM_STEPS = 1000;
         this.MUTATE_POSSIBILITY = 0.01;
         this.MUTATE_STRENGTH = 400;

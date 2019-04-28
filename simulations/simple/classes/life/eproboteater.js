@@ -83,6 +83,7 @@ class EprobotEater extends EprobotBase{
                 }
 
                 this.move(movepos_x, movepos_y);
+                this.orientation = moveval;
             }
 
             if (this.t.poison > 0){

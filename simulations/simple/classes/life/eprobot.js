@@ -29,19 +29,22 @@ class Eprobot extends EprobotBase{
         let penalty = parseInt(steps/10);
         this.life_counter = this.life_counter - penalty;
 
-        let moveval_raw = this.get_output_val(0);
-        let moveval = this.map_output_val(moveval_raw, DIRECTIONS.length + 1);
+        let directionval_raw = this.get_output_val(0);
+        let directionval = this.map_output_val(directionval_raw, DIRECTIONS.length);
 
-        let poison_raw = this.get_output_val(1);
+        let moveval_raw = this.get_output_val(1);
+        let moveval = this.map_output_val(moveval_raw, 2);
+
+        let poison_raw = this.get_output_val(2);
         let poisonval = this.map_output_val(poison_raw, 2);
 
-        let info_raw = this.get_output_val(2);
+        let info_raw = this.get_output_val(3);
         let infoval = this.map_output_val(info_raw, 11);
 
-        let sfs_raw = this.get_output_val(3);
+        let sfs_raw = this.get_output_val(4);
         let sfsval = this.map_output_val(sfs_raw, 3);
 
-        return [moveval, poisonval, infoval, sfsval];
+        return [directionval, moveval, poisonval, infoval, sfsval];
     }
 
     move(new_pos_x, new_pos_y){
@@ -67,14 +70,17 @@ class Eprobot extends EprobotBase{
         //let moveval = this.get_move();
         this.afterstep_trace = null;
         let output = this.get_output_OISC();
-        let moveval = output[0];
-        let poisonval = output[1];
-        let infoval = output[2];
-        let sfsval = output[3];
+        let directionval = output[0];
+        let moveval = output[1];
+        let poisonval = output[2];
+        let infoval = output[3];
+        let sfsval = output[4];
+
+        this.orientation = directionval;
 
         // move
-        if (moveval<DIRECTIONS.length){
-            let vec = DIRECTIONS[moveval];
+        if (moveval==1){
+            let vec = DIRECTIONS[this.orientation];
             let movepos_x = this.s.correct_pos_width(this.t.x + vec.x);
             let movepos_y = this.s.correct_pos_height(this.t.y + vec.y);
 
