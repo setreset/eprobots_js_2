@@ -144,7 +144,7 @@ class Simulation {
             let x = tools_random(this.settings.world_width);
             let y = tools_random(this.settings.world_height);
             if (this.world.get_terrain(x,y).slot_object==null){
-                let ep = new Eprobot(this, program, init_data, this.settings.MUTATE_POSSIBILITY, this.settings.MUTATE_STRENGTH);
+                let ep = new Eprobot(this, program, init_data);
                 this.world.world_set(ep, x, y);
                 this.list_eprobots.push(ep);
             }
@@ -170,7 +170,7 @@ class Simulation {
             let x = tools_random(this.settings.world_width);
             let y = tools_random(this.settings.world_height);
             if (this.world.get_terrain(x,y).slot_object==null){
-                let ep = new EprobotEater(this, program, init_data, this.settings.MUTATE_POSSIBILITY, this.settings.MUTATE_STRENGTH);
+                let ep = new EprobotEater(this, program, init_data);
                 this.world.world_set(ep, x, y);
                 this.list_eproboteaters.push(ep);
             }

@@ -151,8 +151,8 @@ class Eprobot extends EprobotBase{
 
     clone_eprobot(){
         this.s.stats_incr("fork_clone");
-        let new_program = tools_mutate(this.m_pos, this.m_strength, this.program);
-        let new_data = tools_mutate(this.m_pos, this.m_strength, this.init_data);
+        let new_program = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program);
+        let new_data = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data);
         return [new_program, new_data];
     }
 
@@ -194,8 +194,8 @@ class Eprobot extends EprobotBase{
                     let random_index = tools_random(co_eprobots.length);
                     // absteigend sortieren
                     //co_eprobots.sort(function(a, b){return b.energy - a.energy});
-                    new_program = tools_crossover(this.m_pos, this.m_strength, this.program, co_eprobots[random_index].program);
-                    new_data = tools_crossover(this.m_pos, this.m_strength, this.init_data, co_eprobots[random_index].init_data);
+                    new_program = tools_crossover(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program, co_eprobots[random_index].program);
+                    new_data = tools_crossover(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data, co_eprobots[random_index].init_data);
                 }else{
                     let r = this.clone_eprobot();
                     new_program = r[0];
@@ -207,11 +207,7 @@ class Eprobot extends EprobotBase{
                 new_data = r[1];
             }
 
-            var m_pos_offset = (Math.random()-0.5)/100;
-            var new_m_pos = this.m_pos; //Math.max(this.m_pos + m_pos_offset, 0);
-            var m_strength_offset = tools_random2(-10,10);
-            var new_m_strength = this.m_strength; //Math.max(this.m_strength + m_strength_offset, 0);
-            new_eprobot = new Eprobot(this.s, new_program, new_data, new_m_pos, new_m_strength);
+            new_eprobot = new Eprobot(this.s, new_program, new_data);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
             this.energy = this.energy - this.get_fork_energy();
             if (this.water>0){
