@@ -115,7 +115,7 @@ class Eprobot extends EprobotBase{
         }
 
         if (this.s.settings.feature_info && infoval < 10){
-            log("info");
+            this.s.stats_incr("info");
             this.t.info = infoval;
             this.t.info_expiry = this.s.steps + 1000;
         }
@@ -149,6 +149,17 @@ class Eprobot extends EprobotBase{
         this.life_counter--;
     }
 
+    clone_eprobot(){
+        this.s.stats_incr("fork_clone");
+        let new_program = tools_mutate(this.m_pos, this.m_strength, this.program);
+        let new_data = tools_mutate(this.m_pos, this.m_strength, this.init_data);
+        return [new_program, new_data];
+    }
+
+    crossover_eprobot(){
+
+    }
+
     fork(){
         // new eprobot
         let new_eprobot = null;
@@ -160,8 +171,42 @@ class Eprobot extends EprobotBase{
         //let spreadpos_y = this.s.settings.nest_y+tools_random2(-20,20);
         let spreadterrain = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
         if (spreadterrain.slot_object == null){
-            var new_program = tools_mutate(this.m_pos, this.m_strength, this.program);
-            var new_data = tools_mutate(this.m_pos, this.m_strength, this.init_data);
+
+            let new_program, new_data;
+
+            if (tools_random(2)==1){
+                // search eprobot next to me
+                let co_eprobots = [];
+                let box = 10;
+                for (let co_eprobot of this.s.list_eprobots) {
+                    if (co_eprobot==this){
+                        continue;
+                    }
+                    if (co_eprobot.t.x>this.t.x-box && co_eprobot.t.x<this.t.x+box){
+                        if (co_eprobot.t.y>this.t.y-box && co_eprobot.t.y<this.t.y+box){
+                            co_eprobots.push(co_eprobot);
+                        }
+                    }
+                }
+                if (co_eprobots.length>0){
+                    this.s.stats_incr("fork_crossover");
+
+                    let random_index = tools_random(co_eprobots.length);
+                    // absteigend sortieren
+                    //co_eprobots.sort(function(a, b){return b.energy - a.energy});
+                    new_program = tools_crossover(this.m_pos, this.m_strength, this.program, co_eprobots[random_index].program);
+                    new_data = tools_crossover(this.m_pos, this.m_strength, this.init_data, co_eprobots[random_index].init_data);
+                }else{
+                    let r = this.clone_eprobot();
+                    new_program = r[0];
+                    new_data = r[1];
+                }
+            }else{
+                let r = this.clone_eprobot();
+                new_program = r[0];
+                new_data = r[1];
+            }
+
             var m_pos_offset = (Math.random()-0.5)/100;
             var new_m_pos = this.m_pos; //Math.max(this.m_pos + m_pos_offset, 0);
             var m_strength_offset = tools_random2(-10,10);

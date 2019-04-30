@@ -51,6 +51,32 @@ function tools_compute(program, data, PS) {
     return step_counter;
 }
 
+function tools_crossover(m_pos, m_strength, memory_a, memory_b) {
+    // evt. swap
+    if (tools_random(2)==1){
+        let memory_c;
+        memory_c=memory_a;
+        memory_b=memory_a;
+        memory_a=memory_c;
+    }
+
+    var new_memory = [];
+    let co_index = tools_random(memory_a.length);
+    for (let i=0;i<memory_a.length;i++){
+        if (i<co_index){
+            new_memory.push(memory_a[i]);
+        }else{
+            new_memory.push(memory_b[i]);
+        }
+    }
+
+    //if (tools_random(10)<2){
+    new_memory = tools_mutate(m_pos, m_strength, new_memory);
+    //}
+
+    return new_memory;
+}
+
 function tools_mutate(mutate_possibility, mutate_strength, memory) {
     var new_memory = [];
     for (var i=0;i<memory.length;i++){
