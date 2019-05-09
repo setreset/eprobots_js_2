@@ -36,7 +36,7 @@ class Settings {
         this.nest_x = parseInt(this.world_width/2);
         this.nest_y = parseInt(this.world_height/2);
 
-        this.feature_traces = true;
+        this.feature_traces = false;
         this.feature_poison = true;
         this.feature_info = false;
         this.feature_shared_food_storage = true;
