@@ -48,7 +48,6 @@ class EprobotEater extends EprobotBase{
         if (this.s.settings.feature_traces){
             old_t.trace_eproboteater = Math.min(old_t.trace_eproboteater+200,5000);
             old_t.trace_eproboteater_expiry = this.s.steps + 1000;
-            this.afterstep_trace = old_t;
         }
 
         old_t.tail_eproboteater += 1;
@@ -59,7 +58,6 @@ class EprobotEater extends EprobotBase{
 
     step(){
         //let moveval = this.get_move();
-        this.afterstep_trace = null;
         let output = this.get_output_OISC();
         let moveval = output[0];
         let infoval = output[1];

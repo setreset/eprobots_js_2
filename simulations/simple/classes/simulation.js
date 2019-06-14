@@ -31,6 +31,12 @@ class Simulation {
         }
     }
 
+    list_eprobots_init(){
+        for (let i = 0;i<this.settings.concurrency;i++){
+            this.list_eprobots.push([]);
+        }
+    }
+
     init(){
         this.settings = new Settings();
 
@@ -39,6 +45,7 @@ class Simulation {
 
         this.world = new World(this, this.settings.world_width,this.settings.world_height);
         this.list_eprobots = [];
+        this.list_eprobots_init();
         this.list_eproboteaters = [];
         this.list_plants = [];
         this.stats = {};
@@ -125,8 +132,8 @@ class Simulation {
         };
     }
 
-    seed_eprobots(){
-        log("seed_eprobots");
+    seed_eprobots(kind){
+        log("seed_eprobots "+kind);
         for (let i = 0; i<75;i++){
             var program = [];
             for (var pi = 0; pi < this.settings.PROGRAM_LENGTH; pi++) {
@@ -144,9 +151,9 @@ class Simulation {
             let x = tools_random(this.settings.world_width);
             let y = tools_random(this.settings.world_height);
             if (this.world.get_terrain(x,y).slot_object==null){
-                let ep = new Eprobot(this, program, init_data);
+                let ep = new Eprobot(this, program, init_data, kind);
                 this.world.world_set(ep, x, y);
-                this.list_eprobots.push(ep);
+                this.list_eprobots[kind].push(ep);
             }
         }
     }
@@ -190,63 +197,16 @@ class Simulation {
     }
 
     simulation_prestep(){
-        if (this.world.counter_eprobot == 0 && this.world.counter_eproboteater == 0) {
-            this.world.eprobots_created = 0;
-            this.seed_eprobots();
-
-            //console.log("died");
-            //var duration = (new Date()-this.time_start)/1000;
-            //console.log("duration seconds: "+duration);
-            //console.log("steps: "+this.simulation.steps);
-            //this.stop_simulation();
-            //return;
-        }else if (this.world.eprobots_created > this.settings.eprobots_max * 2 && this.world.counter_eproboteater == 0){
-            this.seed_eproboteaters();
+        for (let i = 0;i< this.settings.concurrency;i++){
+            if (this.world.counter_eprobot[i] == 0) {
+                this.seed_eprobots(i);
+            }
         }
-    }
 
-    //reduce_traces(trace_set, trace_list){
-    //    let tl = trace_list.length;
-    //    if (tl > 0){
-    //        let trace_cnt = 0;
-    //        //let traces_list = [...trace_set];
-    //        let num_tries = Math.min(tl / 100,5);
-    //
-    //        while(trace_cnt<num_tries){
-    //            let cand_index = tools_random(tl);
-    //            let cand_trace = trace_list[cand_index];
-    //
-    //            if (cand_trace.trace_eprobot>0){
-    //                cand_trace.trace_eprobot = 0;
-    //                /*cand_trace.trace_eprobot -= 2000;
-    //                if (cand_trace.trace_eprobot<=0){
-    //                    cand_trace.trace_eprobot = 0;
-    //                }*/
-    //            }
-    //
-    //            if (cand_trace.trace_eproboteater>0){
-    //                cand_trace.trace_eproboteater = 0;
-    //                /*cand_trace.trace_eproboteater -= 2000;
-    //                if (cand_trace.trace_eproboteater<=0){
-    //                    cand_trace.trace_eproboteater = 0;
-    //                }*/
-    //            }
-    //
-    //            this.drawer.refresh_paintobj(cand_trace.x, cand_trace.y, cand_trace.get_color());
-    //
-    //            if (cand_trace.trace_eprobot == 0 && cand_trace.trace_eproboteater == 0){
-    //                trace_set.delete(cand_trace);
-    //                trace_list.splice(cand_index, 1);
-    //                tl--;
-    //                if (tl==0){
-    //                    break;
-    //                }
-    //            }
-    //
-    //            trace_cnt++;
-    //        }
-    //    }
-    //}
+        //if (this.world.eprobots_created > this.settings.eprobots_max * 2 && this.world.counter_eproboteater == 0){
+            //this.seed_eproboteaters();
+        //}
+    }
 
     reduce_traces_fast(){
         for (let i=0;i<this.reduce_traces_tries;i++){
@@ -310,7 +270,7 @@ class Simulation {
                 list_eprobots_next.push(o);
 
             }else{
-                this.world.world_unset(o.t.x, o.t.y, o.get_id());
+                this.world.world_unset(o.t.x, o.t.y, o);
                 o.kill();
             }
         }
@@ -324,7 +284,7 @@ class Simulation {
     fork_eprobots(eprobots_with_energy, counter_eprobot, list_eprobots_next){
         for (let o of eprobots_with_energy) {
             let new_eprobot = null;
-            if (this.world[counter_eprobot]< o.get_individuum_max()){
+            if (this.world[counter_eprobot][o.kind]< o.get_individuum_max()){
                 new_eprobot = o.fork();
                 if (new_eprobot){
                     list_eprobots_next.push(new_eprobot);
@@ -336,27 +296,24 @@ class Simulation {
     }
 
     simulation_step(){
-        let r_eprobots = this.process_eprobots(this.list_eprobots);
-        let eprobots_with_energy = r_eprobots.eprobots_with_energy;
-        let list_eprobots_next = r_eprobots.list_eprobots_next;
+        for (let i = 0;i<this.settings.concurrency;i++){
+            let r_eprobots = this.process_eprobots(this.list_eprobots[i]);
+            let eprobots_with_energy = r_eprobots.eprobots_with_energy;
+            let list_eprobots_next = r_eprobots.list_eprobots_next;
 
-        let r_eproboteaters = this.process_eprobots(this.list_eproboteaters);
-        let eproboteaters_with_energy = r_eproboteaters.eprobots_with_energy;
-        let list_eproboteaters_next = r_eproboteaters.list_eprobots_next;
+            // fork
+            this.fork_eprobots(eprobots_with_energy, "counter_eprobot", list_eprobots_next);
+            this.list_eprobots[i] = list_eprobots_next;
+        }
 
-        // absteigend sortieren
-        //this.eprobots_with_energy.sort(function(a, b){return b.energy - a.energy});
-        // aufsteigend sortieren
-        //this.eprobots_with_energy.sort(function(a, b){return a.energy - b.energy});
-        //shuffle(eprobots_with_energy);
-        //shuffle(eproboteater_with_energy);
 
-        // fork
-        this.fork_eprobots(eprobots_with_energy, "counter_eprobot", list_eprobots_next);
-        this.fork_eprobots(eproboteaters_with_energy, "counter_eproboteater", list_eproboteaters_next);
+        //let r_eproboteaters = this.process_eprobots(this.list_eproboteaters);
+        //let eproboteaters_with_energy = r_eproboteaters.eprobots_with_energy;
+        //let list_eproboteaters_next = r_eproboteaters.list_eprobots_next;
+        //
+        //this.fork_eprobots(eproboteaters_with_energy, "counter_eproboteater", list_eproboteaters_next);
 
-        this.list_eprobots = list_eprobots_next;
-        this.list_eproboteaters = list_eproboteaters_next;
+        //this.list_eproboteaters = list_eproboteaters_next;
 
         if (this.world.counter_plant > 0 && this.world.counter_plant < this.settings.plants_max){
             let list_plants_next = [];
@@ -380,8 +337,6 @@ class Simulation {
         }
 
         // traces wegräumen
-        //this.reduce_traces(this.traces_set_eprobots, this.traces_list_eprobots);
-        //this.reduce_traces(this.traces_set_eproboteaters, "trace_eproboteater", this.traces_list_eproboteaters);
         if (this.settings.feature_traces || this.settings.feature_poison || this.settings.feature_info){
             this.reduce_traces_fast();
         }

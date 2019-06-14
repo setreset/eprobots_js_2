@@ -1,7 +1,9 @@
 class EprobotBase {
 
-    constructor(s, program, init_data) {
+    constructor(s, program, init_data, kind) {
         this.t = null;
+
+        this.kind = kind;
 
         this.s = s;
         this.tick = 0;
@@ -14,9 +16,6 @@ class EprobotBase {
 
         this.init_data = init_data;
         this.working_data = init_data.slice(0);
-
-        this.my_color = tools_random(359);
-        this.afterstep_trace = null;
 
         this.tail = [];
 
@@ -78,11 +77,8 @@ class EprobotBase {
         for (let i=0;i<amount;i++){
             var current_frame_end = (i+1)*this.s.settings.DATA_INOUT_INTERVAL;
 
-            this.working_data[current_frame_end-12] = this.t.info;
-            this.working_data[current_frame_end-11] = this.t.poison;
-            this.working_data[current_frame_end-10] = this.t.tail_eprobot;
-            this.working_data[current_frame_end-9] = this.t.tail_eproboteater;
-
+            this.working_data[current_frame_end-10] = this.t.info;
+            this.working_data[current_frame_end-9] = this.t.poison;
             this.working_data[current_frame_end-8] = this.t.trace_eprobot;
             this.working_data[current_frame_end-7] = this.t.trace_eproboteater;
 

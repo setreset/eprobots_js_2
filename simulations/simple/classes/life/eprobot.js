@@ -1,7 +1,7 @@
 class Eprobot extends EprobotBase{
 
     get_individuum_max() {
-        return this.s.settings.eprobots_max;
+        return parseInt(this.s.settings.eprobots_max / this.s.settings.concurrency);
     }
 
     get_id(){
@@ -9,7 +9,9 @@ class Eprobot extends EprobotBase{
     }
 
     get_color(){
-        return OBJECTTYPES.EPROBOT.color[this.s.settings.colortheme];
+        let color = parseInt(360/this.s.settings.concurrency)*this.kind;
+        return "hsl("+color+", 100%, 48%)";
+        //return OBJECTTYPES.EPROBOT.color[this.s.settings.colortheme];
     }
 
     get_output_OISC(){
@@ -54,10 +56,9 @@ class Eprobot extends EprobotBase{
         if (this.s.settings.feature_traces){
             old_t.trace_eprobot = Math.min(old_t.trace_eprobot+200,5000);
             old_t.trace_eprobot_expiry = this.s.steps + 1000;
-            this.afterstep_trace = old_t;
         }
 
-        old_t.tail_eprobot += 1;
+        old_t.tail_eprobot[this.kind] += 1;
         this.tail.push({"t": old_t, "rt": this.tick+20});
 
         this.s.drawer.refresh_paintobj(old_t.x, old_t.y, old_t.get_color());
@@ -65,7 +66,6 @@ class Eprobot extends EprobotBase{
 
     step(){
         //let moveval = this.get_move();
-        this.afterstep_trace = null;
         let output = this.get_output_OISC();
         let moveval = output[0];
         let poisonval = output[1];
@@ -140,7 +140,7 @@ class Eprobot extends EprobotBase{
             if (this.tail[0].rt<=this.tick){
                 let to = this.tail.shift();
                 let t = to.t;
-                t.tail_eprobot = Math.max(t.tail_eprobot-1, 0);
+                t.tail_eprobot[this.kind] = Math.max(t.tail_eprobot[this.kind]-1, 0);
                 this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
             }
         }
@@ -154,10 +154,6 @@ class Eprobot extends EprobotBase{
         let new_program = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program);
         let new_data = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data);
         return [new_program, new_data];
-    }
-
-    crossover_eprobot(){
-
     }
 
     fork(){
@@ -178,7 +174,7 @@ class Eprobot extends EprobotBase{
                 // search eprobot next to me
                 let co_eprobots = [];
                 let box = 10;
-                for (let co_eprobot of this.s.list_eprobots) {
+                for (let co_eprobot of this.s.list_eprobots[this.kind]) {
                     if (co_eprobot==this){
                         continue;
                     }
@@ -207,7 +203,7 @@ class Eprobot extends EprobotBase{
                 new_data = r[1];
             }
 
-            new_eprobot = new Eprobot(this.s, new_program, new_data);
+            new_eprobot = new Eprobot(this.s, new_program, new_data, this.kind);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
             this.energy = this.energy - this.get_fork_energy();
             if (this.water>0){
@@ -221,7 +217,7 @@ class Eprobot extends EprobotBase{
         this.is_dead=true;
         for (let to of this.tail) {
             let t = to.t;
-            t.tail_eprobot = Math.max(t.tail_eprobot-1, 0);
+            t.tail_eprobot[this.kind] = Math.max(t.tail_eprobot[this.kind]-1, 0);
             this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
         }
     }

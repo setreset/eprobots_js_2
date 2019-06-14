@@ -10,14 +10,26 @@ class Terrain {
 
         this.trace_eprobot = 0;
         this.trace_eprobot_expiry = null;
+
+        this.tail_eprobot = [];
+        this.tail_eprobot_init();
+
         this.trace_eproboteater = 0;
         this.trace_eproboteater_expiry = null;
-        this.tail_eprobot = 0;
+
         this.tail_eproboteater = 0;
+
         this.poison = 0;
         this.poison_expiry = null;
+
         this.info = 0;
         this.info_expiry = null;
+    }
+
+    tail_eprobot_init(){
+        for (let i = 0;i< this.s.settings.concurrency;i++){
+            this.tail_eprobot.push(0);
+        }
     }
 
     toJSON(){
@@ -82,19 +94,19 @@ class Terrain {
             if (this.energy_object){
                 return this.energy_object.get_color();
             }else{
-                if (this.tail_eprobot > 0){
-                    if (this.s.settings.colortheme=="dark"){
-                        return "hsl(0, 100%, 10%)";
-                    }else if (this.s.settings.colortheme=="bright"){
-                        return "hsl(0, 100%, 70%)";
+                for (let i=0;i< this.s.settings.concurrency; i++){
+                    if (this.tail_eprobot[i] > 0){
+                        let color = parseInt(360/this.s.settings.concurrency)*i;
+
+                        if (this.s.settings.colortheme=="dark"){
+                            return "hsl("+color+", 100%, 10%)";
+                        }else if (this.s.settings.colortheme=="bright"){
+                            return "hsl("+color+", 100%, 70%)";
+                        }
                     }
-                }else if (this.tail_eproboteater>0){
-                    if (this.s.settings.colortheme=="dark"){
-                        return "hsl(192, 100%, 10%)";
-                    }else if (this.s.settings.colortheme=="bright"){
-                        return "hsl(192, 100%, 40%)";
-                    }
-                }else if (this.poison > 0) {
+                }
+
+                if (this.poison > 0) {
                     if (this.s.settings.colortheme=="dark") {
                         return "rgb(46, 0, 41)";
                     }else if(this.s.settings.colortheme=="bright"){

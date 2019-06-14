@@ -12,12 +12,27 @@ class World {
             }
         }
 
-        this.counter_eprobot = 0;
+        this.counter_eprobot = [];
+        this.counter_eprobot_init();
+
         this.counter_eproboteater = 0;
         this.counter_plant = 0;
 
-        this.eprobots_created = 0;
         this.shared_food_storage = 0;
+    }
+
+    counter_eprobot_init(){
+        for (let i = 0;i<this.s.settings.concurrency;i++){
+            this.counter_eprobot.push(0);
+        }
+    }
+
+    counter_eprobot_max(){
+        let sum = 0;
+        for (let i = 0;i< s.settings.concurrency;i++){
+            sum += this.counter_eprobot[i];
+        }
+        return sum;
     }
 
     get_terrain(x, y){
@@ -43,8 +58,7 @@ class World {
         o.t = t;
 
         if (o.get_id()==OBJECTTYPES.EPROBOT.id){
-            this.counter_eprobot++;
-            this.eprobots_created++;
+            this.counter_eprobot[o.kind]++;
         }else if (o.get_id()==OBJECTTYPES.EPROBOTEATER.id){
             this.counter_eproboteater++;
         }
@@ -52,13 +66,13 @@ class World {
         this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
     }
 
-    world_unset(x,y, object_class){
+    world_unset(x,y, o){
         var t = this.get_terrain(x, y);
         t.set_slot_object(null);
 
-        if (object_class==OBJECTTYPES.EPROBOT.id){
-            this.counter_eprobot--;
-        }else if (object_class==OBJECTTYPES.EPROBOTEATER.id){
+        if (o.get_id()==OBJECTTYPES.EPROBOT.id){
+            this.counter_eprobot[o.kind]--;
+        }else if (o.get_id()==OBJECTTYPES.EPROBOTEATER.id){
             this.counter_eproboteater--;
         }
 
