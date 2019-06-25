@@ -43,19 +43,19 @@ class Settings {
         this.feature_shared_food_storage = false;
     }
 
-    loadState(settingsstate){
-        for (let key in settingsstate){
-            this[key] = settingsstate[key];
-        }
-    }
+    //loadState(settingsstate){
+    //    for (let key in settingsstate){
+    //        this[key] = settingsstate[key];
+    //    }
+    //}
 
-    toJSON(){
-        var settings_o = {};
-
-        for (let key in this){
-            settings_o[key] = this[key];
-        }
-
-        return settings_o;
-    }
+    //toJSON(){
+    //    var settings_o = {};
+    //
+    //    for (let key in this){
+    //        settings_o[key] = this[key];
+    //    }
+    //
+    //    return settings_o;
+    //}
 }

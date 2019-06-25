@@ -8,15 +8,15 @@ class Plant {
         this.energy_count = 300; //1000;
     }
 
-    toJSON(){
-        return {
-            id: this.get_id(),
-            x_pos: this.t.x,
-            y_pos: this.t.y,
-            is_dead: this.is_dead,
-            energy_count: this.energy_count
-        };
-    }
+    //toJSON(){
+    //    return {
+    //        id: this.get_id(),
+    //        x_pos: this.t.x,
+    //        y_pos: this.t.y,
+    //        is_dead: this.is_dead,
+    //        energy_count: this.energy_count
+    //    };
+    //}
 
     get_id(){
         return OBJECTTYPES.PLANT.id;

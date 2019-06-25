@@ -52,85 +52,85 @@ class Simulation {
         this.drawer = new Drawer(this, this.canvas, this.canvas2);
     }
 
-    loadState(simstate){
-        this.steps = simstate.steps;
+    //loadState(simstate){
+    //    this.steps = simstate.steps;
+    //
+    //    this.settings = new Settings();
+    //    this.settings.loadState(simstate.settings);
+    //
+    //    this.world = new World(this, this.settings.world_width,this.settings.world_height);
+    //
+    //    this.drawer = new Drawer(this, this.canvas, this.canvas2);
+    //
+    //    for (let o of simstate.world_objects) {
+    //        if (o.id == OBJECTTYPES.BARRIER.id){
+    //            let b = new Barrier(this);
+    //            this.world.world_set(b, o.x_pos, o.y_pos);
+    //        }
+    //    }
+    //
+    //    this.list_eprobots = [];
+    //    this.list_eproboteaters = [];
+    //    this.list_plants = [];
+    //
+    //    this.trace_objects = {};
+    //    this.stats = {};
+    //
+    //    for (let o of simstate.list_eprobots) {
+    //        let ep = new Eprobot(this, o.program, o.init_data);
+    //        ep.tick = o.tick;
+    //        ep.life_counter = o.life_counter;
+    //        ep.energy = o.energy;
+    //        ep.working_data = o.working_data;
+    //        this.world.world_set(ep, o.x_pos, o.y_pos);
+    //        this.list_eprobots.push(ep);
+    //    }
+    //
+    //    for (let o of simstate.list_eproboteaters) {
+    //        let ep = new EprobotEater(this, o.program, o.init_data);
+    //        ep.tick = o.tick;
+    //        ep.life_counter = o.life_counter;
+    //        ep.energy = o.energy;
+    //        ep.working_data = o.working_data;
+    //        this.world.world_set(ep, o.x_pos, o.y_pos);
+    //        this.list_eproboteaters.push(ep);
+    //    }
+    //
+    //    for (let o of simstate.list_plants) {
+    //        let p = new Plant(this);
+    //        p.is_dead = o.is_dead;
+    //        p.energy_count = o.energy_count;
+    //
+    //        this.world.world_set_energy(p, o.x_pos, o.y_pos);
+    //        this.list_plants.push(p);
+    //    }
+    //}
 
-        this.settings = new Settings();
-        this.settings.loadState(simstate.settings);
-
-        this.world = new World(this, this.settings.world_width,this.settings.world_height);
-
-        this.drawer = new Drawer(this, this.canvas, this.canvas2);
-
-        for (let o of simstate.world_objects) {
-            if (o.id == OBJECTTYPES.BARRIER.id){
-                let b = new Barrier(this);
-                this.world.world_set(b, o.x_pos, o.y_pos);
-            }
-        }
-
-        this.list_eprobots = [];
-        this.list_eproboteaters = [];
-        this.list_plants = [];
-
-        this.trace_objects = {};
-        this.stats = {};
-
-        for (let o of simstate.list_eprobots) {
-            let ep = new Eprobot(this, o.program, o.init_data);
-            ep.tick = o.tick;
-            ep.life_counter = o.life_counter;
-            ep.energy = o.energy;
-            ep.working_data = o.working_data;
-            this.world.world_set(ep, o.x_pos, o.y_pos);
-            this.list_eprobots.push(ep);
-        }
-
-        for (let o of simstate.list_eproboteaters) {
-            let ep = new EprobotEater(this, o.program, o.init_data);
-            ep.tick = o.tick;
-            ep.life_counter = o.life_counter;
-            ep.energy = o.energy;
-            ep.working_data = o.working_data;
-            this.world.world_set(ep, o.x_pos, o.y_pos);
-            this.list_eproboteaters.push(ep);
-        }
-
-        for (let o of simstate.list_plants) {
-            let p = new Plant(this);
-            p.is_dead = o.is_dead;
-            p.energy_count = o.energy_count;
-
-            this.world.world_set_energy(p, o.x_pos, o.y_pos);
-            this.list_plants.push(p);
-        }
-    }
-
-    toJSON(){
-        // collect world objects
-        let world_objects = [];
-        for (var x=0;x<this.settings.world_width;x++){
-            for (var y=0;y<this.settings.world_height;y++){
-                let t = this.world.get_terrain(x, y);
-                if (t.energy_object){
-                    world_objects.push(t.energy_object);
-                }
-                if (t.slot_object && t.slot_object.get_id() == OBJECTTYPES.BARRIER.id){
-                    world_objects.push(t.slot_object);
-                }
-            }
-        }
-
-        return {
-            steps: this.steps,
-            settings: this.settings,
-            world_objects: world_objects,
-            list_eprobots: this.list_eprobots,
-            list_eproboteaters: this.list_eproboteaters,
-            list_plants: this.list_plants,
-            trace_objects: this.trace_objects
-        };
-    }
+    //toJSON(){
+    //    // collect world objects
+    //    let world_objects = [];
+    //    for (var x=0;x<this.settings.world_width;x++){
+    //        for (var y=0;y<this.settings.world_height;y++){
+    //            let t = this.world.get_terrain(x, y);
+    //            if (t.energy_object){
+    //                world_objects.push(t.energy_object);
+    //            }
+    //            if (t.slot_object && t.slot_object.get_id() == OBJECTTYPES.BARRIER.id){
+    //                world_objects.push(t.slot_object);
+    //            }
+    //        }
+    //    }
+    //
+    //    return {
+    //        steps: this.steps,
+    //        settings: this.settings,
+    //        world_objects: world_objects,
+    //        list_eprobots: this.list_eprobots,
+    //        list_eproboteaters: this.list_eproboteaters,
+    //        list_plants: this.list_plants,
+    //        trace_objects: this.trace_objects
+    //    };
+    //}
 
     seed_eprobots(kind){
         log("seed_eprobots "+kind);

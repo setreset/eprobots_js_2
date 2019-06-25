@@ -22,20 +22,20 @@ class EprobotBase {
         this.s.stats_incr("eprobots_created");
     }
 
-    toJSON(){
-        return {
-            id: this.get_id(),
-            tick: this.tick,
-            life_counter: this.life_counter,
-            energy: this.energy,
-            x_pos: this.t.x,
-            y_pos: this.t.y,
-
-            program: this.program,
-            init_data: this.init_data,
-            working_data: this.working_data
-        };
-    }
+    //toJSON(){
+    //    return {
+    //        id: this.get_id(),
+    //        tick: this.tick,
+    //        life_counter: this.life_counter,
+    //        energy: this.energy,
+    //        x_pos: this.t.x,
+    //        y_pos: this.t.y,
+    //
+    //        program: this.program,
+    //        init_data: this.init_data,
+    //        working_data: this.working_data
+    //    };
+    //}
 
     get_fork_energy() {
         return 1;

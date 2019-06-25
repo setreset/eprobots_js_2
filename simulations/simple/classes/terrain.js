@@ -32,30 +32,30 @@ class Terrain {
         }
     }
 
-    toJSON(){
-        var slot_object = this.slot_object;
-        if (slot_object != null){
-            if (slot_object.get_id() == OBJECTTYPES.EPROBOT.id){
-                slot_object = {
-                    id: slot_object.get_id()
-                }
-            }
-        }
-
-        var energy_object = this.energy_object;
-        if (energy_object != null){
-            if (energy_object.get_id() == OBJECTTYPES.PLANT.id){
-                energy_object = {
-                    id: energy_object.get_id()
-                }
-            }
-        }
-
-        return {
-            slot_object: slot_object,
-            energy_object: energy_object
-        };
-    }
+    //toJSON(){
+    //    var slot_object = this.slot_object;
+    //    if (slot_object != null){
+    //        if (slot_object.get_id() == OBJECTTYPES.EPROBOT.id){
+    //            slot_object = {
+    //                id: slot_object.get_id()
+    //            }
+    //        }
+    //    }
+    //
+    //    var energy_object = this.energy_object;
+    //    if (energy_object != null){
+    //        if (energy_object.get_id() == OBJECTTYPES.PLANT.id){
+    //            energy_object = {
+    //                id: energy_object.get_id()
+    //            }
+    //        }
+    //    }
+    //
+    //    return {
+    //        slot_object: slot_object,
+    //        energy_object: energy_object
+    //    };
+    //}
 
     set_slot_object(o){
         this.slot_object = o;

@@ -199,47 +199,46 @@ class Controller {
     }
 
     click_load(){
-        var simsavestate = controls["textbox_simsavestate"].val();
-        var simsavestateobj = JSON.parse(simsavestate);
-
-        // neue simulation initialisieren
-        this.simulation = new Simulation(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
-        this.simulation.loadState(simsavestateobj);
-
-        this.simulation.drawer.paint_fast();
-        //simulation.drawer.paint_full();
+        //var simsavestate = controls["textbox_simsavestate"].val();
+        //var simsavestateobj = JSON.parse(simsavestate);
+        //
+        //// neue simulation initialisieren
+        //this.simulation = new Simulation(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
+        //this.simulation.loadState(simsavestateobj);
+        //
+        //this.simulation.drawer.paint_fast();
+        ////simulation.drawer.paint_full();
     }
 
     click_save(){
-        var simsavestate = JSON.stringify(this.simulation);
-        //var simsavestate = JSON.stringify(simulation, null, '  ');
-        controls["textbox_simsavestate"].val(simsavestate);
+        //var simsavestate = JSON.stringify(this.simulation);
+        ////var simsavestate = JSON.stringify(simulation, null, '  ');
+        //controls["textbox_simsavestate"].val(simsavestate);
     }
 
     click_load_from_ls(){
-        var simsavestate_compressed = localStorage.getItem('simsavestate_compressed');
-        var simsavestate = LZString.decompress(simsavestate_compressed);
-
-        var simsavestateobj = JSON.parse(simsavestate);
-
-        // neue simulation initialisieren
-        this.simulation = new Simulation(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
-        this.simulation.loadState(simsavestateobj);
-
-        this.simulation.drawer.paint_fast();
+        //var simsavestate_compressed = localStorage.getItem('simsavestate_compressed');
+        //var simsavestate = LZString.decompress(simsavestate_compressed);
+        //
+        //var simsavestateobj = JSON.parse(simsavestate);
+        //
+        //// neue simulation initialisieren
+        //this.simulation = new Simulation(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
+        //this.simulation.loadState(simsavestateobj);
+        //
+        //this.simulation.drawer.paint_fast();
     }
 
     click_save_to_ls(){
-        var simsavestate = JSON.stringify(this.simulation);
-        log(simsavestate.length);
-        var simsavestate_compressed = LZString.compress(simsavestate);
-        log(simsavestate_compressed.length);
-        try{
-            localStorage.setItem("simsavestate_compressed", simsavestate_compressed);
-        }catch(err){
-            alert("Error: "+err);
-        }
-
+        //var simsavestate = JSON.stringify(this.simulation);
+        //log(simsavestate.length);
+        //var simsavestate_compressed = LZString.compress(simsavestate);
+        //log(simsavestate_compressed.length);
+        //try{
+        //    localStorage.setItem("simsavestate_compressed", simsavestate_compressed);
+        //}catch(err){
+        //    alert("Error: "+err);
+        //}
     }
 
     get_object_types(){

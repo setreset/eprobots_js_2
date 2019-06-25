@@ -6,13 +6,13 @@ class Barrier {
         this.s = s;
     }
 
-    toJSON(){
-        return {
-            id: this.get_id(),
-            x_pos: this.t.x,
-            y_pos: this.t.y,
-        };
-    }
+    //toJSON(){
+    //    return {
+    //        id: this.get_id(),
+    //        x_pos: this.t.x,
+    //        y_pos: this.t.y,
+    //    };
+    //}
 
     get_id(){
         return OBJECTTYPES.BARRIER.id;
