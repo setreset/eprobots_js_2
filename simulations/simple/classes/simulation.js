@@ -401,4 +401,8 @@ class Simulation {
             }
         }
     }
+
+    get_base_color_eprobot(kind){
+        return parseInt(360/this.settings.concurrency)*kind;
+    }
 }

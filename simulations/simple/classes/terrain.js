@@ -96,7 +96,7 @@ class Terrain {
             }else{
                 for (let i=0;i< this.s.settings.concurrency; i++){
                     if (this.tail_eprobot[i] > 0){
-                        let color = parseInt(360/this.s.settings.concurrency)*i;
+                        let color = this.s.get_base_color_eprobot(i);
 
                         if (this.s.settings.colortheme=="dark"){
                             return "hsl("+color+", 100%, 10%)";
@@ -112,7 +112,9 @@ class Terrain {
                     }else if(this.s.settings.colortheme=="bright"){
                         return "rgb(245, 0, 216)";
                     }
-                }else if (this.trace_eprobot > 0){
+                }
+
+                if (this.trace_eprobot > 0){
                     let l;
                     if (this.s.settings.colortheme=="dark") {
                         l = parseInt(tools_map_range(this.trace_eprobot, 0, this.s.settings.eprobots_lifetime, 0, 7));
@@ -122,7 +124,9 @@ class Terrain {
                         l = Math.max(l, 0);
                     }
                     return "hsl(0, 100%, "+l+"%)";
-                }else if (this.trace_eproboteater > 0){
+                }
+
+                if (this.trace_eproboteater > 0){
                     let l;
                     if (this.s.settings.colortheme=="dark") {
                         l = parseInt(tools_map_range(this.trace_eproboteater, 0, this.s.settings.eprobots_lifetime, 0, 7));
@@ -132,7 +136,9 @@ class Terrain {
                         l = Math.max(l, 85);
                     }
                     return "hsl(192, 100%, "+l+"%)";
-                }else if (this.info > 0){
+                }
+
+                if (this.info > 0){
                     let c = parseInt(tools_map_range(this.info, 0, 9, 0, 360));
                     return "hsl("+c+", 100%, 7%)";
                 }else{

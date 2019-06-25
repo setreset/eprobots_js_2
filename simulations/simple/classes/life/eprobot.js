@@ -9,7 +9,7 @@ class Eprobot extends EprobotBase{
     }
 
     get_color(){
-        let color = parseInt(360/this.s.settings.concurrency)*this.kind;
+        let color = this.s.get_base_color_eprobot(this.kind);
         return "hsl("+color+", 100%, 48%)";
         //return OBJECTTYPES.EPROBOT.color[this.s.settings.colortheme];
     }
