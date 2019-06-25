@@ -47,9 +47,10 @@ class Eprobot extends EprobotBase{
     }
 
     move(new_pos_x, new_pos_y){
-        let old_t = this.t;
-        let old_pos_x = this.t.x;
-        let old_pos_y = this.t.y;
+        let old_t = this.s.world.get_terrain(this.position.x, this.position.y);
+
+        let old_pos_x = this.position.x;
+        let old_pos_y = this.position.y;
 
         this.s.world.world_move(this, old_pos_x, old_pos_y, new_pos_x, new_pos_y);
 
@@ -75,8 +76,8 @@ class Eprobot extends EprobotBase{
         // move
         if (moveval<DIRECTIONS.length){
             let vec = DIRECTIONS[moveval];
-            let movepos_x = this.s.correct_pos_width(this.t.x + vec.x);
-            let movepos_y = this.s.correct_pos_height(this.t.y + vec.y);
+            let movepos_x = this.s.correct_pos_width(this.position.x + vec.x);
+            let movepos_y = this.s.correct_pos_height(this.position.y + vec.y);
 
             let t = this.s.world.get_terrain(movepos_x, movepos_y);
             let slot_object = t.get_slot_object();
@@ -108,16 +109,17 @@ class Eprobot extends EprobotBase{
             }
         }
 
+        let t = this.s.world.get_terrain(this.position.x, this.position.y);
         if (poisonval==1 && this.s.settings.feature_poison){
-            this.t.poison++;
-            this.t.poison_expiry = this.s.steps + 10000;
+            t.poison++;
+            t.poison_expiry = this.s.steps + 10000;
             this.life_counter -= 20;
         }
 
         if (this.s.settings.feature_info && infoval < 10){
             this.s.stats_incr("info");
-            this.t.info = infoval;
-            this.t.info_expiry = this.s.steps + 1000;
+            t.info = infoval;
+            t.info_expiry = this.s.steps + 1000;
         }
 
         if (this.s.settings.feature_shared_food_storage && sfsval == 1){
@@ -161,8 +163,8 @@ class Eprobot extends EprobotBase{
         let new_eprobot = null;
         let spreadval = tools_random(8);
         let vec = DIRECTIONS[spreadval];
-        let spreadpos_x = this.s.correct_pos_width(this.t.x + vec.x);
-        let spreadpos_y = this.s.correct_pos_height(this.t.y + vec.y);
+        let spreadpos_x = this.s.correct_pos_width(this.position.x + vec.x);
+        let spreadpos_y = this.s.correct_pos_height(this.position.y + vec.y);
         //let spreadpos_x = this.s.settings.nest_x+tools_random2(-20,20);
         //let spreadpos_y = this.s.settings.nest_y+tools_random2(-20,20);
         let spreadterrain = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
@@ -178,8 +180,8 @@ class Eprobot extends EprobotBase{
                     if (co_eprobot==this){
                         continue;
                     }
-                    if (co_eprobot.t.x>this.t.x-box && co_eprobot.t.x<this.t.x+box){
-                        if (co_eprobot.t.y>this.t.y-box && co_eprobot.t.y<this.t.y+box){
+                    if (co_eprobot.position.x>this.position.x-box && co_eprobot.position.x<this.position.x+box){
+                        if (co_eprobot.position.y>this.position.y-box && co_eprobot.position.y<this.position.y+box){
                             co_eprobots.push(co_eprobot);
                         }
                     }

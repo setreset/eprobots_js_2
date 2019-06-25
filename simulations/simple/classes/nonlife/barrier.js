@@ -1,7 +1,7 @@
 class Barrier {
 
     constructor(s) {
-        this.t = null;
+        this.position = null;
 
         this.s = s;
     }

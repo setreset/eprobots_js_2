@@ -270,7 +270,7 @@ class Simulation {
                 list_eprobots_next.push(o);
 
             }else{
-                this.world.world_unset(o.t.x, o.t.y, o);
+                this.world.world_unset(o.position.x, o.position.y, o);
                 o.kill();
                 //let a = new Ate(this);
                 //this.world.world_set(a, o.t.x, o.t.y);

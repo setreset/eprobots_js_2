@@ -1,7 +1,7 @@
 class EprobotBase {
 
     constructor(s, program, init_data, kind) {
-        this.t = null;
+        this.position = null;
 
         this.kind = kind;
 
@@ -77,15 +77,16 @@ class EprobotBase {
         for (let i=0;i<amount;i++){
             var current_frame_end = (i+1)*this.s.settings.DATA_INOUT_INTERVAL;
 
-            this.working_data[current_frame_end-10] = this.t.info;
-            this.working_data[current_frame_end-9] = this.t.poison;
-            this.working_data[current_frame_end-8] = this.t.trace_eprobot;
-            this.working_data[current_frame_end-7] = this.t.trace_eproboteater;
+            let t = this.s.world.get_terrain(this.position.x, this.position.y);
+            this.working_data[current_frame_end-10] = t.info;
+            this.working_data[current_frame_end-9] = t.poison;
+            this.working_data[current_frame_end-8] = t.trace_eprobot;
+            this.working_data[current_frame_end-7] = t.trace_eproboteater;
 
-            if (this.t.energy_object) {
-                if (this.t.energy_object.get_id() == OBJECTTYPES.PLANT.id){
+            if (t.energy_object) {
+                if (t.energy_object.get_id() == OBJECTTYPES.PLANT.id){
                     this.working_data[current_frame_end - 6] = 1;
-                } else if (this.t.energy_object.get_id() == OBJECTTYPES.WATER.id){
+                } else if (t.energy_object.get_id() == OBJECTTYPES.WATER.id){
                     this.working_data[current_frame_end - 6] = 2;
                 }
             }else{
@@ -95,8 +96,8 @@ class EprobotBase {
             this.working_data[current_frame_end-5] = this.tick;
             this.working_data[current_frame_end-4] = this.energy;
             this.working_data[current_frame_end-3] = this.water;
-            this.working_data[current_frame_end-2] = this.t.x;
-            this.working_data[current_frame_end-1] = this.t.y;
+            this.working_data[current_frame_end-2] = this.position.x;
+            this.working_data[current_frame_end-1] = this.position.y;
         }
     }
 }
