@@ -17,7 +17,8 @@ class Terrain {
         this.trace_eproboteater = 0;
         this.trace_eproboteater_expiry = null;
 
-        this.tail_eproboteater = 0;
+        this.tail_eproboteater = [];
+        this.tail_eproboteater_init();
 
         this.poison = 0;
         this.poison_expiry = null;
@@ -29,6 +30,12 @@ class Terrain {
     tail_eprobot_init(){
         for (let i = 0;i< this.s.settings.concurrency;i++){
             this.tail_eprobot.push(0);
+        }
+    }
+
+    tail_eproboteater_init(){
+        for (let i = 0;i< this.s.settings.concurrency_eproboteater;i++){
+            this.tail_eproboteater.push(0);
         }
     }
 
@@ -94,9 +101,21 @@ class Terrain {
             if (this.energy_object){
                 return this.energy_object.get_color();
             }else{
-                for (let i=0;i< this.s.settings.concurrency; i++){
+                for (let i=0;i<this.s.settings.concurrency; i++){
                     if (this.tail_eprobot[i] > 0){
                         let color = this.s.get_base_color_eprobot(i);
+
+                        if (this.s.settings.colortheme=="dark"){
+                            return "hsl("+color+", 100%, 10%)";
+                        }else if (this.s.settings.colortheme=="bright"){
+                            return "hsl("+color+", 100%, 70%)";
+                        }
+                    }
+                }
+
+                for (let i=0;i<this.s.settings.concurrency_eproboteater; i++){
+                    if (this.tail_eproboteater[i] > 0){
+                        let color = this.s.get_base_color_eproboteater(i);
 
                         if (this.s.settings.colortheme=="dark"){
                             return "hsl("+color+", 100%, 10%)";

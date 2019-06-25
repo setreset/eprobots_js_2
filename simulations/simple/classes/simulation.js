@@ -37,6 +37,12 @@ class Simulation {
         }
     }
 
+    list_eproboteaters_init(){
+        for (let i = 0;i<this.settings.concurrency_eproboteater;i++){
+            this.list_eproboteaters.push([]);
+        }
+    }
+
     init(){
         this.settings = new Settings();
 
@@ -47,6 +53,7 @@ class Simulation {
         this.list_eprobots = [];
         this.list_eprobots_init();
         this.list_eproboteaters = [];
+        this.list_eproboteaters_init();
         this.list_plants = [];
         this.stats = {};
         this.drawer = new Drawer(this, this.canvas, this.canvas2);
@@ -158,8 +165,8 @@ class Simulation {
         }
     }
 
-    seed_eproboteaters(){
-        log("seed_eproboteaters");
+    seed_eproboteaters(kind){
+        log("seed_eproboteaters "+kind);
         for (let i = 0; i<75;i++){
             var program = [];
             for (var pi = 0; pi < this.settings.PROGRAM_LENGTH; pi++) {
@@ -177,9 +184,9 @@ class Simulation {
             let x = tools_random(this.settings.world_width);
             let y = tools_random(this.settings.world_height);
             if (this.world.get_terrain(x,y).slot_object==null){
-                let ep = new EprobotEater(this, program, init_data);
+                let ep = new EprobotEater(this, program, init_data, kind);
                 this.world.world_set(ep, x, y);
-                this.list_eproboteaters.push(ep);
+                this.list_eproboteaters[kind].push(ep);
             }
         }
     }
@@ -200,6 +207,12 @@ class Simulation {
         for (let i = 0;i< this.settings.concurrency;i++){
             if (this.world.counter_eprobot[i] == 0) {
                 this.seed_eprobots(i);
+            }
+        }
+
+        for (let i = 0;i< this.settings.concurrency_eproboteater;i++){
+            if (this.world.counter_eproboteater[i] == 0) {
+                this.seed_eproboteaters(i);
             }
         }
 
@@ -308,6 +321,15 @@ class Simulation {
             this.list_eprobots[i] = list_eprobots_next;
         }
 
+        for (let i = 0;i<this.settings.concurrency_eproboteater;i++){
+            let r_eprobots = this.process_eprobots(this.list_eproboteaters[i]);
+            let eproboteaters_with_energy = r_eprobots.eprobots_with_energy;
+            let list_eproboteaters_next = r_eprobots.list_eprobots_next;
+
+            // fork
+            this.fork_eprobots(eproboteaters_with_energy, "counter_eproboteater", list_eproboteaters_next);
+            this.list_eproboteaters[i] = list_eproboteaters_next;
+        }
 
         //let r_eproboteaters = this.process_eprobots(this.list_eproboteaters);
         //let eproboteaters_with_energy = r_eproboteaters.eprobots_with_energy;
@@ -403,6 +425,10 @@ class Simulation {
     }
 
     get_base_color_eprobot(kind){
-        return parseInt(360/this.settings.concurrency)*kind;
+        return parseInt(180/this.settings.concurrency)*kind;
+    }
+
+    get_base_color_eproboteater(kind){
+        return parseInt(180/this.settings.concurrency_eproboteater)*kind+180;
     }
 }
