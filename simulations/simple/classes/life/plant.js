@@ -56,8 +56,8 @@ class Plant {
             let spread_max = 5;
             let spreadoffset_x = tools_random2(-spread_max,spread_max);
             let spreadoffset_y = tools_random2(-spread_max,spread_max);
-            spreadpos_x = this.s.correct_pos_width(this.position.x + spreadoffset_x);
-            spreadpos_y = this.s.correct_pos_height(this.position.y + spreadoffset_y);
+            spreadpos_x = this.position.x + spreadoffset_x; //this.s.correct_pos_width(this.position.x + spreadoffset_x);
+            spreadpos_y = this.position.y + spreadoffset_y; //this.s.correct_pos_height(this.position.y + spreadoffset_y);
         }
 
         spreadpos_x = Math.max(spreadpos_x, 50);

@@ -76,8 +76,8 @@ class Eprobot extends EprobotBase{
         // move
         if (moveval<DIRECTIONS.length){
             let vec = DIRECTIONS[moveval];
-            let movepos_x = this.s.correct_pos_width(this.position.x + vec.x);
-            let movepos_y = this.s.correct_pos_height(this.position.y + vec.y);
+            let movepos_x = this.position.x + vec.x; //this.s.correct_pos_width(this.position.x + vec.x);
+            let movepos_y = this.position.y + vec.y; //this.s.correct_pos_height(this.position.y + vec.y);
 
             let t = this.s.world.get_terrain(movepos_x, movepos_y);
             let slot_object = t.get_slot_object();
@@ -156,8 +156,8 @@ class Eprobot extends EprobotBase{
         let new_eprobot = null;
         let spreadval = tools_random(8);
         let vec = DIRECTIONS[spreadval];
-        let spreadpos_x = this.s.correct_pos_width(this.position.x + vec.x);
-        let spreadpos_y = this.s.correct_pos_height(this.position.y + vec.y);
+        let spreadpos_x = this.position.x + vec.x; //this.s.correct_pos_width(this.position.x + vec.x);
+        let spreadpos_y = this.position.y + vec.y; //this.s.correct_pos_height(this.position.y + vec.y);
         //let spreadpos_x = this.s.settings.nest_x+tools_random2(-20,20);
         //let spreadpos_y = this.s.settings.nest_y+tools_random2(-20,20);
         let spreadterrain = this.s.world.get_terrain(spreadpos_x, spreadpos_y);

@@ -50,6 +50,7 @@ class Simulation {
         log("reduce_traces_tries: "+this.reduce_traces_tries);
 
         this.world = new World(this, this.settings.world_width,this.settings.world_height);
+
         this.list_eprobots = [];
         this.list_eprobots_init();
         this.list_eproboteaters = [];
@@ -57,6 +58,26 @@ class Simulation {
         this.list_plants = [];
         this.stats = {};
         this.drawer = new Drawer(this, this.canvas, this.canvas2);
+
+        this.add_borders();
+    }
+
+    add_borders(){
+        for (let x=0;x<this.settings.world_width;x++){
+            let b = new Barrier(this);
+            this.world.world_set(b, x, 0);
+
+            let b2 = new Barrier(this);
+            this.world.world_set(b2, x, this.settings.world_height-1);
+        }
+
+        for (let y=1;y<this.settings.world_height-1;y++){
+            let b = new Barrier(this);
+            this.world.world_set(b, 0, y);
+
+            let b2 = new Barrier(this);
+            this.world.world_set(b2, this.settings.world_width-1, y);
+        }
     }
 
     //loadState(simstate){
