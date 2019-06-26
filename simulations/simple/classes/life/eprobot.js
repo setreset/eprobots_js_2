@@ -151,13 +151,6 @@ class Eprobot extends EprobotBase{
         this.life_counter--;
     }
 
-    clone_eprobot(){
-        this.s.stats_incr("fork_clone");
-        let new_program = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program);
-        let new_data = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data);
-        return [new_program, new_data];
-    }
-
     fork(){
         // new eprobot
         let new_eprobot = null;

@@ -26,7 +26,7 @@ class Settings {
         this.concurrency = 4;
         this.concurrency_eproboteater = 1;
         this.eprobots_max = 500;
-        this.eproboteaters_max = 500;
+        this.eproboteaters_max = 250;
         this.eprobots_lifetime = 2500;
         this.eprobots_fossiltime = 5000;
         this.tracetime = 25;

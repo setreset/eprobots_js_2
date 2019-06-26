@@ -72,6 +72,13 @@ class EprobotBase {
         return out_val;
     }
 
+    clone_eprobot(){
+        this.s.stats_incr("fork_clone");
+        let new_program = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program);
+        let new_data = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data);
+        return [new_program, new_data];
+    }
+
     set_input(){
         var amount = this.s.settings.DATA_LENGTH / this.s.settings.DATA_INOUT_INTERVAL;
         for (let i=0;i<amount;i++){
