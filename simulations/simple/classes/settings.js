@@ -8,8 +8,9 @@ class Settings {
         let screensize_height = window.screen.height; // * window.devicePixelRatio;
         log("devicePixelRatio: "+window.devicePixelRatio);
         log("resolution: "+screensize_width+"x"+screensize_height);
-        let world_width = screensize_width/2;
-        let world_height = screensize_height/2;
+        // welt + 2 wegen umrandung mit barrien
+        let world_width = screensize_width/2+2;
+        let world_height = screensize_height/2+2;
         log("world dimensions: "+world_width+"x"+world_height);
 
         this.colortheme = "dark";
@@ -20,6 +21,8 @@ class Settings {
         this.beam_at_borders = false;
         this.world_width = world_width;
         this.world_height = world_height;
+        this.world_width_visible = world_width-2;
+        this.world_height_visible = world_height-2;
         this.frame_time = 10; //1000/100;
         this.plants_max = 450;
         this.plants_lifetime = 250;
