@@ -85,6 +85,12 @@ class EprobotBase {
             var current_frame_end = (i+1)*this.s.settings.DATA_INOUT_INTERVAL;
 
             let t = this.s.world.get_terrain(this.position.x, this.position.y);
+            let can_fork=0;
+            if (this.s.world.counter_eprobot[this.kind]<this.get_individuum_max()){
+                can_fork=1;
+            }
+            this.working_data[current_frame_end-12] = can_fork;
+            this.working_data[current_frame_end-11] = t.odor_plant;
             this.working_data[current_frame_end-10] = t.info;
             this.working_data[current_frame_end-9] = t.poison;
             this.working_data[current_frame_end-8] = t.trace_eprobot;

@@ -8,14 +8,16 @@ class Terrain {
         this.slot_object = null;
         this.energy_object = null;
 
+        this.odor_plant = 0;
+
         this.trace_eprobot = 0;
         this.trace_eprobot_expiry = null;
 
-        this.tail_eprobot = [];
-        this.tail_eprobot_init();
-
         this.trace_eproboteater = 0;
         this.trace_eproboteater_expiry = null;
+
+        this.tail_eprobot = [];
+        this.tail_eprobot_init();
 
         this.tail_eproboteater = [];
         this.tail_eproboteater_init();

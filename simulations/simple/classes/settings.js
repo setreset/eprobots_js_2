@@ -27,8 +27,8 @@ class Settings {
         this.plants_max = 450;
         this.plants_lifetime = 250;
         this.concurrency = 4;
-        this.concurrency_eproboteater = 1;
-        this.eprobots_max = 500;
+        this.concurrency_eproboteater = 0;
+        this.eprobots_max = 1000;
         this.eproboteaters_max = 250;
         this.eprobots_lifetime = 2500;
         this.eprobots_fossiltime = 5000;

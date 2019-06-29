@@ -99,6 +99,7 @@ class World {
         var t = this.get_terrain(x_pos, y_pos);
         t.set_energy_object(o);
         o.position = {x: x_pos, y: y_pos};
+        o.set_odor_fields();
 
         if (o.get_id()==OBJECTTYPES.PLANT.id){
             this.counter_plant++;
@@ -107,11 +108,12 @@ class World {
         this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
     }
 
-    world_unset_energy(x,y, object_class){
+    world_unset_energy(x,y, o){
         var t = this.get_terrain(x, y);
         t.set_energy_object(null);
+        o.unset_odor_fields();
 
-        if (object_class==OBJECTTYPES.PLANT.id){
+        if (o.get_id()==OBJECTTYPES.PLANT.id){
             this.counter_plant--;
         }
 

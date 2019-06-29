@@ -2,6 +2,7 @@ class Ate {
 
     constructor(s) {
         this.position = null;
+
         this.s = s;
     }
 

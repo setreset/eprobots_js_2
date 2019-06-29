@@ -5,7 +5,7 @@ class Plant {
 
         this.s = s;
         this.is_dead = false;
-        this.energy_count = 300; //1000;
+        this.energy_count = 75; //1000;
     }
 
     //toJSON(){
@@ -39,6 +39,26 @@ class Plant {
 
     step(){
         this.tick++;
+    }
+
+    set_odor_fields(){
+        let t = this.s.world.get_terrain(this.position.x, this.position.y);
+        t.odor_plant+=2;
+        for (let v of DIRECTIONS) {
+            // get terrain
+            let t = this.s.world.get_terrain(this.position.x + v.x, this.position.y + v.y);
+            t.odor_plant++;
+        }
+    }
+
+    unset_odor_fields(){
+        let t = this.s.world.get_terrain(this.position.x, this.position.y);
+        t.odor_plant-=2;
+        for (let v of DIRECTIONS) {
+            // get terrain
+            let t = this.s.world.get_terrain(this.position.x + v.x, this.position.y + v.y);
+            t.odor_plant--;
+        }
     }
 
     fork(){
