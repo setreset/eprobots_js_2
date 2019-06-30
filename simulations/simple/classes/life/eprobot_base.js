@@ -8,9 +8,8 @@ class EprobotBase {
         this.s = s;
         this.tick = 0;
         this.is_dead = false;
-        this.energy = 0;
+        this.energy = s.settings.energy_start;
         this.water = 0;
-        this.life_counter = s.settings.eprobots_lifetime;
 
         this.program = program;
 
@@ -37,8 +36,8 @@ class EprobotBase {
     //    };
     //}
 
-    get_fork_energy() {
-        return 1;
+    get_fork_energy_level() {
+        return this.s.settings.energy_level_fork;
     }
 
     map_output_val(val, number_of_values){

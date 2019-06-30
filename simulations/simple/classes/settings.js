@@ -30,7 +30,7 @@ class Settings {
         this.concurrency_eproboteater = 0;
         this.eprobots_max = 1000;
         this.eproboteaters_max = 250;
-        this.eprobots_lifetime = 2500;
+        this.eprobots_lifetime_max = 5000;
         this.eprobots_fossiltime = 5000;
         this.tracetime = 25;
         this.PROGRAM_LENGTH = 500;
@@ -41,6 +41,10 @@ class Settings {
         this.MUTATE_STRENGTH = 400;
         this.nest_x = parseInt(this.world_width/2);
         this.nest_y = parseInt(this.world_height/2);
+        this.energy_start = 600;
+        this.energy_cost_fork = 600;
+        this.energy_profit_plant = 300;
+        this.energy_level_fork = 1200;
 
         this.feature_traces = false;
         this.feature_poison = false;

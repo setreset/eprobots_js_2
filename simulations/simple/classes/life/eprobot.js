@@ -29,7 +29,7 @@ class Eprobot extends EprobotBase{
         }*/
 
         let penalty = parseInt(steps/10);
-        this.life_counter = this.life_counter - penalty;
+        this.energy = this.energy - penalty;
 
         let moveval_raw = this.get_output_val(0);
         let moveval = this.map_output_val(moveval_raw, DIRECTIONS.length + 1);
@@ -74,7 +74,7 @@ class Eprobot extends EprobotBase{
         let sfsval = output[3];
 
         // move
-        if (moveval<DIRECTIONS.length){
+        if (this.energy > 0 && moveval<DIRECTIONS.length){
             let vec = DIRECTIONS[moveval];
             let movepos_x = this.position.x + vec.x; //this.s.correct_pos_width(this.position.x + vec.x);
             let movepos_y = this.position.y + vec.y; //this.s.correct_pos_height(this.position.y + vec.y);
@@ -86,8 +86,7 @@ class Eprobot extends EprobotBase{
                 if (energy_object){
                     if (energy_object.get_id()==OBJECTTYPES.PLANT.id){
                         //slot_object.kill();
-                        this.energy++;
-                        this.life_counter+=10;
+                        this.energy+=this.s.settings.energy_profit_plant;
                         energy_object.energy_count--;
                         if (energy_object.energy_count==0){
                             energy_object.is_dead=true;
@@ -106,6 +105,7 @@ class Eprobot extends EprobotBase{
                 }
 
                 this.move(movepos_x, movepos_y);
+                this.energy--;
             }
         }
 
@@ -113,7 +113,7 @@ class Eprobot extends EprobotBase{
         if (poisonval==1 && this.s.settings.feature_poison){
             t.poison++;
             t.poison_expiry = this.s.steps + 10000;
-            this.life_counter -= 20;
+            this.energy -= 20;
         }
 
         if (this.s.settings.feature_info && infoval < 10){
@@ -148,7 +148,7 @@ class Eprobot extends EprobotBase{
         }
 
         this.tick++;
-        this.life_counter--;
+        this.energy--;
     }
 
     fork(){
@@ -200,7 +200,7 @@ class Eprobot extends EprobotBase{
 
             new_eprobot = new Eprobot(this.s, new_program, new_data, this.kind);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
-            this.energy = this.energy - this.get_fork_energy();
+            this.energy = this.energy - this.s.settings.energy_cost_fork;
             if (this.water>0){
                 this.water--;
             }

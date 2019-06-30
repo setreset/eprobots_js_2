@@ -290,7 +290,7 @@ class Simulation {
 
         for (let o of list_eprobots) {
             if (o.is_dead) continue;
-            let living = o.life_counter > 0 && o.tick <= this.settings.eprobots_lifetime*2;
+            let living = o.tick <= this.settings.eprobots_lifetime_max && o.energy > 0;
 
             if (living){
                 // INPUT
@@ -298,7 +298,7 @@ class Simulation {
 
                 o.step();
 
-                if (o.energy >= o.get_fork_energy()){
+                if (o.energy > o.get_fork_energy_level()){
                     eprobots_with_energy.push(o);
                 }
                 list_eprobots_next.push(o);

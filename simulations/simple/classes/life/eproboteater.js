@@ -29,7 +29,7 @@ class EprobotEater extends EprobotBase{
          }*/
 
         let penalty = parseInt(steps/10);
-        this.life_counter = this.life_counter - penalty;
+        this.energy = this.energy - penalty;
 
         let moveval_raw = this.get_output_val(0);
         let moveval = this.map_output_val(moveval_raw, DIRECTIONS.length + 1);
@@ -66,7 +66,7 @@ class EprobotEater extends EprobotBase{
         let infoval = output[1];
 
         // move
-        if (moveval<DIRECTIONS.length){
+        if (this.energy > 0 && moveval<DIRECTIONS.length){
             let vec = DIRECTIONS[moveval];
             let movepos_x = this.position.x + vec.x; //this.s.correct_pos_width(this.position.x + vec.x);
             let movepos_y = this.position.y + vec.y; //this.s.correct_pos_height(this.position.y + vec.y);
@@ -78,17 +78,17 @@ class EprobotEater extends EprobotBase{
                     //slot_object.kill();
                     this.s.stats_incr("eprobot_kills");
                     this.energy+=slot_object.energy+1;
-                    this.life_counter+=10;
                     slot_object.kill();
                     this.s.world.world_unset(movepos_x, movepos_y, slot_object);
                 }
 
                 this.move(movepos_x, movepos_y);
+                this.energy--;
             }
 
             if (t.poison > 0){
                 t.poison--;
-                this.life_counter -= 40;
+                this.energy -= 40;
                 //this.kill();
                 //this.s.world.world_unset(this.t.x, this.t.y, this.get_id());
             }
@@ -110,7 +110,7 @@ class EprobotEater extends EprobotBase{
         }
 
         this.tick++;
-        this.life_counter--;
+        this.energy--;
     }
 
     fork(){
@@ -128,7 +128,7 @@ class EprobotEater extends EprobotBase{
             var new_data = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data);
             new_eprobot = new EprobotEater(this.s, new_program, new_data, this.kind);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
-            this.energy = this.energy - this.get_fork_energy();
+            this.energy = this.energy - this.s.settings.energy_cost_fork;
             if (this.water>0){
                 this.water--;
             }

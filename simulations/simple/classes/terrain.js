@@ -138,10 +138,10 @@ class Terrain {
                 if (this.trace_eprobot > 0){
                     let l;
                     if (this.s.settings.colortheme=="dark") {
-                        l = parseInt(tools_map_range(this.trace_eprobot, 0, this.s.settings.eprobots_lifetime, 0, 7));
+                        l = parseInt(tools_map_range(this.trace_eprobot, 0, this.s.settings.eprobots_lifetime_max, 0, 7));
                         l = Math.min(l, 7);
                     }else if(this.s.settings.colortheme=="bright"){
-                        l = parseInt(tools_map_range(this.trace_eprobot, 0, this.s.settings.eprobots_lifetime, 100, 85));
+                        l = parseInt(tools_map_range(this.trace_eprobot, 0, this.s.settings.eprobots_lifetime_max, 100, 85));
                         l = Math.max(l, 0);
                     }
                     return "hsl(0, 100%, "+l+"%)";
@@ -150,10 +150,10 @@ class Terrain {
                 if (this.trace_eproboteater > 0){
                     let l;
                     if (this.s.settings.colortheme=="dark") {
-                        l = parseInt(tools_map_range(this.trace_eproboteater, 0, this.s.settings.eprobots_lifetime, 0, 7));
+                        l = parseInt(tools_map_range(this.trace_eproboteater, 0, this.s.settings.eprobots_lifetime_max, 0, 7));
                         l = Math.min(l, 7);
                     }else if(this.s.settings.colortheme=="bright"){
-                        l = parseInt(tools_map_range(this.trace_eproboteater, 0, this.s.settings.eprobots_lifetime, 100, 85));
+                        l = parseInt(tools_map_range(this.trace_eproboteater, 0, this.s.settings.eprobots_lifetime_max, 100, 85));
                         l = Math.max(l, 85);
                     }
                     return "hsl(192, 100%, "+l+"%)";
