@@ -231,6 +231,12 @@ class Simulation {
         for (let i = 0; i<10;i++){
             let x = tools_random(this.world_width);
             let y = tools_random(this.world_height);
+
+            x = Math.max(x, 50);
+            x = Math.min(x, this.world_width-50);
+            y = Math.max(y, 50);
+            y = Math.min(y, this.world_height-50);
+
             if (this.world.get_terrain(x,y).energy_object==null){
                 let p = new Plant(this);
                 this.world.world_set_energy(p, x, y);
