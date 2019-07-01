@@ -1,5 +1,5 @@
 var settings_init = {
-    world_divider: 2,
+    world_divider: 4,
     colortheme: "dark",
     background_color: {
         dark: "#000000",
@@ -8,7 +8,7 @@ var settings_init = {
     beam_at_borders: false,
     frame_time: 10, //1000/100;
     plants_max: 450,
-    concurrency: 4,
+    concurrency: 1,
     concurrency_eproboteater: 0,
     eprobots_max: 1000,
     eproboteaters_max: 250,

@@ -198,9 +198,9 @@ class Eprobot extends EprobotBase{
                 new_data = r[1];
             }
 
-            new_eprobot = new Eprobot(this.s, new_program, new_data, this.kind);
-            this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
-            this.energy = this.energy - this.s.settings.energy_cost_fork;
+            //new_eprobot = new Eprobot(this.s, new_program, new_data, this.kind);
+            //this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
+            //this.energy = this.energy - this.s.settings.energy_cost_fork;
             if (this.water>0){
                 this.water--;
             }
