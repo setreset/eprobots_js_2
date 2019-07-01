@@ -142,8 +142,8 @@ class Controller {
             this.toggle_run();
         }
         else{
-            let world_x = parseInt(tools_map_range(mousePos.x,0,canvas_rect.width, 0, this.simulation.settings.world_width_visible));
-            let world_y = parseInt(tools_map_range(mousePos.y,0,canvas_rect.height, 0, this.simulation.settings.world_height_visible));
+            let world_x = parseInt(tools_map_range(mousePos.x,0,canvas_rect.width, 0, this.simulation.world_width_visible));
+            let world_y = parseInt(tools_map_range(mousePos.y,0,canvas_rect.height, 0, this.simulation.world_height_visible));
             //console.log("x_world:" + world_x + " y_world:" + world_y);
             this.simulation.click_world(world_x+1, world_y+1, this.draw_mode);
         }
@@ -176,8 +176,8 @@ class Controller {
             this.toggle_run();
         }
         else{
-            let world_x = parseInt(tools_map_range(mousePos.x,0,canvas_rect.width, 0, this.simulation.settings.world_width));
-            let world_y = parseInt(tools_map_range(mousePos.y,0,canvas_rect.height, 0, this.simulation.settings.world_height));
+            let world_x = parseInt(tools_map_range(mousePos.x,0,canvas_rect.width, 0, this.simulation.world_width));
+            let world_y = parseInt(tools_map_range(mousePos.y,0,canvas_rect.height, 0, this.simulation.world_height));
             //console.log("x_world:" + world_x + " y_world:" + world_y);
             this.simulation.click_world(world_x, world_y, this.draw_mode);
         }

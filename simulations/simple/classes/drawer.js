@@ -23,8 +23,8 @@ class Drawer {
         let c_h = rect.height;
 
         // korrigieren weil nur der innere bereich angezeigt wird
-        this.x_step = c_w / (this.s.settings.world_width_visible);
-        this.y_step = c_h / (this.s.settings.world_height_visible);
+        this.x_step = c_w / (this.s.world_width_visible);
+        this.y_step = c_h / (this.s.world_height_visible);
 
         this.canvas.width = c_w;
         this.canvas.height = c_h;
@@ -78,8 +78,8 @@ class Drawer {
 
         // nur inneren bereich abscannen
         // vorher "for (var x=0;x<this.s.settings.world_width;x++)" (y dito)
-        for (var x=1;x<this.s.settings.world_width-1;x++) {
-            for (var y = 1; y < this.s.settings.world_height-1; y++) {
+        for (var x=1;x<this.s.world_width-1;x++) {
+            for (var y = 1; y < this.s.world_height-1; y++) {
                 var t = this.s.world.get_terrain(x, y);
                 ctx.fillStyle = t.get_color();
                 // mit positionskorrektur für zeichenbereich

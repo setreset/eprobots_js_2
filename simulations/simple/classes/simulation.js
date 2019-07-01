@@ -9,9 +9,9 @@ class Simulation {
     }
 
     prepare(){
-        for (var i=0;i<this.settings.world_height; i++){
+        for (var i=0;i<this.world_height; i++){
             let b = new Barrier(this);
-            this.world.world_set(b, this.settings.world_width/2, i);
+            this.world.world_set(b, this.world_width/2, i);
         }
     }
 
@@ -44,12 +44,24 @@ class Simulation {
     }
 
     init(){
-        this.settings = new Settings();
+        this.settings = new Settings(this);
 
-        this.reduce_traces_tries = parseInt((this.settings.world_width * this.settings.world_height)/518);
+        let screensize_width = window.screen.width; // * window.devicePixelRatio;
+        let screensize_height = window.screen.height; // * window.devicePixelRatio;
+        log("devicePixelRatio: "+window.devicePixelRatio);
+        log("resolution: "+screensize_width+"x"+screensize_height);
+        // welt + 2 wegen umrandung mit barrien
+        this.world_width = screensize_width/this.settings.world_divider+2;
+        this.world_height = screensize_height/this.settings.world_divider+2;
+        log("world dimensions: "+this.world_width+"x"+this.world_height);
+        this.world_width_visible = this.world_width-2;
+        this.world_height_visible = this.world_height-2;
+
+        this.world = new World(this, this.world_width, this.world_height);
+        this.drawer = new Drawer(this, this.canvas, this.canvas2);
+
+        this.reduce_traces_tries = parseInt((this.world_width * this.world_height)/518);
         log("reduce_traces_tries: "+this.reduce_traces_tries);
-
-        this.world = new World(this, this.settings.world_width,this.settings.world_height);
 
         this.list_eprobots = [];
         this.list_eprobots_init();
@@ -57,26 +69,25 @@ class Simulation {
         this.list_eproboteaters_init();
         this.list_plants = [];
         this.stats = {};
-        this.drawer = new Drawer(this, this.canvas, this.canvas2);
 
         this.add_borders();
     }
 
     add_borders(){
-        for (let x=0;x<this.settings.world_width;x++){
+        for (let x=0;x<this.world_width;x++){
             let b = new Barrier(this);
             this.world.world_set(b, x, 0);
 
             let b2 = new Barrier(this);
-            this.world.world_set(b2, x, this.settings.world_height-1);
+            this.world.world_set(b2, x, this.world_height-1);
         }
 
-        for (let y=1;y<this.settings.world_height-1;y++){
+        for (let y=1;y<this.world_height-1;y++){
             let b = new Barrier(this);
             this.world.world_set(b, 0, y);
 
             let b2 = new Barrier(this);
-            this.world.world_set(b2, this.settings.world_width-1, y);
+            this.world.world_set(b2, this.world_width-1, y);
         }
     }
 
@@ -176,8 +187,8 @@ class Simulation {
             }
             //let x = this.settings.nest_x+tools_random2(-20,20);
             //let y = this.settings.nest_y+tools_random2(-20,20);
-            let x = tools_random(this.settings.world_width);
-            let y = tools_random(this.settings.world_height);
+            let x = tools_random(this.world_width);
+            let y = tools_random(this.world_height);
             if (this.world.get_terrain(x,y).slot_object==null){
                 let ep = new Eprobot(this, program, init_data, kind);
                 this.world.world_set(ep, x, y);
@@ -202,8 +213,8 @@ class Simulation {
             }
             //let x = this.settings.nest_x+tools_random2(-20,20);
             //let y = this.settings.nest_y+tools_random2(-20,20);
-            let x = tools_random(this.settings.world_width);
-            let y = tools_random(this.settings.world_height);
+            let x = tools_random(this.world_width);
+            let y = tools_random(this.world_height);
             if (this.world.get_terrain(x,y).slot_object==null){
                 let ep = new EprobotEater(this, program, init_data, kind);
                 this.world.world_set(ep, x, y);
@@ -214,8 +225,8 @@ class Simulation {
 
     seed_energy(){
         for (let i = 0; i<10;i++){
-            let x = tools_random(this.settings.world_width);
-            let y = tools_random(this.settings.world_height);
+            let x = tools_random(this.world_width);
+            let y = tools_random(this.world_height);
             if (this.world.get_terrain(x,y).energy_object==null){
                 let p = new Plant(this);
                 this.world.world_set_energy(p, x, y);
@@ -244,8 +255,8 @@ class Simulation {
 
     reduce_traces_fast(){
         for (let i=0;i<this.reduce_traces_tries;i++){
-            let x = tools_random(this.settings.world_width);
-            let y = tools_random(this.settings.world_height);
+            let x = tools_random(this.world_width);
+            let y = tools_random(this.world_height);
             let cand_terrain = this.world.get_terrain(x,y);
 
             let reduced = false;
@@ -392,12 +403,12 @@ class Simulation {
     correct_pos_width(x_pos){
         if (this.settings.beam_at_borders){
             if (x_pos>=0){
-                return x_pos % this.settings.world_width;
+                return x_pos % this.world_width;
             }else{
-                return this.settings.world_width - (Math.abs(x_pos) % this.settings.world_width);
+                return this.world_width - (Math.abs(x_pos) % this.world_width);
             }
         }else{
-            return Math.min(Math.max(0,x_pos), this.settings.world_width-1);
+            return Math.min(Math.max(0,x_pos), this.world_width-1);
         }
 
     }
@@ -405,12 +416,12 @@ class Simulation {
     correct_pos_height(y_pos){
         if (this.settings.beam_at_borders) {
             if (y_pos >= 0) {
-                return y_pos % this.settings.world_height;
+                return y_pos % this.world_height;
             } else {
-                return this.settings.world_height - (Math.abs(y_pos) % this.settings.world_height);
+                return this.world_height - (Math.abs(y_pos) % this.world_height);
             }
         }else{
-            return Math.min(Math.max(0,y_pos), this.settings.world_height-1);
+            return Math.min(Math.max(0,y_pos), this.world_height-1);
         }
     }
 
