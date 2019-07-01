@@ -28,6 +28,8 @@ $(document).ready(function() {
     controls["textbox_simsavestate"] = $("#simsavestate");
     controls["btn_load_from_localstorage"] = $("#btn_load_from_localstorage");
     controls["btn_save_to_localstorage"] = $("#btn_save_to_localstorage");
+    controls["textbox_settings"] = $("#textbox_settings");
+    controls["btn_set_settings"] = $("#btn_set_settings");
 
     var controller = new Controller();
     con = controller;
@@ -74,6 +76,8 @@ $(document).ready(function() {
     controls["btn_load_from_localstorage"].on("click", function(e){controller.click_load_from_ls()});
 
     controls["btn_save_to_localstorage"].on("click", function(e){controller.click_save_to_ls()});
+
+    controls["btn_set_settings"].on("click", function(e){controller.click_set_settings()});
 
     // setup simitem-selector
 

@@ -43,8 +43,8 @@ class Simulation {
         }
     }
 
-    init(){
-        this.settings = new Settings(this);
+    init(settings){
+        this.settings = settings;
 
         let screensize_width = window.screen.width; // * window.devicePixelRatio;
         let screensize_height = window.screen.height; // * window.devicePixelRatio;
@@ -71,6 +71,10 @@ class Simulation {
         this.stats = {};
 
         this.add_borders();
+    }
+
+    set_settings(new_settings){
+        this.settings = new_settings;
     }
 
     add_borders(){

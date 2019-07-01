@@ -5,6 +5,11 @@ class Controller {
         this.running = false;
         this.draw_mode = null;
         this.mouse_down = false;
+
+        this.settings = Object.assign({}, settings_init);
+        var settings_json = JSON.stringify(this.settings, null, '  ');
+        controls["textbox_settings"].val(settings_json);
+
         this.init_simulation();
     }
 
@@ -68,8 +73,10 @@ class Controller {
     }
 
     init_simulation(){
-        this.simulation = new Simulation(controls["simulation_canvas"][0], controls["simulation_canvas2"][0]);
-        this.simulation.init();
+        let canvas1 = controls["simulation_canvas"][0];
+        let canvas2 = controls["simulation_canvas2"][0];
+        this.simulation = new Simulation(canvas1, canvas2);
+        this.simulation.init(this.settings);
         //this.simulation.prepare();
         //this.simulation.seed_eprobots();
         this.simulation.drawer.paint_fast();
@@ -196,6 +203,12 @@ class Controller {
 
     _set_draw_mode(dm){
         this.draw_mode = dm;
+    }
+
+    click_set_settings(){
+        let settings_json = controls["textbox_settings"].val();
+        this.settings = JSON.parse(settings_json);
+        this.simulation.set_settings(this.settings);
     }
 
     click_load(){
