@@ -86,7 +86,7 @@ class Plant {
         spreadpos_y = Math.min(spreadpos_y, this.s.world_height-50);
 
         let t = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
-        if (t.energy_object == null){
+        if (t.energy_object == null && t.slot_object == null){
             new_plant = new Plant(this.s);
             this.s.world.world_set_energy(new_plant, spreadpos_x, spreadpos_y);
         }

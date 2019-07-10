@@ -1,6 +1,6 @@
 class EprobotBase {
 
-    constructor(s, program, init_data, kind) {
+    constructor(s, program, init_data, kind, energy) {
         this.position = null;
 
         this.kind = kind;
@@ -8,8 +8,9 @@ class EprobotBase {
         this.s = s;
         this.tick = 0;
         this.is_dead = false;
-        this.energy = s.settings.energy_start;
+        this.energy = energy;
         this.water = 0;
+        this.can_fork = true;
 
         this.program = program;
 

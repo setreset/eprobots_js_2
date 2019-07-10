@@ -28,22 +28,26 @@ class Eprobot extends EprobotBase{
             console.log("Steps mean: "+this.s.stats["mean_sum"]/this.s.stats["mean_amount"]);
         }*/
 
-        let penalty = parseInt(steps/10);
+        let penalty = parseInt(steps/20);
         this.energy = this.energy - penalty;
 
         let moveval_raw = this.get_output_val(0);
         let moveval = this.map_output_val(moveval_raw, DIRECTIONS.length + 1);
 
-        let poison_raw = this.get_output_val(1);
-        let poisonval = this.map_output_val(poison_raw, 2);
+        let fork_raw = this.get_output_val(1);
+        let forkval = this.map_output_val(fork_raw, 2);
 
-        let info_raw = this.get_output_val(2);
-        let infoval = this.map_output_val(info_raw, 11);
+        //let poison_raw = this.get_output_val(1);
+        //let poisonval = this.map_output_val(poison_raw, 2);
+        //
+        //let info_raw = this.get_output_val(2);
+        //let infoval = this.map_output_val(info_raw, 11);
+        //
+        //let sfs_raw = this.get_output_val(3);
+        //let sfsval = this.map_output_val(sfs_raw, 3);
 
-        let sfs_raw = this.get_output_val(3);
-        let sfsval = this.map_output_val(sfs_raw, 3);
-
-        return [moveval, poisonval, infoval, sfsval];
+        //return [moveval, poisonval, infoval, sfsval];
+        return [moveval, forkval];
     }
 
     move(new_pos_x, new_pos_y){
@@ -69,9 +73,10 @@ class Eprobot extends EprobotBase{
         //let moveval = this.get_move();
         let output = this.get_output_OISC();
         let moveval = output[0];
-        let poisonval = output[1];
-        let infoval = output[2];
-        let sfsval = output[3];
+        let forkval = output[1];
+        //let poisonval = output[1];
+        //let infoval = output[2];
+        //let sfsval = output[3];
 
         // move
         if (this.energy > 0 && moveval<DIRECTIONS.length){
@@ -109,8 +114,10 @@ class Eprobot extends EprobotBase{
             }
         }
 
+        this.can_fork = forkval==1 ? true : false;
+
         let t = this.s.world.get_terrain(this.position.x, this.position.y);
-        if (poisonval==1 && this.s.settings.feature_poison){
+        if (this.s.settings.feature_poison && poisonval==1){
             t.poison++;
             t.poison_expiry = this.s.steps + 10000;
             this.energy -= 20;
@@ -198,9 +205,18 @@ class Eprobot extends EprobotBase{
                 new_data = r[1];
             }
 
-            new_eprobot = new Eprobot(this.s, new_program, new_data, this.kind);
+            let energy_for_child = this.s.settings.energy_start;
+
+            if (this.energy>this.s.settings.energy_level_fork){
+                let extra_energy = parseInt((this.energy-this.s.settings.energy_level_fork)/10);
+                energy_for_child += extra_energy;
+            }
+
+            this.energy = this.energy - energy_for_child;
+
+            new_eprobot = new Eprobot(this.s, new_program, new_data, this.kind, energy_for_child);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
-            this.energy = this.energy - this.s.settings.energy_cost_fork;
+
             if (this.water>0){
                 this.water--;
             }

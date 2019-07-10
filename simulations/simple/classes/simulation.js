@@ -93,6 +93,14 @@ class Simulation {
             let b2 = new Barrier(this);
             this.world.world_set(b2, this.world_width-1, y);
         }
+
+        // mitte
+        //for (let y=2;y<this.world_height-2;y++){
+        //    if (y<(this.world_height/2)-10 || y>(this.world_height/2)+10){
+        //        let b = new Barrier(this);
+        //        this.world.world_set(b, this.world_width/2, y);
+        //    }
+        //}
     }
 
     //loadState(simstate){
@@ -194,7 +202,7 @@ class Simulation {
             let x = tools_random(this.world_width);
             let y = tools_random(this.world_height);
             if (this.world.get_terrain(x,y).slot_object==null){
-                let ep = new Eprobot(this, program, init_data, kind);
+                let ep = new Eprobot(this, program, init_data, kind, this.settings.energy_start);
                 this.world.world_set(ep, x, y);
                 this.list_eprobots[kind].push(ep);
             }
@@ -319,7 +327,7 @@ class Simulation {
 
                 o.step();
 
-                if (o.energy > o.get_fork_energy_level()){
+                if (o.energy > o.get_fork_energy_level() && o.can_fork){
                     eprobots_with_energy.push(o);
                 }
                 list_eprobots_next.push(o);
