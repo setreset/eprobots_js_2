@@ -28,7 +28,7 @@ class Eprobot extends EprobotBase{
             console.log("Steps mean: "+this.s.stats["mean_sum"]/this.s.stats["mean_amount"]);
         }*/
 
-        let penalty = parseInt(steps/20);
+        let penalty = parseInt(steps/50);
         this.energy = this.energy - penalty;
 
         let moveval_raw = this.get_output_val(0);
