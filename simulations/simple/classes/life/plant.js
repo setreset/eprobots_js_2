@@ -5,7 +5,7 @@ class Plant {
 
         this.s = s;
         this.is_dead = false;
-        this.energy_count = 300; //300, 1000;
+        this.energy_count = 50; //300, 1000;
     }
 
     //toJSON(){

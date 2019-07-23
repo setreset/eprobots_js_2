@@ -94,13 +94,47 @@ class Simulation {
             this.world.world_set(b2, this.world_width-1, y);
         }
 
+        var grid_size = 90;
+        var edge_improbability = 6;
+
         // mitte
-        //for (let y=2;y<this.world_height-2;y++){
-        //    if (y<(this.world_height/2)-10 || y>(this.world_height/2)+10){
-        //        let b = new Barrier(this);
-        //        this.world.world_set(b, this.world_width/2, y);
-        //    }
-        //}
+        let tilesize_height = parseInt(this.world_height_visible/grid_size);
+        let tilesize_width = parseInt(this.world_width_visible/grid_size);
+
+        // senkrecht
+        //for (let x1=1;x1<grid_size-1;x1++){
+        /*for (let x1=1;x1<grid_size/2;x1++){
+            for (let y1=0;y1<grid_size;y1++){
+                if (tools_random(edge_improbability)==0){
+                    for (let y=1; y<tilesize_height+1; y++){
+                        if (this.world.get_terrain(x1*tilesize_width, y+(y1*tilesize_height)).get_slot_object()==null){
+                            let b = new Barrier(this);
+                            this.world.world_set(b, x1*tilesize_width, y+(y1*tilesize_height));
+                        }else{
+                            console.log("!");
+                        }
+
+                    }
+                }
+            }
+        }
+
+        // waagerecht
+        for (let y1=1;y1<grid_size-1;y1++){
+            //for (let x1=0;x1<grid_size;x1++){
+            for (let x1=0;x1<grid_size/2;x1++){
+                if (tools_random(edge_improbability)==0){
+                    for (let x=0; x<tilesize_width+1; x++){
+                        if (this.world.get_terrain( x+(x1*tilesize_width), y1*tilesize_height).get_slot_object()==null){
+                            let b = new Barrier(this);
+                            this.world.world_set(b, x+(x1*tilesize_width), y1*tilesize_height);
+                        }else{
+                            console.log("!!");
+                        }
+                    }
+                }
+            }
+        }*/
     }
 
     //loadState(simstate){
@@ -475,7 +509,7 @@ class Simulation {
     }
 
     get_base_color_eprobot(kind){
-        return parseInt(180/this.settings.concurrency)*kind;
+        return parseInt(360/this.settings.concurrency)*kind;
     }
 
     get_base_color_eproboteater(kind){

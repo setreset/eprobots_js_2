@@ -77,6 +77,8 @@ class World {
             this.counter_eprobot[o.kind]++;
         }else if (o.get_id()==OBJECTTYPES.EPROBOTEATER.id){
             this.counter_eproboteater[o.kind]++;
+        }else if (o.get_id()==OBJECTTYPES.BARRIER.id){
+            o.set_odor_fields();
         }
 
         this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
@@ -90,6 +92,8 @@ class World {
             this.counter_eprobot[o.kind]--;
         }else if (o.get_id()==OBJECTTYPES.EPROBOTEATER.id){
             this.counter_eproboteater[o.kind]--;
+        }else if (o.get_id()==OBJECTTYPES.BARRIER.id){
+            o.unset_odor_fields();
         }
 
         this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());

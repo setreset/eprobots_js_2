@@ -89,7 +89,8 @@ class EprobotBase {
             if (this.s.world.counter_eprobot[this.kind]<this.get_individuum_max()){
                 can_fork=1;
             }
-            this.working_data[current_frame_end-12] = can_fork;
+            this.working_data[current_frame_end-13] = can_fork;
+            this.working_data[current_frame_end-12] = t.odor_barrier;
             this.working_data[current_frame_end-11] = t.odor_plant;
             this.working_data[current_frame_end-10] = t.info;
             this.working_data[current_frame_end-9] = t.poison;

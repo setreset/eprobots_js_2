@@ -7,7 +7,7 @@ var settings_init = {
     },
     beam_at_borders: false,
     frame_time: 10, //1000/100;
-    plants_max: 450,
+    plants_max: 1800,
     concurrency: 4,
     concurrency_eproboteater: 0,
     eprobots_max: 1000,
@@ -15,7 +15,7 @@ var settings_init = {
     eprobots_lifetime_max: 10000,
     PROGRAM_LENGTH: 500,
     DATA_LENGTH: 500,
-    DATA_INOUT_INTERVAL: 25,
+    DATA_INOUT_INTERVAL: 50,
     PROGRAM_STEPS: 1000,
     MUTATE_POSSIBILITY: 0.01,
     MUTATE_STRENGTH: 400,

@@ -9,6 +9,7 @@ class Terrain {
         this.energy_object = null;
 
         this.odor_plant = 0;
+        this.odor_barrier = 0;
 
         this.trace_eprobot = 0;
         this.trace_eprobot_expiry = null;
