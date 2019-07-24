@@ -36,10 +36,12 @@ class Controller {
 
     control_simulation_size(st){
         if (this.simulation.steps % 100 == 0){
-            log("st: "+st);
+            log("st: "+st+ " counter_eprobots: " + this.simulation.world.counter_eprobot_all());
             if (st > 2){
-                this.simulation.settings.eprobots_max = Math.min(this.simulation.settings.eprobots_max+5, 1000);
-                log("increase eprobots_max: "+this.simulation.settings.eprobots_max);
+                if (this.simulation.world.counter_eprobot_all()>this.simulation.settings.eprobots_max-10){
+                    this.simulation.settings.eprobots_max = Math.min(this.simulation.settings.eprobots_max+5, 10000);
+                    log("increase eprobots_max: "+this.simulation.settings.eprobots_max);
+                }
             }else if(st < 1){
                 this.simulation.settings.eprobots_max = Math.max(this.simulation.settings.eprobots_max-5, 100);
                 log("reduce eprobots_max: "+this.simulation.settings.eprobots_max);

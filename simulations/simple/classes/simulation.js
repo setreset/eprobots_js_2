@@ -103,7 +103,8 @@ class Simulation {
 
         // senkrecht
         //for (let x1=1;x1<grid_size-1;x1++){
-        /*for (let x1=1;x1<grid_size/2;x1++){
+        //for (let x1=1;x1<grid_size/2;x1++){
+        /*for (let x1=grid_size/4;x1<(grid_size-1)-(grid_size/4);x1++){
             for (let y1=0;y1<grid_size;y1++){
                 if (tools_random(edge_improbability)==0){
                     for (let y=1; y<tilesize_height+1; y++){
@@ -122,7 +123,8 @@ class Simulation {
         // waagerecht
         for (let y1=1;y1<grid_size-1;y1++){
             //for (let x1=0;x1<grid_size;x1++){
-            for (let x1=0;x1<grid_size/2;x1++){
+            //for (let x1=0;x1<grid_size/2;x1++){
+            for (let x1=grid_size/4;x1<grid_size-(grid_size/4);x1++){
                 if (tools_random(edge_improbability)==0){
                     for (let x=0; x<tilesize_width+1; x++){
                         if (this.world.get_terrain( x+(x1*tilesize_width), y1*tilesize_height).get_slot_object()==null){

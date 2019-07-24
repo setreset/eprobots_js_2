@@ -232,4 +232,20 @@ class Eprobot extends EprobotBase{
             this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
         }
     }
+
+    set_odor_fields(){
+        for (let v of DIRECTIONS) {
+            // get terrain
+            let t = this.s.world.get_terrain(this.position.x + v.x, this.position.y + v.y);
+            t.odor_eprobot++;
+        }
+    }
+
+    unset_odor_fields(){
+        for (let v of DIRECTIONS) {
+            // get terrain
+            let t = this.s.world.get_terrain(this.position.x + v.x, this.position.y + v.y);
+            t.odor_eprobot--;
+        }
+    }
 }

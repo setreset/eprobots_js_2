@@ -29,9 +29,9 @@ class World {
         }
     }
 
-    counter_eprobot_max(){
+    counter_eprobot_all(){
         let sum = 0;
-        for (let i = 0;i< s.settings.concurrency;i++){
+        for (let i = 0;i< this.s.settings.concurrency;i++){
             sum += this.counter_eprobot[i];
         }
         return sum;
@@ -43,9 +43,9 @@ class World {
         }
     }
 
-    counter_eproboteater_max(){
+    counter_eproboteater_all(){
         let sum = 0;
-        for (let i = 0;i< s.settings.concurrency_eproboteater;i++){
+        for (let i = 0;i< this.s.settings.concurrency_eproboteater;i++){
             sum += this.counter_eproboteater[i];
         }
         return sum;
@@ -56,9 +56,11 @@ class World {
     }
 
     world_move(o, old_pos_x, old_pos_y, new_pos_x, new_pos_y){
+        o.unset_odor_fields();
         var t = this.get_terrain(new_pos_x, new_pos_y);
         t.set_slot_object(o);
         o.position = {x: new_pos_x, y: new_pos_y};
+        o.set_odor_fields();
 
         this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
 
@@ -75,6 +77,7 @@ class World {
 
         if (o.get_id()==OBJECTTYPES.EPROBOT.id){
             this.counter_eprobot[o.kind]++;
+            o.set_odor_fields();
         }else if (o.get_id()==OBJECTTYPES.EPROBOTEATER.id){
             this.counter_eproboteater[o.kind]++;
         }else if (o.get_id()==OBJECTTYPES.BARRIER.id){
@@ -90,6 +93,7 @@ class World {
 
         if (o.get_id()==OBJECTTYPES.EPROBOT.id){
             this.counter_eprobot[o.kind]--;
+            o.unset_odor_fields();
         }else if (o.get_id()==OBJECTTYPES.EPROBOTEATER.id){
             this.counter_eproboteater[o.kind]--;
         }else if (o.get_id()==OBJECTTYPES.BARRIER.id){
