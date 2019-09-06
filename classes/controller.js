@@ -65,6 +65,16 @@ class Controller {
 
             //this.control_simulation_size(st);
 
+            //szenario
+            if (this.simulation.steps%10000==0){
+                this.settings.plants_max-=12;
+                log("reduziere plants:" + this.settings.plants_max);
+            }
+            if (this.simulation.steps%1000000==0){
+                this.reset_simulation();
+                this.settings.plants_max = settings_init.plants_max;
+            }
+
             setTimeout(()=>{this.simulation_loop()}, st);
         }
     }
@@ -81,6 +91,13 @@ class Controller {
         this.simulation.init(this.settings);
         //this.simulation.prepare();
         //this.simulation.seed_eprobots();
+
+        this.simulation.seed_energy();
+        this.simulation.seed_energy();
+        this.simulation.seed_energy();
+        this.simulation.seed_energy();
+        this.simulation.seed_energy();
+
         this.simulation.drawer.paint_fast();
     }
 

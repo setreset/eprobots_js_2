@@ -16,7 +16,7 @@ var settings_init = {
     PROGRAM_LENGTH: 500,
     DATA_LENGTH: 500,
     DATA_INOUT_INTERVAL: 50,
-    PROGRAM_STEPS: 1000,
+    PROGRAM_STEPS: 10000,
     MUTATE_POSSIBILITY: 0.01,
     MUTATE_STRENGTH: 400,
     energy_start: 800,
