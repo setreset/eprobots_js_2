@@ -221,7 +221,7 @@ class Simulation {
 
     seed_eprobots(kind){
         log("seed_eprobots "+kind);
-        for (let i = 0; i<75;i++){
+        for (let i = 0; i<this.settings.SEED_EPROBOTS_NUMBER;i++){
             var program = [];
             for (var pi = 0; pi < this.settings.PROGRAM_LENGTH; pi++) {
                 var val = tools_random(this.settings.PROGRAM_LENGTH * 10) - this.settings.PROGRAM_LENGTH;
@@ -290,11 +290,13 @@ class Simulation {
     }
 
     simulation_prestep(){
-        for (let i = 0;i< this.settings.concurrency;i++){
-            if (this.world.counter_eprobot[i] == 0) {
-                this.seed_eprobots(i);
+        //if (this.steps<100000){
+            for (let i = 0;i< this.settings.concurrency;i++){
+                if (this.world.counter_eprobot[i] == 0) {
+                    this.seed_eprobots(i);
+                }
             }
-        }
+        //}
 
         for (let i = 0;i< this.settings.concurrency_eproboteater;i++){
             if (this.world.counter_eproboteater[i] == 0) {

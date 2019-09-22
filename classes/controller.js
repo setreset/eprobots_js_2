@@ -66,14 +66,25 @@ class Controller {
             //this.control_simulation_size(st);
 
             //szenario
-            if (this.simulation.steps%10000==0){
-                this.settings.plants_max-=12;
-                log("reduziere plants:" + this.settings.plants_max);
-            }
-            if (this.simulation.steps%1000000==0){
-                this.reset_simulation();
-                this.settings.plants_max = settings_init.plants_max;
-            }
+            /*if (this.simulation.steps%10000==0){
+                if (this.simulation.world.counter_eprobot_all()==0){
+                    this.reset_simulation();
+                    this.settings.plants_max = settings_init.plants_max;
+                }else{
+                    this.settings.plants_max-=12;
+                    log("reduziere plants:" + this.settings.plants_max);
+                }
+            }*/
+
+            /*if (this.simulation.steps%1000==0){
+                if (this.simulation.world.counter_eprobot_all()<this.settings.eprobots_max-100){
+                    this.settings.plants_max+=6;
+                    log("erhoehe plants:" + this.settings.plants_max);
+                }else{
+                    this.settings.plants_max-=6;
+                    log("reduziere plants:" + this.settings.plants_max);
+                }
+            }*/
 
             setTimeout(()=>{this.simulation_loop()}, st);
         }

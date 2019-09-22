@@ -15,9 +15,9 @@ class Eprobot extends EprobotBase{
     }
 
     get_output_OISC(){
-        let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS);
+        let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS_MAX);
 
-        if (steps>=this.s.settings.PROGRAM_STEPS){
+        if (steps>=this.s.settings.PROGRAM_STEPS_MAX){
             this.s.stats_incr("high_stepcounter");
         }
 
@@ -28,7 +28,7 @@ class Eprobot extends EprobotBase{
             console.log("Steps mean: "+this.s.stats["mean_sum"]/this.s.stats["mean_amount"]);
         }*/
 
-        let penalty = parseInt(steps/1000);
+        let penalty = parseInt(steps/this.s.settings.PROGRAM_STEPS_FOR_FREE);
         this.energy = this.energy - penalty;
 
         let moveval_raw = this.get_output_val(0);

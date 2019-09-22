@@ -15,9 +15,9 @@ class EprobotEater extends EprobotBase{
     }
 
     get_output_OISC(){
-        let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS);
+        let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS_MAX);
 
-        if (steps>=this.s.settings.PROGRAM_STEPS){
+        if (steps>=this.s.settings.PROGRAM_STEPS_MAX){
             this.s.stats_incr("high_stepcounter");
         }
 
