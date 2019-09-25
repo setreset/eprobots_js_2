@@ -64,7 +64,7 @@ class Eprobot extends EprobotBase{
         }
 
         old_t.tail_eprobot[this.kind] += 1;
-        this.tail.push({"t": old_t, "rt": this.tick+20});
+        this.tail.push({"t": old_t, "rt": this.tick+this.s.settings.TAIL_LENGTH});
 
         this.s.drawer.refresh_paintobj(old_t.x, old_t.y, old_t.get_color());
     }

@@ -25,6 +25,7 @@ var settings_init = {
     energy_cost_fork: 800,
     energy_profit_plant: 850,
     energy_level_fork: 1200,
+    TAIL_LENGTH: 20,
 
     feature_traces: false,
     feature_poison: false,
