@@ -10,7 +10,9 @@ class EprobotBase {
         this.is_dead = false;
         this.energy = energy;
         this.water = 0;
-        this.can_fork = true;
+
+        this.plant_counter = 0;
+        this.can_fork = false;
 
         this.program = program;
 

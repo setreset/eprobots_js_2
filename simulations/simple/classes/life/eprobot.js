@@ -34,8 +34,11 @@ class Eprobot extends EprobotBase{
         let moveval_raw = this.get_output_val(0);
         let moveval = this.map_output_val(moveval_raw, DIRECTIONS.length + 1);
 
-        let fork_raw = this.get_output_val(1);
-        let forkval = this.map_output_val(fork_raw, 2);
+        //let fork_raw = this.get_output_val(1);
+        //let forkval = this.map_output_val(fork_raw, 2);
+
+        let collect_raw = this.get_output_val(2);
+        let collectval = this.map_output_val(collect_raw, 3);
 
         //let poison_raw = this.get_output_val(1);
         //let poisonval = this.map_output_val(poison_raw, 2);
@@ -47,7 +50,7 @@ class Eprobot extends EprobotBase{
         //let sfsval = this.map_output_val(sfs_raw, 3);
 
         //return [moveval, poisonval, infoval, sfsval];
-        return [moveval, forkval];
+        return [moveval, collectval];
     }
 
     move(new_pos_x, new_pos_y){
@@ -73,7 +76,9 @@ class Eprobot extends EprobotBase{
         //let moveval = this.get_move();
         let output = this.get_output_OISC();
         let moveval = output[0];
-        let forkval = output[1];
+        //let forkval = output[1];
+        let collectval = output[1];
+
         //let poisonval = output[1];
         //let infoval = output[2];
         //let sfsval = output[3];
@@ -92,21 +97,14 @@ class Eprobot extends EprobotBase{
                     if (energy_object.get_id()==OBJECTTYPES.PLANT.id){
                         //slot_object.kill();
                         this.energy+=this.s.settings.energy_profit_plant;
+                        this.plant_counter++;
                         energy_object.energy_count--;
                         if (energy_object.energy_count==0){
                             energy_object.is_dead=true;
                             this.s.world.world_unset_energy(movepos_x, movepos_y, energy_object);
                             //console.log(new Date()+": entferne pflanze");
                         }
-                    }else if (energy_object.get_id()==OBJECTTYPES.WATER.id){
-                        this.water++;
-                        //energy_object.energy_count--;
-                        if (energy_object.energy_count==0){
-                            this.s.world.world_unset_energy(movepos_x, movepos_y);
-                            log(new Date()+": entferne wasser");
-                        }
                     }
-
                 }
 
                 this.move(movepos_x, movepos_y);
@@ -114,7 +112,46 @@ class Eprobot extends EprobotBase{
             }
         }
 
-        this.can_fork = forkval==1 ? true : false;
+        if (this.position.x >= this.s.nest_x1 && this.position.x<= this.s.nest_x2){
+            if (this.position.y >= this.s.nest_y1 && this.position.y<= this.s.nest_y2){
+                if (this.plant_counter>0){
+                    this.plant_counter--;
+                    log("release");
+                    this.can_fork = true;
+                }
+            }
+        }
+
+        /*if (collectval==1){ // aufnehmen
+
+            let t = this.s.world.get_terrain(this.position.x, this.position.y);
+            let energy_object = t.get_energy_object();
+            if (energy_object){
+                log("collect");
+                this.plant_counter++;
+
+                //this.energy+=this.s.settings.energy_profit_plant;
+                energy_object.energy_count--;
+                if (energy_object.energy_count==0){
+                    energy_object.is_dead=true;
+                    this.s.world.world_unset_energy(this.position.x, this.position.y, energy_object);
+                    //console.log(new Date()+": entferne pflanze");
+                }
+            }
+        }else if(collectval==2){ // ablegen
+
+            if (this.position.x >= this.s.nest_x1 && this.position.x<= this.s.nest_x2){
+                if (this.position.y >= this.s.nest_y1 && this.position.y<= this.s.nest_y2){
+                    if (this.plant_counter>0){
+                        this.plant_counter--;
+                        log("release");
+                        this.can_fork = true;
+                    }
+                }
+            }
+        }*/
+
+        //this.can_fork = forkval==1 ? true : false;
 
         let t = this.s.world.get_terrain(this.position.x, this.position.y);
         if (this.s.settings.feature_poison && poisonval==1){
@@ -207,12 +244,12 @@ class Eprobot extends EprobotBase{
 
             let energy_for_child = this.s.settings.energy_start;
 
-            if (this.energy>this.s.settings.energy_level_fork){
+            /*if (this.energy>this.s.settings.energy_level_fork){
                 let extra_energy = parseInt((this.energy-this.s.settings.energy_level_fork)/10);
                 energy_for_child += extra_energy;
             }
 
-            this.energy = this.energy - energy_for_child;
+            this.energy = this.energy - energy_for_child;*/
 
             new_eprobot = new Eprobot(this.s, new_program, new_data, this.kind, energy_for_child);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);

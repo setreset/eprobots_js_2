@@ -71,6 +71,11 @@ class Simulation {
         this.stats = {};
 
         this.add_borders();
+
+        this.nest_x1 = parseInt(this.world_width/2)-40;
+        this.nest_x2 = parseInt(this.world_width/2)+40;
+        this.nest_y1 = parseInt(this.world_height/2)-40;
+        this.nest_y2 = parseInt(this.world_height/2)+40;
     }
 
     set_settings(new_settings){
@@ -219,29 +224,33 @@ class Simulation {
     //    };
     //}
 
+    seed_eprobot(kind){
+        var program = [];
+        for (var pi = 0; pi < this.settings.PROGRAM_LENGTH; pi++) {
+            var val = tools_random(this.settings.PROGRAM_LENGTH * 10) - this.settings.PROGRAM_LENGTH;
+            program.push(val);
+        }
+
+        var init_data = [];
+        for (var di = 0; di < this.settings.DATA_LENGTH; di++) {
+            var val = tools_random2(-720, 720);
+            init_data.push(val);
+        }
+        let x = tools_random2(this.nest_x1,this.nest_x2+1);
+        let y = tools_random2(this.nest_y1,this.nest_y2+1);
+        //let x = tools_random(this.world_width);
+        //let y = tools_random(this.world_height);
+        if (this.world.get_terrain(x,y).slot_object==null){
+            let ep = new Eprobot(this, program, init_data, kind, this.settings.energy_start);
+            this.world.world_set(ep, x, y);
+            this.list_eprobots[kind].push(ep);
+        }
+    }
+
     seed_eprobots(kind){
         log("seed_eprobots "+kind);
         for (let i = 0; i<this.settings.SEED_EPROBOTS_NUMBER;i++){
-            var program = [];
-            for (var pi = 0; pi < this.settings.PROGRAM_LENGTH; pi++) {
-                var val = tools_random(this.settings.PROGRAM_LENGTH * 10) - this.settings.PROGRAM_LENGTH;
-                program.push(val);
-            }
-
-            var init_data = [];
-            for (var di = 0; di < this.settings.DATA_LENGTH; di++) {
-                var val = tools_random2(-720, 720);
-                init_data.push(val);
-            }
-            //let x = this.settings.nest_x+tools_random2(-20,20);
-            //let y = this.settings.nest_y+tools_random2(-20,20);
-            let x = tools_random(this.world_width);
-            let y = tools_random(this.world_height);
-            if (this.world.get_terrain(x,y).slot_object==null){
-                let ep = new Eprobot(this, program, init_data, kind, this.settings.energy_start);
-                this.world.world_set(ep, x, y);
-                this.list_eprobots[kind].push(ep);
-            }
+            this.seed_eprobot(kind);
         }
     }
 
@@ -295,6 +304,7 @@ class Simulation {
                 if (this.world.counter_eprobot[i] == 0) {
                     this.seed_eprobots(i);
                 }
+                //this.seed_eprobot(i);
             }
         //}
 
@@ -365,7 +375,8 @@ class Simulation {
 
                 o.step();
 
-                if (o.energy > o.get_fork_energy_level() && o.can_fork){
+                if (o.can_fork){
+                    o.can_fork = false;
                     eprobots_with_energy.push(o);
                 }
                 list_eprobots_next.push(o);
