@@ -8,6 +8,9 @@ class Terrain {
         this.slot_object = null;
         this.energy_object = null;
 
+        this.special_energy = [];
+        this.special_energy_init();
+
         this.odor_plant = 0;
         this.odor_barrier = 0;
         this.odor_eprobot = 0;
@@ -40,6 +43,12 @@ class Terrain {
     tail_eproboteater_init(){
         for (let i = 0;i< this.s.settings.concurrency_eproboteater;i++){
             this.tail_eproboteater.push(0);
+        }
+    }
+
+    special_energy_init(){
+        for (let i = 0;i< this.s.settings.concurrency;i++){
+            this.special_energy.push(0);
         }
     }
 
@@ -105,6 +114,13 @@ class Terrain {
             if (this.energy_object){
                 return this.energy_object.get_color();
             }else{
+                for (let i=0;i<this.s.settings.concurrency; i++){
+                    if (this.special_energy[i] > 0){
+                        let colorstring = this.s.get_color_specialenergy(i);
+                        return colorstring;
+                    }
+                }
+
                 for (let i=0;i<this.s.settings.concurrency; i++){
                     if (this.tail_eprobot[i] > 0){
                         let color = this.s.get_base_color_eprobot(i);

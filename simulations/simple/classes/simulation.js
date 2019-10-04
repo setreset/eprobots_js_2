@@ -516,6 +516,14 @@ class Simulation {
         return parseInt(360/this.settings.concurrency)*kind;
     }
 
+    get_color_specialenergy(kind){
+        if (kind==0){
+            return "#f56e00";
+        }else if(kind==1){
+            return "#8f00f5";
+        }
+    }
+
     get_base_color_eproboteater(kind){
         return parseInt(180/this.settings.concurrency_eproboteater)*kind+180;
     }

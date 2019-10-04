@@ -8,7 +8,7 @@ var settings_init = {
     beam_at_borders: false,
     frame_time: 10, //1000/100;
     plants_max: 1200,
-    concurrency: 4,
+    concurrency: 2,
     concurrency_eproboteater: 0,
     eprobots_max: 1000,
     eproboteaters_max: 250,

@@ -12,6 +12,12 @@ class EprobotBase {
         this.water = 0;
         this.can_fork = true;
 
+        if (this.kind==0){
+            this.special_energy_consume = 1;
+        }else if(this.kind==1){
+            this.special_energy_consume = 0;
+        }
+
         this.program = program;
 
         this.init_data = init_data;
