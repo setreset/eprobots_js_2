@@ -351,7 +351,7 @@ class Simulation {
 
     process_eprobots(list_eprobots){
         let list_eprobots_next = [];
-        let eprobots_with_energy = [];
+        let eprobots_forkable = [];
 
         //shuffle(this.active_objects);
 
@@ -365,8 +365,8 @@ class Simulation {
 
                 o.step();
 
-                if (o.energy > o.get_fork_energy_level() && o.can_fork){
-                    eprobots_with_energy.push(o);
+                if (o.fork_ready()){
+                    eprobots_forkable.push(o);
                 }
                 list_eprobots_next.push(o);
 
@@ -380,12 +380,12 @@ class Simulation {
 
         return {
             "list_eprobots_next": list_eprobots_next,
-            "eprobots_with_energy": eprobots_with_energy
+            "eprobots_forkable": eprobots_forkable
         };
     }
 
-    fork_eprobots(eprobots_with_energy, counter_eprobot, list_eprobots_next){
-        for (let o of eprobots_with_energy) {
+    fork_eprobots(eprobots_forkable, counter_eprobot, list_eprobots_next){
+        for (let o of eprobots_forkable) {
             let new_eprobot = null;
             if (this.world[counter_eprobot][o.kind]< o.get_individuum_max()){
                 new_eprobot = o.fork();
@@ -401,23 +401,23 @@ class Simulation {
     simulation_step(){
         for (let i = 0;i<this.settings.concurrency;i++){
             let r_eprobots = this.process_eprobots(this.list_eprobots[i]);
-            let eprobots_with_energy = r_eprobots.eprobots_with_energy;
+            let eprobots_forkable = r_eprobots.eprobots_forkable;
             let list_eprobots_next = r_eprobots.list_eprobots_next;
 
             // fork
-            this.fork_eprobots(eprobots_with_energy, "counter_eprobot", list_eprobots_next);
+            this.fork_eprobots(eprobots_forkable, "counter_eprobot", list_eprobots_next);
             this.list_eprobots[i] = list_eprobots_next;
         }
 
-        for (let i = 0;i<this.settings.concurrency_eproboteater;i++){
-            let r_eprobots = this.process_eprobots(this.list_eproboteaters[i]);
-            let eproboteaters_with_energy = r_eprobots.eprobots_with_energy;
-            let list_eproboteaters_next = r_eprobots.list_eprobots_next;
-
-            // fork
-            this.fork_eprobots(eproboteaters_with_energy, "counter_eproboteater", list_eproboteaters_next);
-            this.list_eproboteaters[i] = list_eproboteaters_next;
-        }
+        //for (let i = 0;i<this.settings.concurrency_eproboteater;i++){
+        //    let r_eprobots = this.process_eprobots(this.list_eproboteaters[i]);
+        //    let eproboteaters_with_energy = r_eprobots.eprobots_with_energy;
+        //    let list_eproboteaters_next = r_eprobots.list_eprobots_next;
+        //
+        //    // fork
+        //    this.fork_eprobots(eproboteaters_with_energy, "counter_eproboteater", list_eproboteaters_next);
+        //    this.list_eproboteaters[i] = list_eproboteaters_next;
+        //}
 
         //let r_eproboteaters = this.process_eprobots(this.list_eproboteaters);
         //let eproboteaters_with_energy = r_eproboteaters.eprobots_with_energy;
