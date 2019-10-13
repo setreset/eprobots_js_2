@@ -9,7 +9,6 @@ class Eprobot{
         this.tick = 0;
         this.is_dead = false;
         this.energy = energy;
-        this.water = 0;
         this.can_fork = true;
 
         if (this.kind==0){
@@ -76,27 +75,22 @@ class Eprobot{
             if (this.s.world.counter_eprobot[this.kind]<this.get_individuum_max()){
                 can_fork=1;
             }
-            this.working_data[current_frame_end-13] = can_fork;
-            this.working_data[current_frame_end-12] = t.odor_eprobot;
-            this.working_data[current_frame_end-11] = t.odor_barrier;
-            this.working_data[current_frame_end-10] = t.odor_plant;
-            this.working_data[current_frame_end-9] = t.info;
-            this.working_data[current_frame_end-8] = t.poison;
-            this.working_data[current_frame_end-7] = t.trace_eprobot;
+            this.working_data[current_frame_end-12] = can_fork;
+            this.working_data[current_frame_end-11] = t.odor_eprobot;
+            this.working_data[current_frame_end-10] = t.odor_barrier;
+            this.working_data[current_frame_end-9] = t.odor_plant;
+            this.working_data[current_frame_end-8] = t.info;
+            this.working_data[current_frame_end-7] = t.poison;
+            this.working_data[current_frame_end-6] = t.trace_eprobot;
 
             if (t.energy_object) {
-                if (t.energy_object.get_id() == OBJECTTYPES.PLANT.id){
-                    this.working_data[current_frame_end - 6] = 1;
-                } else if (t.energy_object.get_id() == OBJECTTYPES.WATER.id){
-                    this.working_data[current_frame_end - 6] = 2;
-                }
+                this.working_data[current_frame_end - 5] = 1;
             }else{
-                this.working_data[current_frame_end-6] = 0;
+                this.working_data[current_frame_end-5] = 0;
             }
 
-            this.working_data[current_frame_end-5] = this.tick;
-            this.working_data[current_frame_end-4] = this.energy;
-            this.working_data[current_frame_end-3] = this.water;
+            this.working_data[current_frame_end-4] = this.tick;
+            this.working_data[current_frame_end-3] = this.energy;
             this.working_data[current_frame_end-2] = this.position.x;
             this.working_data[current_frame_end-1] = this.position.y;
         }
@@ -326,10 +320,6 @@ class Eprobot{
 
             new_eprobot = new Eprobot(this.s, new_program, new_data, this.kind, energy_for_child);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
-
-            if (this.water>0){
-                this.water--;
-            }
         }
         return new_eprobot
     }
