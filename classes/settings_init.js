@@ -9,9 +9,7 @@ var settings_init = {
     frame_time: 10, //1000/100;
     plants_max: 1200,
     concurrency: 2,
-    concurrency_eproboteater: 0,
     eprobots_max: 1000,
-    eproboteaters_max: 250,
     SEED_EPROBOTS_NUMBER: 75,
     eprobots_lifetime_max: 10000,
     PROGRAM_LENGTH: 500,

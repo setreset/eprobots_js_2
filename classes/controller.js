@@ -112,16 +112,6 @@ class Controller {
         this.simulation.drawer.paint_fast();
     }
 
-    seed_eprobots(){
-        this.simulation.seed_eprobots();
-        this.simulation.drawer.paint_fast();
-    }
-
-    seed_eproboteaters(){
-        this.simulation.seed_eproboteaters();
-        this.simulation.drawer.paint_fast();
-    }
-
     seed_energy(){
         log("controller: seed_energy");
         this.simulation.seed_energy();

@@ -18,14 +18,8 @@ class Terrain {
         this.trace_eprobot = 0;
         this.trace_eprobot_expiry = null;
 
-        this.trace_eproboteater = 0;
-        this.trace_eproboteater_expiry = null;
-
         this.tail_eprobot = [];
         this.tail_eprobot_init();
-
-        this.tail_eproboteater = [];
-        this.tail_eproboteater_init();
 
         this.poison = 0;
         this.poison_expiry = null;
@@ -37,12 +31,6 @@ class Terrain {
     tail_eprobot_init(){
         for (let i = 0;i< this.s.settings.concurrency;i++){
             this.tail_eprobot.push(0);
-        }
-    }
-
-    tail_eproboteater_init(){
-        for (let i = 0;i< this.s.settings.concurrency_eproboteater;i++){
-            this.tail_eproboteater.push(0);
         }
     }
 
@@ -97,10 +85,6 @@ class Terrain {
         this.trace_object_eprobot = o;
     }
 
-    set_trace_object_eproboteater(o){
-        this.trace_object_eproboteater = o;
-    }
-
     get_color(){
         if (this.slot_object){
             return this.slot_object.get_color();
@@ -133,18 +117,6 @@ class Terrain {
                     }
                 }
 
-                for (let i=0;i<this.s.settings.concurrency_eproboteater; i++){
-                    if (this.tail_eproboteater[i] > 0){
-                        let color = this.s.get_base_color_eproboteater(i);
-
-                        if (this.s.settings.colortheme=="dark"){
-                            return "hsl("+color+", 100%, 10%)";
-                        }else if (this.s.settings.colortheme=="bright"){
-                            return "hsl("+color+", 100%, 70%)";
-                        }
-                    }
-                }
-
                 if (this.poison > 0) {
                     if (this.s.settings.colortheme=="dark") {
                         return "rgb(46, 0, 41)";
@@ -163,18 +135,6 @@ class Terrain {
                         l = Math.max(l, 0);
                     }
                     return "hsl(0, 100%, "+l+"%)";
-                }
-
-                if (this.trace_eproboteater > 0){
-                    let l;
-                    if (this.s.settings.colortheme=="dark") {
-                        l = parseInt(tools_map_range(this.trace_eproboteater, 0, this.s.settings.eprobots_lifetime_max, 0, 7));
-                        l = Math.min(l, 7);
-                    }else if(this.s.settings.colortheme=="bright"){
-                        l = parseInt(tools_map_range(this.trace_eproboteater, 0, this.s.settings.eprobots_lifetime_max, 100, 85));
-                        l = Math.max(l, 85);
-                    }
-                    return "hsl(192, 100%, "+l+"%)";
                 }
 
                 if (this.info > 0){
