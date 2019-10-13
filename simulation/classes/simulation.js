@@ -1,8 +1,8 @@
 class Simulation {
 
-    constructor(canvas, canvas2) {
+    constructor(canvas) {
         this.canvas = canvas;
-        this.canvas2 = canvas2;
+
         this.steps = 0;
 
         sim = this;
@@ -58,7 +58,7 @@ class Simulation {
         this.world_height_visible = this.world_height-2;
 
         this.world = new World(this, this.world_width, this.world_height);
-        this.drawer = new Drawer(this, this.canvas, this.canvas2);
+        this.drawer = new Drawer(this, this.canvas);
 
         this.reduce_traces_tries = parseInt((this.world_width * this.world_height)/518);
         log("reduce_traces_tries: "+this.reduce_traces_tries);

@@ -1,11 +1,9 @@
 class Drawer {
 
-    constructor(s, canvas, canvas2) {
+    constructor(s, canvas) {
         this.s = s;
         this.canvas = canvas;
-        this.canvas2 = canvas2;
         this.canvas_ctx = canvas.getContext('2d', {alpha: false});
-        this.canvas2_ctx = canvas2.getContext('2d', {alpha: false});
         this.x_step = null;
         this.y_step = null;
 
@@ -29,16 +27,8 @@ class Drawer {
         this.canvas.width = c_w;
         this.canvas.height = c_h;
 
-        this.canvas2.width = c_w;
-        this.canvas2.height = c_h;
-
         this.canvas_ctx.fillStyle = this.s.settings.background_color[this.s.settings.colortheme];
         this.canvas_ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        //this.canvas_ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        this.canvas2_ctx.fillStyle = this.s.settings.background_color[this.s.settings.colortheme];
-        this.canvas2_ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        //this.canvas2_ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
     refresh_paintobj(x, y, color){
