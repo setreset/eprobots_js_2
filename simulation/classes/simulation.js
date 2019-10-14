@@ -3,6 +3,24 @@ class Simulation {
     constructor(canvas) {
         this.canvas = canvas;
 
+        this.simconfig = [
+            {
+                "eprobot_key": "eprobot_a",
+                "eprobot_class": EprobotA,
+                "base_color": 0,
+                "color_special_energy": "#f56e00",
+                "individuals_max": 500
+
+            },
+            {
+                "eprobot_key": "eprobot_b",
+                "eprobot_class": EprobotB,
+                "base_color": 180,
+                "color_special_energy": "#8f00f5",
+                "individuals_max": 500
+            }
+        ];
+
         this.steps = 0;
 
         sim = this;
@@ -32,8 +50,8 @@ class Simulation {
     }
 
     list_eprobots_init(){
-        for (let i = 0;i<this.settings.concurrency;i++){
-            this.list_eprobots.push([]);
+        for (let eprobot_config of this.simconfig){
+            this["list_"+eprobot_config.eprobot_key] = [];
         }
     }
 
@@ -57,8 +75,8 @@ class Simulation {
         this.reduce_traces_tries = parseInt((this.world_width * this.world_height)/518);
         log("reduce_traces_tries: "+this.reduce_traces_tries);
 
-        this.list_eprobots = [];
         this.list_eprobots_init();
+
         this.list_plants = [];
         this.stats = {};
 
@@ -211,8 +229,8 @@ class Simulation {
     //    };
     //}
 
-    seed_eprobots(kind){
-        log("seed_eprobots "+kind);
+    seed_eprobots(eprobot_config){
+        log("seed_eprobots "+eprobot_config["eprobot_key"]);
         for (let i = 0; i<this.settings.SEED_EPROBOTS_NUMBER;i++){
             var program = [];
             for (var pi = 0; pi < this.settings.PROGRAM_LENGTH; pi++) {
@@ -230,9 +248,9 @@ class Simulation {
             let x = tools_random(this.world_width);
             let y = tools_random(this.world_height);
             if (this.world.get_terrain(x,y).slot_object==null){
-                let ep = new Eprobot(this, program, init_data, kind, this.settings.energy_start);
+                let ep = new eprobot_config.eprobot_class(this, program, init_data, this.settings.energy_start, eprobot_config);
                 this.world.world_set(ep, x, y);
-                this.list_eprobots[kind].push(ep);
+                this["list_"+eprobot_config.eprobot_key].push(ep);
             }
         }
     }
@@ -256,9 +274,9 @@ class Simulation {
     }
 
     simulation_prestep(){
-        for (let i = 0;i< this.settings.concurrency;i++){
-            if (this.world.counter_eprobot[i] == 0) {
-                this.seed_eprobots(i);
+        for (let eprobot_config of this.simconfig){
+            if (this.world["counter_"+eprobot_config.eprobot_key] == 0) {
+                this.seed_eprobots(eprobot_config);
             }
         }
     }
@@ -330,10 +348,10 @@ class Simulation {
         };
     }
 
-    fork_eprobots(eprobots_forkable, counter_eprobot, list_eprobots_next){
+    fork_eprobots(eprobots_forkable, list_eprobots_next){
         for (let o of eprobots_forkable) {
             let new_eprobot = null;
-            if (this.world[counter_eprobot][o.kind]< o.get_individuum_max()){
+            if (this.world["counter_"+ o.config.eprobot_key] < o.get_individuum_max()){
                 new_eprobot = o.fork();
                 if (new_eprobot){
                     list_eprobots_next.push(new_eprobot);
@@ -345,14 +363,14 @@ class Simulation {
     }
 
     simulation_step(){
-        for (let i = 0;i<this.settings.concurrency;i++){
-            let r_eprobots = this.process_eprobots(this.list_eprobots[i]);
+        for (let eprobot_config of this.simconfig){
+            let r_eprobots = this.process_eprobots(this["list_"+eprobot_config.eprobot_key]);
             let eprobots_forkable = r_eprobots.eprobots_forkable;
             let list_eprobots_next = r_eprobots.list_eprobots_next;
 
             // fork
-            this.fork_eprobots(eprobots_forkable, "counter_eprobot", list_eprobots_next);
-            this.list_eprobots[i] = list_eprobots_next;
+            this.fork_eprobots(eprobots_forkable, list_eprobots_next);
+            this["list_"+eprobot_config.eprobot_key] = list_eprobots_next;
         }
 
         if (this.world.counter_plant > 0 && this.world.counter_plant < this.settings.plants_max){
@@ -437,18 +455,6 @@ class Simulation {
             }else{
                 log("besetzt");
             }
-        }
-    }
-
-    get_base_color_eprobot(kind){
-        return parseInt(360/this.settings.concurrency)*kind;
-    }
-
-    get_color_specialenergy(kind){
-        if (kind==0){
-            return "#f56e00";
-        }else if(kind==1){
-            return "#8f00f5";
         }
     }
 }

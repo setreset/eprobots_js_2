@@ -12,7 +12,6 @@ class World {
             }
         }
 
-        this.counter_eprobot = [];
         this.counter_eprobot_init();
 
         this.counter_plant = 0;
@@ -21,15 +20,15 @@ class World {
     }
 
     counter_eprobot_init(){
-        for (let i = 0;i<this.s.settings.concurrency;i++){
-            this.counter_eprobot.push(0);
+        for (let eprobot_config of this.s.simconfig){
+            this["counter_"+eprobot_config.eprobot_key] = 0;
         }
     }
 
     counter_eprobot_all(){
         let sum = 0;
-        for (let i = 0;i< this.s.settings.concurrency;i++){
-            sum += this.counter_eprobot[i];
+        for (let eprobot_config of this.s.simconfig){
+            sum += this["counter_"+eprobot_config.eprobot_key];
         }
         return sum;
     }
@@ -59,7 +58,7 @@ class World {
         o.position = {x: x_pos, y: y_pos};
 
         if (o.get_id()==OBJECTTYPES.EPROBOT.id){
-            this.counter_eprobot[o.kind]++;
+            this["counter_"+ o.config.eprobot_key]++;
             o.set_odor_fields();
         }else if (o.get_id()==OBJECTTYPES.BARRIER.id){
             o.set_odor_fields();
@@ -73,7 +72,7 @@ class World {
         t.set_slot_object(null);
 
         if (o.get_id()==OBJECTTYPES.EPROBOT.id){
-            this.counter_eprobot[o.kind]--;
+            this["counter_"+ o.config.eprobot_key]--;
             o.unset_odor_fields();
         }else if (o.get_id()==OBJECTTYPES.BARRIER.id){
             o.unset_odor_fields();

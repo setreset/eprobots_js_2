@@ -18,7 +18,6 @@ class Terrain {
         this.trace_eprobot = 0;
         this.trace_eprobot_expiry = null;
 
-        this.tail_eprobot = [];
         this.tail_eprobot_init();
 
         this.poison = 0;
@@ -29,14 +28,14 @@ class Terrain {
     }
 
     tail_eprobot_init(){
-        for (let i = 0;i< this.s.settings.concurrency;i++){
-            this.tail_eprobot.push(0);
+        for (let eprobot_config of this.s.simconfig){
+            this["tail_"+eprobot_config.eprobot_key] = 0;
         }
     }
 
     special_energy_init(){
-        for (let i = 0;i< this.s.settings.concurrency;i++){
-            this.special_energy.push(0);
+        for (let eprobot_config of this.s.simconfig){
+            this["special_energy_"+eprobot_config.eprobot_key] = 0;
         }
     }
 
@@ -98,16 +97,16 @@ class Terrain {
             if (this.energy_object){
                 return this.energy_object.get_color();
             }else{
-                for (let i=0;i<this.s.settings.concurrency; i++){
-                    if (this.special_energy[i] > 0){
-                        let colorstring = this.s.get_color_specialenergy(i);
+                for (let eprobot_config of this.s.simconfig){
+                    if (this["special_energy_"+eprobot_config.eprobot_key] > 0){
+                        let colorstring = eprobot_config.color_special_energy;
                         return colorstring;
                     }
                 }
 
-                for (let i=0;i<this.s.settings.concurrency; i++){
-                    if (this.tail_eprobot[i] > 0){
-                        let color = this.s.get_base_color_eprobot(i);
+                for (let eprobot_config of this.s.simconfig){
+                    if (this["tail_"+eprobot_config.eprobot_key] > 0){
+                        let color = eprobot_config.base_color;
 
                         if (this.s.settings.colortheme=="dark"){
                             return "hsl("+color+", 100%, 10%)";

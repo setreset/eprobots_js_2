@@ -16,16 +16,8 @@ var OBJECTTYPES = {
         },
         drawable: false
     },
-    EPROBOTEATER: {
-        id: 2,
-        drawable: false,
-        color: {
-            dark: "rgb(0, 200, 250)",
-            bright: "rgb(0, 3, 158)"
-        },
-    },
     BARRIER: {
-        id: 3,
+        id: 2,
         color: {
             dark: "rgb(255, 255, 255)",
             bright: "rgb(0, 0, 0)"
@@ -33,7 +25,7 @@ var OBJECTTYPES = {
         drawable: true
     },
     ATE: {
-        id: 4,
+        id: 3,
         color: {
             dark: "rgb(164, 99, 14)",
             bright: "rgb(0, 0, 0)"

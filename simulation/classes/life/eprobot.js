@@ -1,21 +1,15 @@
 class Eprobot{
 
-    constructor(s, program, init_data, kind, energy) {
+    constructor(s, program, init_data, energy, config) {
         this.position = null;
-
-        this.kind = kind;
 
         this.s = s;
         this.tick = 0;
         this.is_dead = false;
         this.energy = energy;
-        this.can_fork = true;
+        this.config = config;
 
-        if (this.kind==0){
-            this.special_energy_consume = 1;
-        }else if(this.kind==1){
-            this.special_energy_consume = 0;
-        }
+        this.can_fork = true;
 
         this.program = program;
 
@@ -95,7 +89,7 @@ class Eprobot{
     }
 
     get_individuum_max() {
-        return parseInt(this.s.settings.eprobots_max / this.s.settings.concurrency);
+        return this.config.individuals_max;
     }
 
     get_id(){
@@ -103,7 +97,7 @@ class Eprobot{
     }
 
     get_color(){
-        let color = this.s.get_base_color_eprobot(this.kind);
+        let color = this.config.base_color;
         return "hsl("+color+", 100%, 48%)";
         //return OBJECTTYPES.EPROBOT.color[this.s.settings.colortheme];
     }
@@ -160,7 +154,7 @@ class Eprobot{
             old_t.trace_eprobot_expiry = this.s.steps + 1000;
         }
 
-        old_t.tail_eprobot[this.kind] += 1;
+        old_t["tail_"+this.config.eprobot_key] += 1;
         this.tail.push({"t": old_t, "rt": this.tick+this.s.settings.TAIL_LENGTH});
 
         this.s.drawer.refresh_paintobj(old_t.x, old_t.y, old_t.get_color());
@@ -183,7 +177,7 @@ class Eprobot{
             let movepos_y = this.position.y + vec.y; //this.s.correct_pos_height(this.position.y + vec.y);
 
             let t = this.s.world.get_terrain(movepos_x, movepos_y);
-            if (t.get_slot_object() == null && t.special_energy[this.kind]==0){
+            if (t.get_slot_object() == null && t["special_energy_"+this.config.eprobot_key]==0){
                 let energy_object = t.get_energy_object();
                 if (energy_object){
                     if (energy_object.get_id()==OBJECTTYPES.PLANT.id){
@@ -198,9 +192,9 @@ class Eprobot{
                     }
                 }
 
-                if (t.special_energy[this.special_energy_consume]>0){
+                if (t["special_energy_"+this.special_energy_consume]>0){
                     this.energy+=this.s.settings.energy_profit_plant;
-                    t.special_energy[this.special_energy_consume]--;
+                    t["special_energy_"+this.special_energy_consume]--;
                 }
 
                 this.move(movepos_x, movepos_y);
@@ -213,8 +207,8 @@ class Eprobot{
         let t = this.s.world.get_terrain(this.position.x, this.position.y);
 
         if (dropval==1){
-            if (t.special_energy[this.kind]==0){
-                t.special_energy[this.kind]++;
+            if (t["special_energy_"+this.config.eprobot_key]==0){
+                t["special_energy_"+this.config.eprobot_key]++;
                 this.energy -= 20;
             }
         }
@@ -251,7 +245,7 @@ class Eprobot{
             if (this.tail[0].rt<=this.tick){
                 let to = this.tail.shift();
                 let t = to.t;
-                t.tail_eprobot[this.kind] = Math.max(t.tail_eprobot[this.kind]-1, 0);
+                t["tail_"+this.config.eprobot_key] = Math.max(t["tail_"+this.config.eprobot_key]-1, 0);
                 this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
             }
         }
@@ -278,7 +272,7 @@ class Eprobot{
                 // search eprobot next to me
                 let co_eprobots = [];
                 let box = 10;
-                for (let co_eprobot of this.s.list_eprobots[this.kind]) {
+                for (let co_eprobot of this.s["list_"+this.config.eprobot_key]) {
                     if (co_eprobot==this){
                         continue;
                     }
@@ -316,7 +310,7 @@ class Eprobot{
 
             this.energy = this.energy - energy_for_child;
 
-            new_eprobot = new Eprobot(this.s, new_program, new_data, this.kind, energy_for_child);
+            new_eprobot = new this.config.eprobot_class(this.s, new_program, new_data, energy_for_child, this.config);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
         }
         return new_eprobot
@@ -334,7 +328,7 @@ class Eprobot{
         this.is_dead=true;
         for (let to of this.tail) {
             let t = to.t;
-            t.tail_eprobot[this.kind] = Math.max(t.tail_eprobot[this.kind]-1, 0);
+            t["tail_"+this.config.eprobot_key] = Math.max(t["tail_"+this.config.eprobot_key]-1, 0);
             this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
         }
     }
@@ -353,5 +347,19 @@ class Eprobot{
             let t = this.s.world.get_terrain(this.position.x + v.x, this.position.y + v.y);
             t.odor_eprobot--;
         }
+    }
+}
+
+class EprobotA extends Eprobot{
+    constructor(s, program, init_data, energy, config) {
+        super(s, program, init_data, energy, config);
+        this.special_energy_consume = "eprobot_b";
+    }
+}
+
+class EprobotB extends Eprobot{
+    constructor(s, program, init_data, energy, config) {
+        super(s, program, init_data, energy, config);
+        this.special_energy_consume = "eprobot_a";
     }
 }
