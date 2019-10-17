@@ -8,7 +8,7 @@ class Terrain {
         this.slot_object = null;
         this.energy_object = null;
 
-        this.special_energy = [];
+        this.special_energy_fields = [];
         this.special_energy_init();
 
         this.odor_plant = 0;
@@ -35,7 +35,13 @@ class Terrain {
 
     special_energy_init(){
         for (let eprobot_config of this.s.simconfig){
-            this["special_energy_"+eprobot_config.eprobot_key] = 0;
+            if ("special_energy" in eprobot_config){
+                let special_energy_key = "special_energy_"+eprobot_config.eprobot_key;
+                this[special_energy_key] = 0;
+                let tmp = tools_modulo_with_wrap(eprobot_config.base_color-50, 360);
+                let special_energy_color = "hsl("+tmp+", 100%, 48%)";
+                this.special_energy_fields.push({"key": special_energy_key, color: special_energy_color});
+            }
         }
     }
 
@@ -97,9 +103,9 @@ class Terrain {
             if (this.energy_object){
                 return this.energy_object.get_color();
             }else{
-                for (let eprobot_config of this.s.simconfig){
-                    if (this["special_energy_"+eprobot_config.eprobot_key] > 0){
-                        let colorstring = eprobot_config.color_special_energy;
+                for (let special_energy_field of this.special_energy_fields){
+                    if (this[special_energy_field.key] > 0){
+                        let colorstring = special_energy_field.color;
                         return colorstring;
                     }
                 }

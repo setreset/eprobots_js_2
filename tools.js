@@ -221,3 +221,19 @@ function maze_display(m) {
     }
     return text.join('');
 }
+
+function tools_modulo_with_wrap(number, max){
+    number = number % max;
+    if (number<0){
+        number = max + number;
+    }
+    return number;
+}
+
+function tools_negative_to_0(number){
+    if (number<0){
+        return 0;
+    }else{
+        return number;
+    }
+}

@@ -1,25 +1,9 @@
 class Simulation {
 
-    constructor(canvas) {
+    constructor(canvas, simconfig) {
         this.canvas = canvas;
 
-        this.simconfig = [
-            {
-                "eprobot_key": "eprobot_a",
-                "eprobot_class": EprobotA,
-                "base_color": 0,
-                "color_special_energy": "#f56e00",
-                "individuals_max": 500
-
-            },
-            {
-                "eprobot_key": "eprobot_b",
-                "eprobot_class": EprobotB,
-                "base_color": 180,
-                "color_special_energy": "#8f00f5",
-                "individuals_max": 500
-            }
-        ];
+        this.simconfig = simconfig;
 
         this.steps = 0;
 

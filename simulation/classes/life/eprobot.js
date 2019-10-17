@@ -177,7 +177,16 @@ class Eprobot{
             let movepos_y = this.position.y + vec.y; //this.s.correct_pos_height(this.position.y + vec.y);
 
             let t = this.s.world.get_terrain(movepos_x, movepos_y);
-            if (t.get_slot_object() == null && t["special_energy_"+this.config.eprobot_key]==0){
+
+            let no_go_field = false;
+            for (let special_energy_no_go_field of this.special_energy_no_go_fields){
+                if (t["special_energy_"+special_energy_no_go_field] > 0){
+                    no_go_field = true;
+                    break;
+                }
+            }
+
+            if (t.get_slot_object() == null && !no_go_field){
                 let energy_object = t.get_energy_object();
                 if (energy_object){
                     if (energy_object.get_id()==OBJECTTYPES.PLANT.id){
@@ -194,7 +203,7 @@ class Eprobot{
 
                 if (t["special_energy_"+this.special_energy_consume]>0){
                     this.energy+=this.s.settings.energy_profit_plant;
-                    t["special_energy_"+this.special_energy_consume]--;
+                    t["special_energy_"+this.special_energy_consume] = tools_negative_to_0(t["special_energy_"+this.special_energy_consume]-1);
                 }
 
                 this.move(movepos_x, movepos_y);
@@ -354,6 +363,7 @@ class EprobotA extends Eprobot{
     constructor(s, program, init_data, energy, config) {
         super(s, program, init_data, energy, config);
         this.special_energy_consume = "eprobot_b";
+        this.special_energy_no_go_fields = ["eprobot_a"];
     }
 }
 
@@ -361,5 +371,30 @@ class EprobotB extends Eprobot{
     constructor(s, program, init_data, energy, config) {
         super(s, program, init_data, energy, config);
         this.special_energy_consume = "eprobot_a";
+        this.special_energy_no_go_fields = ["eprobot_b"];
     }
 }
+
+//class EprobotA extends Eprobot{
+//    constructor(s, program, init_data, energy, config) {
+//        super(s, program, init_data, energy, config);
+//        this.special_energy_consume = "eprobot_c";
+//        this.special_energy_no_go_fields = ["eprobot_a", "eprobot_b"];
+//    }
+//}
+//
+//class EprobotB extends Eprobot{
+//    constructor(s, program, init_data, energy, config) {
+//        super(s, program, init_data, energy, config);
+//        this.special_energy_consume = "eprobot_a";
+//        this.special_energy_no_go_fields = ["eprobot_b", "eprobot_c"];
+//    }
+//}
+//
+//class EprobotC extends Eprobot{
+//    constructor(s, program, init_data, energy, config) {
+//        super(s, program, init_data, energy, config);
+//        this.special_energy_consume = "eprobot_b";
+//        this.special_energy_no_go_fields = ["eprobot_c", "eprobot_a"];
+//    }
+//}
