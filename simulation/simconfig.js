@@ -11,9 +11,16 @@ var simconfig = [
     {
         "eprobot_key": "eprobot_b",
         "eprobot_class": EprobotB,
-        "base_color": 180,
+        "base_color": 120,
         "special_energy": true,
         "individuals_max": 500
+    },
+    {
+        "eprobot_key": "eproboteater",
+        "eprobot_class": EprobotEater,
+        "base_color": 240,
+        "special_energy": false,
+        "individuals_max": 300
     }
 
     //{
