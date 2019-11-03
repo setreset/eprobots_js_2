@@ -194,7 +194,7 @@ class EprobotBase{
 
     try_move(t_new){
         let no_go_field = false;
-        for (let special_energy_no_go_field of this.special_energy_no_go_fields){
+        for (let special_energy_no_go_field of this.config.special_energy_no_go_fields){
             if (t_new["special_energy_"+special_energy_no_go_field] > 0){
                 no_go_field = true;
                 break;

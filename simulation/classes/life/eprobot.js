@@ -53,9 +53,11 @@ class Eprobot extends EprobotBase{
             }
         }
 
-        if (t_new["special_energy_"+this.special_energy_consume]>0){
-            this.energy+=this.s.settings.energy_profit_plant;
-            t_new["special_energy_"+this.special_energy_consume] = tools_negative_to_0(t_new["special_energy_"+this.special_energy_consume]-1);
+        for (let special_energy_consume_field of this.config.special_energy_consume_fields){
+            if (t_new["special_energy_"+special_energy_consume_field]>0){
+                this.energy+=this.s.settings.energy_profit_plant;
+                t_new["special_energy_"+special_energy_consume_field] = tools_negative_to_0(t_new["special_energy_"+special_energy_consume_field]-1);
+            }
         }
     }
 
@@ -70,22 +72,6 @@ class Eprobot extends EprobotBase{
                 this.energy -= 20;
             }
         }
-    }
-}
-
-class EprobotA extends Eprobot{
-    constructor(s, program, init_data, energy, config) {
-        super(s, program, init_data, energy, config);
-        this.special_energy_consume = "eprobot_b";
-        this.special_energy_no_go_fields = ["eprobot_a"];
-    }
-}
-
-class EprobotB extends Eprobot{
-    constructor(s, program, init_data, energy, config) {
-        super(s, program, init_data, energy, config);
-        this.special_energy_consume = "eprobot_a";
-        this.special_energy_no_go_fields = ["eprobot_b"];
     }
 }
 
@@ -156,7 +142,7 @@ class EprobotEater extends EprobotBase{
     }
 
     try_eat(t_new){
-        if (t_new.get_slot_object() && t_new.get_slot_object().get_id()==OBJECTTYPES.EPROBOT.id && t_new.get_slot_object().config.special_energy==true){
+        if (t_new.get_slot_object() && t_new.get_slot_object().get_id()==OBJECTTYPES.EPROBOT.id /*&& t_new.get_slot_object().config.eprobot_key!=this.config.eprobot_key*/){
 
             this.energy+=(this.s.settings.energy_profit_plant*64);
             t_new.get_slot_object().kill();
