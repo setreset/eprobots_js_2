@@ -8,6 +8,9 @@ class Simulation {
         this.steps = 0;
 
         sim = this;
+
+        //create a synth and connect it to the master output (your speakers)
+        this.synth = new Tone.Synth().toMaster();
     }
 
     prepare(){
@@ -338,6 +341,7 @@ class Simulation {
             if (this.world["counter_"+ o.config.eprobot_key] < o.get_individuum_max()){
                 new_eprobot = o.fork();
                 if (new_eprobot){
+                    play_tone(this.synth, o.config.note_create, 0.1, this.settings.SOUND);
                     list_eprobots_next.push(new_eprobot);
                 }
             }else{

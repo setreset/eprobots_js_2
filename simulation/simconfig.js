@@ -7,8 +7,8 @@ var simconfig = [
         "special_energy": true,
         "special_energy_consume_fields": ["eprobot_b"],
         "special_energy_no_go_fields": ["eprobot_a"],
-        "individuals_max": 500
-
+        "individuals_max": 500,
+        "note_create": "C4"
     },
     {
         "eprobot_key": "eprobot_b",
@@ -17,7 +17,8 @@ var simconfig = [
         "special_energy": true,
         "special_energy_consume_fields": ["eprobot_a"],
         "special_energy_no_go_fields": ["eprobot_b"],
-        "individuals_max": 500
+        "individuals_max": 500,
+        "note_create": "D4"
     },
     {
         "eprobot_key": "eprobot_p",
@@ -26,7 +27,8 @@ var simconfig = [
         "special_energy": false,
         "special_energy_consume_fields": ["eprobot_a", "eprobot_b"],
         "special_energy_no_go_fields": [],
-        "individuals_max": 200
+        "individuals_max": 200,
+        "note_create": "E4"
     },
     {
         "eprobot_key": "eproboteater_a",
@@ -34,7 +36,8 @@ var simconfig = [
         "base_color": 270,
         "special_energy": false,
         "special_energy_no_go_fields": ["eprobot_a", "eprobot_b"],
-        "individuals_max": 200
+        "individuals_max": 200,
+        "note_create": "F4"
     },
     //{
     //    "eprobot_key": "eproboteater_b",

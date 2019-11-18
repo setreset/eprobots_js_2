@@ -237,3 +237,10 @@ function tools_negative_to_0(number){
         return number;
     }
 }
+
+function play_tone(synth, note, propability, sound){
+    //play a middle 'C' for the duration of an 8th note
+    if (sound && Math.random()<propability){
+        synth.triggerAttackRelease(note, "8n");
+    }
+}
