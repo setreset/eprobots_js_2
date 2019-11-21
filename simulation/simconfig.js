@@ -2,7 +2,7 @@ var simconfig = [
 
     {
         "eprobot_key": "eprobot_a",
-        "eprobot_class": Eprobot,
+        "eprobot_class": "eprobot",
         "base_color": 0,
         "special_energy": true,
         "special_energy_consume_fields": ["eprobot_b"],
@@ -12,7 +12,7 @@ var simconfig = [
     },
     {
         "eprobot_key": "eprobot_b",
-        "eprobot_class": Eprobot,
+        "eprobot_class": "eprobot",
         "base_color": 90,
         "special_energy": true,
         "special_energy_consume_fields": ["eprobot_a"],
@@ -22,7 +22,7 @@ var simconfig = [
     },
     {
         "eprobot_key": "eprobot_p",
-        "eprobot_class": EprobotParasit,
+        "eprobot_class": "eprobot_parasit",
         "base_color": 180,
         "special_energy": false,
         "special_energy_consume_fields": ["eprobot_a", "eprobot_b"],
@@ -32,7 +32,7 @@ var simconfig = [
     },
     {
         "eprobot_key": "eproboteater_a",
-        "eprobot_class": EprobotEater,
+        "eprobot_class": "eprobot_eater",
         "base_color": 270,
         "special_energy": false,
         "special_energy_no_go_fields": ["eprobot_a", "eprobot_b"],

@@ -1,3 +1,5 @@
+eprobot_classes = {};
+
 class Eprobot extends EprobotBase{
     get_output_OISC(){
         let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS_MAX);
@@ -75,6 +77,8 @@ class Eprobot extends EprobotBase{
     }
 }
 
+eprobot_classes["eprobot"] = Eprobot;
+
 class EprobotParasit extends EprobotBase{
     get_output_OISC(){
         let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS_MAX);
@@ -138,6 +142,8 @@ class EprobotParasit extends EprobotBase{
     action_hook(output){
     }
 }
+
+eprobot_classes["eprobot_parasit"] = EprobotParasit;
 
 //class EprobotA extends Eprobot{
 //    constructor(s, program, init_data, energy, config) {
@@ -217,3 +223,5 @@ class EprobotEater extends EprobotBase{
     action_hook(output){
     }
 }
+
+eprobot_classes["eprobot_eater"] = EprobotEater;

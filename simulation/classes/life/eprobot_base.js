@@ -263,7 +263,8 @@ class EprobotBase{
 
             this.energy = this.energy - energy_for_child;
 
-            new_eprobot = new this.config.eprobot_class(this.s, new_program, new_data, energy_for_child, this.config);
+            let eprobot_class = eprobot_classes[this.config.eprobot_class];
+            new_eprobot = new eprobot_class(this.s, new_program, new_data, energy_for_child, this.config);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
         }
         return new_eprobot

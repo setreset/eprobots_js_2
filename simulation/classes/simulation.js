@@ -235,7 +235,8 @@ class Simulation {
             let x = tools_random(this.world_width);
             let y = tools_random(this.world_height);
             if (this.world.get_terrain(x,y).slot_object==null){
-                let ep = new eprobot_config.eprobot_class(this, program, init_data, this.settings.energy_start, eprobot_config);
+                let eprobot_class = eprobot_classes[eprobot_config.eprobot_class];
+                let ep = new eprobot_class(this, program, init_data, this.settings.energy_start, eprobot_config);
                 this.world.world_set(ep, x, y);
                 this["list_"+eprobot_config.eprobot_key].push(ep);
             }
