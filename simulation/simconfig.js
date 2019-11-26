@@ -22,7 +22,7 @@ var simconfig = [
     },
     {
         "eprobot_key": "eprobot_p",
-        "eprobot_class": "eprobot_parasit",
+        "eprobot_class": "eprobot_parasite",
         "base_color": 180,
         "special_energy": false,
         "special_energy_consume_fields": ["eprobot_a", "eprobot_b"],

@@ -1,4 +1,4 @@
-class Eprobot extends EprobotBase{
+class EprobotParasite extends EprobotBase{
     get_output_OISC(){
         let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS_MAX);
 
@@ -22,9 +22,6 @@ class Eprobot extends EprobotBase{
         let fork_raw = this.get_output_val(1);
         let forkval = this.map_output_val(fork_raw, 2);
 
-        let energydrop_raw = this.get_output_val(2);
-        let energyval = this.map_output_val(energydrop_raw, 2);
-
         //let poison_raw = this.get_output_val(1);
         //let poisonval = this.map_output_val(poison_raw, 2);
         //
@@ -35,7 +32,7 @@ class Eprobot extends EprobotBase{
         //let sfsval = this.map_output_val(sfs_raw, 3);
 
         //return [moveval, poisonval, infoval, sfsval];
-        return [moveval, forkval, energyval];
+        return [moveval, forkval];
     }
 
     try_eat(t_new){
@@ -62,17 +59,7 @@ class Eprobot extends EprobotBase{
     }
 
     action_hook(output){
-        let dropval = output[2];
-
-        if (dropval==1){
-            let t = this.s.world.get_terrain(this.position.x, this.position.y);
-
-            if (t["special_energy_"+this.config.eprobot_key]==0){
-                t["special_energy_"+this.config.eprobot_key]++;
-                this.energy -= 20;
-            }
-        }
     }
 }
 
-eprobot_classes["eprobot"] = Eprobot;
+eprobot_classes["eprobot_parasite"] = EprobotParasite;

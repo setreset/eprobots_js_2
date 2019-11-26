@@ -1,3 +1,5 @@
+eprobot_classes = {};
+
 class EprobotBase{
 
     constructor(s, program, init_data, energy, config) {
