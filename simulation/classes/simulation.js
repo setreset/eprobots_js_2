@@ -90,153 +90,16 @@ class Simulation {
             let b2 = new Barrier(this);
             this.world.world_set(b2, this.world_width-1, y);
         }
-
-        var grid_size = 90;
-        var edge_improbability = 6;
-
-        // mitte
-        let tilesize_height = parseInt(this.world_height_visible/grid_size);
-        let tilesize_width = parseInt(this.world_width_visible/grid_size);
-
-        // senkrecht
-        //for (let x1=1;x1<grid_size-1;x1++){
-        //for (let x1=1;x1<grid_size/2;x1++){
-        /*for (let x1=grid_size/4;x1<(grid_size-1)-(grid_size/4);x1++){
-            for (let y1=0;y1<grid_size;y1++){
-                if (tools_random(edge_improbability)==0){
-                    for (let y=1; y<tilesize_height+1; y++){
-                        if (this.world.get_terrain(x1*tilesize_width, y+(y1*tilesize_height)).get_slot_object()==null){
-                            let b = new Barrier(this);
-                            this.world.world_set(b, x1*tilesize_width, y+(y1*tilesize_height));
-                        }else{
-                            console.log("!");
-                        }
-
-                    }
-                }
-            }
-        }
-
-        // waagerecht
-        for (let y1=1;y1<grid_size-1;y1++){
-            //for (let x1=0;x1<grid_size;x1++){
-            //for (let x1=0;x1<grid_size/2;x1++){
-            for (let x1=grid_size/4;x1<grid_size-(grid_size/4);x1++){
-                if (tools_random(edge_improbability)==0){
-                    for (let x=0; x<tilesize_width+1; x++){
-                        if (this.world.get_terrain( x+(x1*tilesize_width), y1*tilesize_height).get_slot_object()==null){
-                            let b = new Barrier(this);
-                            this.world.world_set(b, x+(x1*tilesize_width), y1*tilesize_height);
-                        }else{
-                            console.log("!!");
-                        }
-                    }
-                }
-            }
-        }*/
     }
-
-    //loadState(simstate){
-    //    this.steps = simstate.steps;
-    //
-    //    this.settings = new Settings();
-    //    this.settings.loadState(simstate.settings);
-    //
-    //    this.world = new World(this, this.settings.world_width,this.settings.world_height);
-    //
-    //    this.drawer = new Drawer(this, this.canvas, this.canvas2);
-    //
-    //    for (let o of simstate.world_objects) {
-    //        if (o.id == OBJECTTYPES.BARRIER.id){
-    //            let b = new Barrier(this);
-    //            this.world.world_set(b, o.x_pos, o.y_pos);
-    //        }
-    //    }
-    //
-    //    this.list_eprobots = [];
-    //    this.list_eproboteaters = [];
-    //    this.list_plants = [];
-    //
-    //    this.trace_objects = {};
-    //    this.stats = {};
-    //
-    //    for (let o of simstate.list_eprobots) {
-    //        let ep = new Eprobot(this, o.program, o.init_data);
-    //        ep.tick = o.tick;
-    //        ep.life_counter = o.life_counter;
-    //        ep.energy = o.energy;
-    //        ep.working_data = o.working_data;
-    //        this.world.world_set(ep, o.x_pos, o.y_pos);
-    //        this.list_eprobots.push(ep);
-    //    }
-    //
-    //    for (let o of simstate.list_eproboteaters) {
-    //        let ep = new EprobotEater(this, o.program, o.init_data);
-    //        ep.tick = o.tick;
-    //        ep.life_counter = o.life_counter;
-    //        ep.energy = o.energy;
-    //        ep.working_data = o.working_data;
-    //        this.world.world_set(ep, o.x_pos, o.y_pos);
-    //        this.list_eproboteaters.push(ep);
-    //    }
-    //
-    //    for (let o of simstate.list_plants) {
-    //        let p = new Plant(this);
-    //        p.is_dead = o.is_dead;
-    //        p.energy_count = o.energy_count;
-    //
-    //        this.world.world_set_energy(p, o.x_pos, o.y_pos);
-    //        this.list_plants.push(p);
-    //    }
-    //}
-
-    //toJSON(){
-    //    // collect world objects
-    //    let world_objects = [];
-    //    for (var x=0;x<this.settings.world_width;x++){
-    //        for (var y=0;y<this.settings.world_height;y++){
-    //            let t = this.world.get_terrain(x, y);
-    //            if (t.energy_object){
-    //                world_objects.push(t.energy_object);
-    //            }
-    //            if (t.slot_object && t.slot_object.get_id() == OBJECTTYPES.BARRIER.id){
-    //                world_objects.push(t.slot_object);
-    //            }
-    //        }
-    //    }
-    //
-    //    return {
-    //        steps: this.steps,
-    //        settings: this.settings,
-    //        world_objects: world_objects,
-    //        list_eprobots: this.list_eprobots,
-    //        list_eproboteaters: this.list_eproboteaters,
-    //        list_plants: this.list_plants,
-    //        trace_objects: this.trace_objects
-    //    };
-    //}
 
     seed_eprobots(eprobot_config){
         log("seed_eprobots "+eprobot_config["eprobot_key"]);
         for (let i = 0; i<this.settings.SEED_EPROBOTS_NUMBER;i++){
-            var program = [];
-            for (var pi = 0; pi < this.settings.PROGRAM_LENGTH; pi++) {
-                var val = tools_random(this.settings.PROGRAM_LENGTH * 10) - this.settings.PROGRAM_LENGTH;
-                program.push(val);
-            }
-
-            var init_data = [];
-            for (var di = 0; di < this.settings.DATA_LENGTH; di++) {
-                var val = tools_random2(-720, 720);
-                init_data.push(val);
-            }
-            //let x = this.settings.nest_x+tools_random2(-20,20);
-            //let y = this.settings.nest_y+tools_random2(-20,20);
             let x = tools_random(this.world_width);
             let y = tools_random(this.world_height);
             if (this.world.get_terrain(x,y).slot_object==null){
                 let eprobot_class = eprobot_classes[eprobot_config.eprobot_class];
-                let ep = new eprobot_class(this, program, init_data, this.settings.energy_start, eprobot_config);
+                let ep = eprobot_class.seed(this, eprobot_config);
                 this.world.world_set(ep, x, y);
                 this["list_"+eprobot_config.eprobot_key].push(ep);
             }

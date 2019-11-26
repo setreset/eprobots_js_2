@@ -2,6 +2,23 @@ eprobot_classes = {};
 
 class EprobotBase{
 
+    static seed(s, eprobot_config){
+        var program = [];
+        for (var pi = 0; pi < s.settings.PROGRAM_LENGTH; pi++) {
+            var val = tools_random(s.settings.PROGRAM_LENGTH * 10) - s.settings.PROGRAM_LENGTH;
+            program.push(val);
+        }
+
+        var init_data = [];
+        for (var di = 0; di < s.settings.DATA_LENGTH; di++) {
+            var val = tools_random2(-720, 720);
+            init_data.push(val);
+        }
+
+        let eprobot_class = eprobot_classes[eprobot_config.eprobot_class];
+        return new eprobot_class(s, program, init_data, s.settings.energy_start, eprobot_config);
+    }
+
     constructor(s, program, init_data, energy, config) {
         this.position = null;
 

@@ -1,5 +1,4 @@
 var simconfig = [
-
     {
         "eprobot_key": "eprobot_a",
         "eprobot_class": "eprobot",
@@ -38,12 +37,5 @@ var simconfig = [
         "special_energy_no_go_fields": ["eprobot_a", "eprobot_b"],
         "individuals_max": 200,
         "note_create": "F4"
-    },
-    //{
-    //    "eprobot_key": "eproboteater_b",
-    //    "eprobot_class": EprobotEater,
-    //    "base_color": 270,
-    //    "special_energy": false,
-    //    "individuals_max": 300
-    //}
+    }
 ];
