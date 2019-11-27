@@ -57,7 +57,7 @@ class World {
         t.set_slot_object(o);
         o.position = {x: x_pos, y: y_pos};
 
-        if (o.get_id()==OBJECTTYPES.EPROBOT.id){
+        if (o.get_id()==OBJECTTYPES.EPROBOT.id || o.get_id()==OBJECTTYPES.PLANT.id){
             this["counter_"+ o.config.eprobot_key]++;
             o.set_odor_fields();
         }else if (o.get_id()==OBJECTTYPES.BARRIER.id){
@@ -71,7 +71,7 @@ class World {
         var t = this.get_terrain(x, y);
         t.set_slot_object(null);
 
-        if (o.get_id()==OBJECTTYPES.EPROBOT.id){
+        if (o.get_id()==OBJECTTYPES.EPROBOT.id || o.get_id()==OBJECTTYPES.PLANT.id){
             this["counter_"+ o.config.eprobot_key]--;
             o.unset_odor_fields();
         }else if (o.get_id()==OBJECTTYPES.BARRIER.id){

@@ -1,5 +1,3 @@
-eprobot_classes = {};
-
 class EprobotBase{
 
     static seed(s, eprobot_config){
@@ -320,5 +318,9 @@ class EprobotBase{
             let t = this.s.world.get_terrain(this.position.x + v.x, this.position.y + v.y);
             t.odor_eprobot--;
         }
+    }
+
+    is_living(){
+        return this.tick <= this.settings.eprobots_lifetime_max && this.energy > 0;
     }
 }

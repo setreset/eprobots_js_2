@@ -172,7 +172,7 @@ class Simulation {
 
         for (let o of list_eprobots) {
             if (o.is_dead) continue;
-            let living = o.tick <= this.settings.eprobots_lifetime_max && o.energy > 0;
+            let living = o.is_living();
 
             if (living){
                 // INPUT

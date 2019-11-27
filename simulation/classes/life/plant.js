@@ -1,49 +1,65 @@
-class Plant {
+class Plant{
+    static seed(s, eprobot_config){
+        let eprobot_class = eprobot_classes[eprobot_config.eprobot_class];
+        return new eprobot_class(s, eprobot_config);
+    }
 
-    constructor(s) {
+    constructor(s, config) {
         this.position = null;
 
         this.s = s;
+        this.tick = 0;
         this.is_dead = false;
-        this.energy_count = 50; //300, 1000;
+        this.config = config;
     }
 
-    //toJSON(){
-    //    return {
-    //        id: this.get_id(),
-    //        x_pos: this.t.x,
-    //        y_pos: this.t.y,
-    //        is_dead: this.is_dead,
-    //        energy_count: this.energy_count
-    //    };
-    //}
+    set_input(){
+
+    }
+
+    get_individuum_max() {
+        return this.config.individuals_max;
+    }
 
     get_id(){
         return OBJECTTYPES.PLANT.id;
     }
 
     get_color(){
-        return OBJECTTYPES.PLANT.color[this.s.settings.colortheme];
+        let color = this.config.base_color;
+        return "hsl("+color+", 100%, 48%)";
+        //return OBJECTTYPES.EPROBOT.color[this.s.settings.colortheme];
     }
-
-    //get_lifetime(){
-    //    return this.s.settings.plants_lifetime;
-    //}
-
-    //kill(){
-    //    this.s.world.world_unset(this.x_pos, this.y_pos);
-    //    this.s.world.counter_plant--;
-    //    this.is_dead = true;
-    //}
-    //
 
     step(){
         this.tick++;
     }
 
+    fork(){
+        // new eprobot
+        let new_eprobot = null;
+        let spreadval = tools_random(8);
+        let vec = DIRECTIONS[spreadval];
+        let spreadpos_x = this.position.x + vec.x;
+        let spreadpos_y = this.position.y + vec.y;
+        let spreadterrain = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
+        if (spreadterrain.slot_object == null){
+            let eprobot_class = eprobot_classes[this.config.eprobot_class];
+            new_eprobot = new eprobot_class(this.s, this.config);
+            this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
+        }
+        return new_eprobot
+    }
+
+    fork_ready(){
+        return this.tick > 100;
+    }
+
+    kill(){
+        this.is_dead=true;
+    }
+
     set_odor_fields(){
-        let t = this.s.world.get_terrain(this.position.x, this.position.y);
-        t.odor_plant+=2;
         for (let v of DIRECTIONS) {
             // get terrain
             let t = this.s.world.get_terrain(this.position.x + v.x, this.position.y + v.y);
@@ -52,8 +68,6 @@ class Plant {
     }
 
     unset_odor_fields(){
-        let t = this.s.world.get_terrain(this.position.x, this.position.y);
-        t.odor_plant-=2;
         for (let v of DIRECTIONS) {
             // get terrain
             let t = this.s.world.get_terrain(this.position.x + v.x, this.position.y + v.y);
@@ -61,35 +75,9 @@ class Plant {
         }
     }
 
-    fork(){
-        //console.log("plant fork");
-        let new_plant = null;
-        //let spreadval = tools_random(8);
-        //let vec = DIRECTIONS[spreadval];
-
-        let spreadpos_x, spreadpos_y;
-
-        if (Math.random()<1/50){
-            spreadpos_x = tools_random(this.s.world_width);
-            spreadpos_y = tools_random(this.s.world_height);
-        }else{
-            let spread_max = 5;
-            let spreadoffset_x = tools_random2(-spread_max,spread_max);
-            let spreadoffset_y = tools_random2(-spread_max,spread_max);
-            spreadpos_x = this.position.x + spreadoffset_x; //this.s.correct_pos_width(this.position.x + spreadoffset_x);
-            spreadpos_y = this.position.y + spreadoffset_y; //this.s.correct_pos_height(this.position.y + spreadoffset_y);
-        }
-
-        spreadpos_x = Math.max(spreadpos_x, 50);
-        spreadpos_x = Math.min(spreadpos_x, this.s.world_width-50);
-        spreadpos_y = Math.max(spreadpos_y, 50);
-        spreadpos_y = Math.min(spreadpos_y, this.s.world_height-50);
-
-        let t = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
-        if (t.energy_object == null && t.slot_object == null){
-            new_plant = new Plant(this.s);
-            this.s.world.world_set_energy(new_plant, spreadpos_x, spreadpos_y);
-        }
-        return new_plant;
+    is_living(){
+        return this.tick <= 200;
     }
 }
+
+eprobot_classes["plant"] = Plant;

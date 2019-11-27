@@ -1,4 +1,5 @@
 var sim;
+var eprobot_classes = {};
 
 class Controller {
     constructor() {
