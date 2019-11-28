@@ -41,11 +41,13 @@ class EprobotEater extends EprobotBase{
     }
 
     try_eat(t_new){
-        if (t_new.get_slot_object() && t_new.get_slot_object().get_id()==OBJECTTYPES.EPROBOT.id /*&& t_new.get_slot_object().config.eprobot_key!=this.config.eprobot_key*/){
+        let slot_object = t_new.get_slot_object();
+        /*&& t_new.get_slot_object().config.eprobot_key!=this.config.eprobot_key*/
+        if (slot_object && slot_object.get_id()==OBJECTTYPES.EPROBOT.id){
 
-            this.energy+=(this.s.settings.energy_profit_plant*64);
-            t_new.get_slot_object().kill();
-            this.s.world.world_unset(t_new.x, t_new.y, t_new.get_slot_object());
+            this.energy+=(this.s.settings.energy_profit_plant*10);
+            slot_object.kill();
+            this.s.world.world_unset(t_new.x, t_new.y, slot_object);
         }
     }
 
