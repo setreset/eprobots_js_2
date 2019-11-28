@@ -14,10 +14,16 @@ class EprobotBase{
         }
 
         let eprobot_class = eprobot_classes[eprobot_config.eprobot_class];
-        return new eprobot_class(s, program, init_data, s.settings.energy_start, eprobot_config);
+
+        // get pool
+        let pool = s["pool_"+eprobot_config.eprobot_key];
+        let eo = pool.get_object(eprobot_class);
+        //let eo = new eprobot_class();
+        eo.init(s, program, init_data, s.settings.energy_start, eprobot_config);
+        return eo;
     }
 
-    constructor(s, program, init_data, energy, config) {
+    init(s, program, init_data, energy, config) {
         this.position = null;
 
         this.s = s;
@@ -285,7 +291,11 @@ class EprobotBase{
             this.energy = this.energy - energy_for_child;
 
             let eprobot_class = eprobot_classes[this.config.eprobot_class];
-            new_eprobot = new eprobot_class(this.s, new_program, new_data, energy_for_child, this.config);
+
+            // get pool
+            let pool = this.s["pool_"+this.config.eprobot_key];
+            new_eprobot = pool.get_object(eprobot_class);
+            new_eprobot.init(this.s, new_program, new_data, energy_for_child, this.config);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
         }
         return new_eprobot
