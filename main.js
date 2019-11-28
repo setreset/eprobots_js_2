@@ -59,7 +59,7 @@ $(document).ready(function() {
 
     controls["btn_reset"].on("click", function(e){controller.reset_simulation()});
 
-    controls["btn_seed_energy"].on("click", function(e){controller.seed_energy()});
+    //controls["btn_seed_energy"].on("click", function(e){controller.seed_energy()});
 
     controls["btn_fullscreen"].on("click", function(ev){controller.toggle_fullscreen()});
 

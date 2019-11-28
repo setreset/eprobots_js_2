@@ -14,8 +14,6 @@ class World {
 
         this.counter_eprobot_init();
 
-        this.counter_plant = 0;
-
         this.shared_food_storage = 0;
     }
 
@@ -76,31 +74,6 @@ class World {
             o.unset_odor_fields();
         }else if (o.get_id()==OBJECTTYPES.BARRIER.id){
             o.unset_odor_fields();
-        }
-
-        this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
-    }
-
-    world_set_energy(o, x_pos, y_pos){
-        var t = this.get_terrain(x_pos, y_pos);
-        t.set_energy_object(o);
-        o.position = {x: x_pos, y: y_pos};
-        o.set_odor_fields();
-
-        if (o.get_id()==OBJECTTYPES.PLANT.id){
-            this.counter_plant++;
-        }
-
-        this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
-    }
-
-    world_unset_energy(x,y, o){
-        var t = this.get_terrain(x, y);
-        t.set_energy_object(null);
-        o.unset_odor_fields();
-
-        if (o.get_id()==OBJECTTYPES.PLANT.id){
-            this.counter_plant--;
         }
 
         this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());

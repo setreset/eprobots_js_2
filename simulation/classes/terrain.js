@@ -29,7 +29,9 @@ class Terrain {
 
     tail_eprobot_init(){
         for (let eprobot_config of this.s.simconfig){
-            this["tail_"+eprobot_config.eprobot_key] = 0;
+            if ("tails" in eprobot_config && eprobot_config["tails"] == true) {
+                this["tail_" + eprobot_config.eprobot_key] = 0;
+            }
         }
     }
 

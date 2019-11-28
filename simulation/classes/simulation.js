@@ -106,24 +106,6 @@ class Simulation {
         }
     }
 
-    seed_energy(){
-        for (let i = 0; i<10;i++){
-            let x = tools_random(this.world_width);
-            let y = tools_random(this.world_height);
-
-            x = Math.max(x, 50);
-            x = Math.min(x, this.world_width-50);
-            y = Math.max(y, 50);
-            y = Math.min(y, this.world_height-50);
-
-            if (this.world.get_terrain(x,y).energy_object==null){
-                let p = new Plant(this);
-                this.world.world_set_energy(p, x, y);
-                this.list_plants.push(p);
-            }
-        }
-    }
-
     simulation_prestep(){
         for (let eprobot_config of this.simconfig){
             if (this.world["counter_"+eprobot_config.eprobot_key] == 0) {
@@ -225,58 +207,12 @@ class Simulation {
             this["list_"+eprobot_config.eprobot_key] = list_eprobots_next;
         }
 
-        if (this.world.counter_plant > 0 && this.world.counter_plant < this.settings.plants_max){
-            let list_plants_next = [];
-            let plant_cnt = 0;
-            let num_tries = this.settings.plants_max / 10;
-            while(plant_cnt < num_tries && this.world.counter_plant < this.settings.plants_max){
-                let cand_index = tools_random(this.list_plants.length);
-                let cand_plant = this.list_plants[cand_index];
-                if (cand_plant.is_dead){
-                    this.list_plants.splice(cand_index, 1);
-                }else{
-                    let new_plant = cand_plant.fork();
-                    if (new_plant){
-                        list_plants_next.push(new_plant);
-                    }
-                }
-
-                plant_cnt++;
-            }
-            this.list_plants.push(...list_plants_next);
-        }
-
         // traces wegräumen
         if (this.settings.feature_traces || this.settings.feature_poison || this.settings.feature_info){
             this.reduce_traces_fast();
         }
 
         this.steps++;
-    }
-
-    correct_pos_width(x_pos){
-        if (this.settings.beam_at_borders){
-            if (x_pos>=0){
-                return x_pos % this.world_width;
-            }else{
-                return this.world_width - (Math.abs(x_pos) % this.world_width);
-            }
-        }else{
-            return Math.min(Math.max(0,x_pos), this.world_width-1);
-        }
-
-    }
-
-    correct_pos_height(y_pos){
-        if (this.settings.beam_at_borders) {
-            if (y_pos >= 0) {
-                return y_pos % this.world_height;
-            } else {
-                return this.world_height - (Math.abs(y_pos) % this.world_height);
-            }
-        }else{
-            return Math.min(Math.max(0,y_pos), this.world_height-1);
-        }
     }
 
     get_object_types(){
@@ -288,17 +224,7 @@ class Simulation {
         log("click_world");
         console.log(t);
 
-        if (draw_mode == OBJECTTYPES.PLANT.id){
-            if (t.energy_object == null){
-                let p = new Plant(this);
-                this.world.world_set_energy(p, world_x, world_y);
-                this.list_plants.push(p);
-                //simulation.active_objects.push(p);
-                this.drawer.paint_fast();
-            }else{
-                log("besetzt");
-            }
-        }else if (draw_mode == OBJECTTYPES.BARRIER.id){
+        if (draw_mode == OBJECTTYPES.BARRIER.id){
             if (t.slot_object == null){
                 let b = new Barrier(this);
                 this.world.world_set(b, world_x, world_y);
