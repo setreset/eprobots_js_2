@@ -16,10 +16,16 @@ class EprobotBase{
         }
 
         let eprobot_class = eprobot_classes[eprobot_config.eprobot_class];
-        return new eprobot_class(s, program, init_data, s.settings.energy_start, eprobot_config);
+
+        // get pool
+        let pool = s["pool_"+eprobot_config.eprobot_key];
+        let eo = pool.get_object(eprobot_class);
+        //let eo = new eprobot_class();
+        eo.init(s, program, init_data, s.settings.energy_start, eprobot_config);
+        return eo;
     }
 
-    constructor(s, program, init_data, energy, config) {
+    init(s, program, init_data, energy, config) {
         this.position = null;
 
         this.s = s;
@@ -240,38 +246,42 @@ class EprobotBase{
 
             let new_program, new_data;
 
-            if (tools_random(2)==1){
-                // search eprobot next to me
-                let co_eprobots = [];
-                let box = 10;
-                for (let co_eprobot of this.s["list_"+this.config.eprobot_key]) {
-                    if (co_eprobot==this){
-                        continue;
-                    }
-                    if (co_eprobot.position.x>this.position.x-box && co_eprobot.position.x<this.position.x+box){
-                        if (co_eprobot.position.y>this.position.y-box && co_eprobot.position.y<this.position.y+box){
-                            co_eprobots.push(co_eprobot);
-                        }
-                    }
-                }
-                if (co_eprobots.length>0){
-                    this.s.stats_incr("fork_crossover");
+            //if (tools_random(2)==1){
+            //    // search eprobot next to me
+            //    let co_eprobots = [];
+            //    let box = 10;
+            //    for (let co_eprobot of this.s["list_"+this.config.eprobot_key]) {
+            //        if (co_eprobot==this){
+            //            continue;
+            //        }
+            //        if (co_eprobot.position.x>this.position.x-box && co_eprobot.position.x<this.position.x+box){
+            //            if (co_eprobot.position.y>this.position.y-box && co_eprobot.position.y<this.position.y+box){
+            //                co_eprobots.push(co_eprobot);
+            //            }
+            //        }
+            //    }
+            //    if (co_eprobots.length>0){
+            //        this.s.stats_incr("fork_crossover");
+            //
+            //        let random_index = tools_random(co_eprobots.length);
+            //        // absteigend sortieren
+            //        //co_eprobots.sort(function(a, b){return b.energy - a.energy});
+            //        new_program = tools_crossover(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program, co_eprobots[random_index].program);
+            //        new_data = tools_crossover(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data, co_eprobots[random_index].init_data);
+            //    }else{
+            //        let r = this.clone_eprobot();
+            //        new_program = r[0];
+            //        new_data = r[1];
+            //    }
+            //}else{
+            //    let r = this.clone_eprobot();
+            //    new_program = r[0];
+            //    new_data = r[1];
+            //}
 
-                    let random_index = tools_random(co_eprobots.length);
-                    // absteigend sortieren
-                    //co_eprobots.sort(function(a, b){return b.energy - a.energy});
-                    new_program = tools_crossover(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program, co_eprobots[random_index].program);
-                    new_data = tools_crossover(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data, co_eprobots[random_index].init_data);
-                }else{
-                    let r = this.clone_eprobot();
-                    new_program = r[0];
-                    new_data = r[1];
-                }
-            }else{
-                let r = this.clone_eprobot();
-                new_program = r[0];
-                new_data = r[1];
-            }
+            let r = this.clone_eprobot();
+            new_program = r[0];
+            new_data = r[1];
 
             let energy_for_child = this.s.settings.energy_start;
 
@@ -283,7 +293,11 @@ class EprobotBase{
             this.energy = this.energy - energy_for_child;
 
             let eprobot_class = eprobot_classes[this.config.eprobot_class];
-            new_eprobot = new eprobot_class(this.s, new_program, new_data, energy_for_child, this.config);
+
+            // get pool
+            let pool = this.s["pool_"+this.config.eprobot_key];
+            new_eprobot = pool.get_object(eprobot_class);
+            new_eprobot.init(this.s, new_program, new_data, energy_for_child, this.config);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
         }
         return new_eprobot

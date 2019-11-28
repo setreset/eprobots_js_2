@@ -42,6 +42,13 @@ class Simulation {
         }
     }
 
+    pool_eprobots_init(){
+        for (let eprobot_config of this.simconfig){
+            let eprobot_class = eprobot_classes[eprobot_config.eprobot_class];
+            this["pool_"+eprobot_config.eprobot_key] = new ObjectPool(eprobot_class);
+        }
+    }
+
     init(settings){
         this.settings = settings;
 
@@ -63,6 +70,7 @@ class Simulation {
         log("reduce_traces_tries: "+this.reduce_traces_tries);
 
         this.list_eprobots_init();
+        this.pool_eprobots_init();
 
         this.list_plants = [];
         this.stats = {};
@@ -164,7 +172,7 @@ class Simulation {
         }
     }
 
-    process_eprobots(list_eprobots){
+    process_eprobots(list_eprobots, pool_eprobots){
         let list_eprobots_next = [];
         let eprobots_forkable = [];
 
@@ -188,6 +196,7 @@ class Simulation {
             }else{
                 this.world.world_unset(o.position.x, o.position.y, o);
                 o.kill();
+                pool_eprobots.return_object(o);
                 //let a = new Ate(this);
                 //this.world.world_set(a, o.t.x, o.t.y);
             }
@@ -216,7 +225,7 @@ class Simulation {
 
     simulation_step(){
         for (let eprobot_config of this.simconfig){
-            let r_eprobots = this.process_eprobots(this["list_"+eprobot_config.eprobot_key]);
+            let r_eprobots = this.process_eprobots(this["list_"+eprobot_config.eprobot_key],this["pool_"+eprobot_config.eprobot_key]);
             let eprobots_forkable = r_eprobots.eprobots_forkable;
             let list_eprobots_next = r_eprobots.list_eprobots_next;
 
