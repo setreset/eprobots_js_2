@@ -321,6 +321,6 @@ class EprobotBase{
     }
 
     is_living(){
-        return this.tick <= this.settings.eprobots_lifetime_max && this.energy > 0;
+        return this.tick <= this.s.settings.eprobots_lifetime_max && this.energy > 0;
     }
 }

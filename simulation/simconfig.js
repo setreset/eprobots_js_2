@@ -3,8 +3,21 @@ var simconfig = [
         "eprobot_key": "eprobot_plant",
         "eprobot_class": "plant",
         "base_color": 120,
+        "individuals_max": 2500,
+        "tails": false,
+    },
+    {
+        "eprobot_key": "eprobot_a",
+        "eprobot_class": "eprobot",
+        "base_color": 0,
         "individuals_max": 500,
-        "tails": false
+        "tails": true,
+
+        "special_energy": false,
+        "special_energy_consume_fields": [],
+        "special_energy_no_go_fields": [],
+
+        "note_create": "C4"
     }
     //{
     //    "eprobot_key": "eprobot_a",

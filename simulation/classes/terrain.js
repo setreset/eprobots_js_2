@@ -55,14 +55,6 @@ class Terrain {
         return this.slot_object;
     }
 
-    set_energy_object(o){
-        this.energy_object = o;
-    }
-
-    get_energy_object(){
-        return this.energy_object;
-    }
-
     set_trace_object_eprobot(o){
         this.trace_object_eprobot = o;
     }

@@ -39,39 +39,49 @@ class Eprobot extends EprobotBase{
     }
 
     try_eat(t_new){
-        let energy_object = t_new.get_energy_object();
-        if (energy_object){
-            if (energy_object.get_id()==OBJECTTYPES.PLANT.id){
-                //slot_object.kill();
-                this.energy+=this.s.settings.energy_profit_plant;
-                energy_object.energy_count--;
-                if (energy_object.energy_count==0){
-                    energy_object.is_dead=true;
-                    this.s.world.world_unset_energy(t_new.x, t_new.y, energy_object);
-                    //console.log(new Date()+": entferne pflanze");
-                }
-            }
-        }
+        let energy_object = t_new.get_slot_object();
+        if (energy_object && energy_object.get_id()==OBJECTTYPES.PLANT.id){
 
-        for (let special_energy_consume_field of this.config.special_energy_consume_fields){
-            if (t_new["special_energy_"+special_energy_consume_field]>0){
-                this.energy+=this.s.settings.energy_profit_plant;
-                t_new["special_energy_"+special_energy_consume_field] = tools_negative_to_0(t_new["special_energy_"+special_energy_consume_field]-1);
-            }
+            this.energy+=this.s.settings.energy_profit_plant;
+            energy_object.kill();
+            this.s.world.world_unset(t_new.x, t_new.y, energy_object);
         }
     }
 
+    //try_eat(t_new){
+    //    let energy_object = t_new.get_energy_object();
+    //    if (energy_object){
+    //        if (energy_object.get_id()==OBJECTTYPES.PLANT.id){
+    //            //slot_object.kill();
+    //            this.energy+=this.s.settings.energy_profit_plant;
+    //            energy_object.energy_count--;
+    //            if (energy_object.energy_count==0){
+    //                energy_object.is_dead=true;
+    //                this.s.world.world_unset_energy(t_new.x, t_new.y, energy_object);
+    //                //console.log(new Date()+": entferne pflanze");
+    //            }
+    //        }
+    //    }
+    //
+    //    for (let special_energy_consume_field of this.config.special_energy_consume_fields){
+    //        if (t_new["special_energy_"+special_energy_consume_field]>0){
+    //            this.energy+=this.s.settings.energy_profit_plant;
+    //            t_new["special_energy_"+special_energy_consume_field] = tools_negative_to_0(t_new["special_energy_"+special_energy_consume_field]-1);
+    //        }
+    //    }
+    //}
+
     action_hook(output){
-        let dropval = output[2];
-
-        if (dropval==1){
-            let t = this.s.world.get_terrain(this.position.x, this.position.y);
-
-            if (t["special_energy_"+this.config.eprobot_key]==0){
-                t["special_energy_"+this.config.eprobot_key]++;
-                this.energy -= 20;
-            }
-        }
+        //let dropval = output[2];
+        //
+        //if (dropval==1){
+        //    let t = this.s.world.get_terrain(this.position.x, this.position.y);
+        //
+        //    if (t["special_energy_"+this.config.eprobot_key]==0){
+        //        t["special_energy_"+this.config.eprobot_key]++;
+        //        this.energy -= 20;
+        //    }
+        //}
     }
 }
 
