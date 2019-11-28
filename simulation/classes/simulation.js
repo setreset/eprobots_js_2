@@ -151,7 +151,7 @@ class Simulation {
     }
 
     process_eprobots(list_eprobots){
-        let list_eprobots_next = {};
+        let list_eprobots_to_delete = [];
         let eprobots_forkable = [];
 
         //shuffle(this.active_objects);
@@ -170,26 +170,26 @@ class Simulation {
                 if (o.ep.fork_ready()){
                     eprobots_forkable.push(o.ep);
                 }
-                list_eprobots_next[o.ep_key] = {
-                    "ep": o.ep,
-                    "ep_key": o.ep_key
-                };
 
             }else{
                 this.world.world_unset(o.ep.position.x, o.ep.position.y, o.ep);
                 o.ep.kill();
                 //let a = new Ate(this);
                 //this.world.world_set(a, o.t.x, o.t.y);
+                list_eprobots_to_delete.push(o.ep_key);
             }
         }
 
+        for (let o_key of list_eprobots_to_delete){
+            delete list_eprobots[o_key];
+        }
+
         return {
-            "list_eprobots_next": list_eprobots_next,
             "eprobots_forkable": eprobots_forkable
         };
     }
 
-    fork_eprobots(eprobots_forkable, list_eprobots_next){
+    fork_eprobots(eprobots_forkable, list_eprobots){
         for (let o of eprobots_forkable) {
             let new_eprobot = null;
             if (this.world["counter_"+ o.config.eprobot_key] < o.get_individuum_max()){
@@ -201,7 +201,7 @@ class Simulation {
                         "ep": new_eprobot,
                         "ep_key": ep_key
                     }
-                    list_eprobots_next[ep_key] = ep_ds;
+                    list_eprobots[ep_key] = ep_ds;
                 }
             }else{
                 break;
@@ -213,11 +213,11 @@ class Simulation {
         for (let eprobot_config of this.simconfig){
             let r_eprobots = this.process_eprobots(this["list_"+eprobot_config.eprobot_key]);
             let eprobots_forkable = r_eprobots.eprobots_forkable;
-            let list_eprobots_next = r_eprobots.list_eprobots_next;
+            //let list_eprobots_next = r_eprobots.list_eprobots_next;
 
             // fork
-            this.fork_eprobots(eprobots_forkable, list_eprobots_next);
-            this["list_"+eprobot_config.eprobot_key] = list_eprobots_next;
+            this.fork_eprobots(eprobots_forkable, this["list_"+eprobot_config.eprobot_key]);
+            //this["list_"+eprobot_config.eprobot_key] = list_eprobots_next;
         }
 
         // traces wegräumen
