@@ -238,38 +238,43 @@ class EprobotBase{
 
             let new_program, new_data;
 
-            if (tools_random(2)==1){
-                // search eprobot next to me
-                let co_eprobots = [];
-                let box = 10;
-                for (let co_eprobot of this.s["list_"+this.config.eprobot_key]) {
-                    if (co_eprobot==this){
-                        continue;
-                    }
-                    if (co_eprobot.position.x>this.position.x-box && co_eprobot.position.x<this.position.x+box){
-                        if (co_eprobot.position.y>this.position.y-box && co_eprobot.position.y<this.position.y+box){
-                            co_eprobots.push(co_eprobot);
-                        }
-                    }
-                }
-                if (co_eprobots.length>0){
-                    this.s.stats_incr("fork_crossover");
+            //// crossing over
+            //if (tools_random(2)==1){
+            //    // search eprobot next to me
+            //    let co_eprobots = [];
+            //    let box = 10;
+            //    for (let co_eprobot of this.s["list_"+this.config.eprobot_key]) {
+            //        if (co_eprobot==this){
+            //            continue;
+            //        }
+            //        if (co_eprobot.position.x>this.position.x-box && co_eprobot.position.x<this.position.x+box){
+            //            if (co_eprobot.position.y>this.position.y-box && co_eprobot.position.y<this.position.y+box){
+            //                co_eprobots.push(co_eprobot);
+            //            }
+            //        }
+            //    }
+            //    if (co_eprobots.length>0){
+            //        this.s.stats_incr("fork_crossover");
+            //
+            //        let random_index = tools_random(co_eprobots.length);
+            //        // absteigend sortieren
+            //        //co_eprobots.sort(function(a, b){return b.energy - a.energy});
+            //        new_program = tools_crossover(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program, co_eprobots[random_index].program);
+            //        new_data = tools_crossover(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data, co_eprobots[random_index].init_data);
+            //    }else{
+            //        let r = this.clone_eprobot();
+            //        new_program = r[0];
+            //        new_data = r[1];
+            //    }
+            //}else{
+            //    let r = this.clone_eprobot();
+            //    new_program = r[0];
+            //    new_data = r[1];
+            //}
 
-                    let random_index = tools_random(co_eprobots.length);
-                    // absteigend sortieren
-                    //co_eprobots.sort(function(a, b){return b.energy - a.energy});
-                    new_program = tools_crossover(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program, co_eprobots[random_index].program);
-                    new_data = tools_crossover(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data, co_eprobots[random_index].init_data);
-                }else{
-                    let r = this.clone_eprobot();
-                    new_program = r[0];
-                    new_data = r[1];
-                }
-            }else{
-                let r = this.clone_eprobot();
-                new_program = r[0];
-                new_data = r[1];
-            }
+            let r = this.clone_eprobot();
+            new_program = r[0];
+            new_data = r[1];
 
             let energy_for_child = this.s.settings.energy_start;
 

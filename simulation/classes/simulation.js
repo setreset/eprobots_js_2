@@ -38,7 +38,7 @@ class Simulation {
 
     list_eprobots_init(){
         for (let eprobot_config of this.simconfig){
-            this["list_"+eprobot_config.eprobot_key] = [];
+            this["list_"+eprobot_config.eprobot_key] = {};
         }
     }
 
@@ -64,7 +64,6 @@ class Simulation {
 
         this.list_eprobots_init();
 
-        this.list_plants = [];
         this.stats = {};
 
         this.add_borders();
@@ -101,7 +100,12 @@ class Simulation {
                 let eprobot_class = eprobot_classes[eprobot_config.eprobot_class];
                 let ep = eprobot_class.seed(this, eprobot_config);
                 this.world.world_set(ep, x, y);
-                this["list_"+eprobot_config.eprobot_key].push(ep);
+                let ep_key = makeid(5);
+                let ep_ds = {
+                    "ep": ep,
+                    "ep_key": ep_key
+                };
+                this["list_"+eprobot_config.eprobot_key][ep_key] = ep_ds;
             }
         }
     }
@@ -147,29 +151,33 @@ class Simulation {
     }
 
     process_eprobots(list_eprobots){
-        let list_eprobots_next = [];
+        let list_eprobots_next = {};
         let eprobots_forkable = [];
 
         //shuffle(this.active_objects);
 
-        for (let o of list_eprobots) {
-            if (o.is_dead) continue;
-            let living = o.is_living();
+        for (let o_key in list_eprobots) {
+            let o = list_eprobots[o_key];
+            if (o.ep.is_dead) continue;
+            let living = o.ep.is_living();
 
             if (living){
                 // INPUT
-                o.set_input();
+                o.ep.set_input();
 
-                o.step();
+                o.ep.step();
 
-                if (o.fork_ready()){
-                    eprobots_forkable.push(o);
+                if (o.ep.fork_ready()){
+                    eprobots_forkable.push(o.ep);
                 }
-                list_eprobots_next.push(o);
+                list_eprobots_next[o.ep_key] = {
+                    "ep": o.ep,
+                    "ep_key": o.ep_key
+                };
 
             }else{
-                this.world.world_unset(o.position.x, o.position.y, o);
-                o.kill();
+                this.world.world_unset(o.ep.position.x, o.ep.position.y, o.ep);
+                o.ep.kill();
                 //let a = new Ate(this);
                 //this.world.world_set(a, o.t.x, o.t.y);
             }
@@ -188,7 +196,12 @@ class Simulation {
                 new_eprobot = o.fork();
                 if (new_eprobot){
                     play_tone(this.synth, o.config.note_create, 0.1, this.settings.SOUND);
-                    list_eprobots_next.push(new_eprobot);
+                    let ep_key = makeid(5);
+                    let ep_ds = {
+                        "ep": new_eprobot,
+                        "ep_key": ep_key
+                    }
+                    list_eprobots_next[ep_key] = ep_ds;
                 }
             }else{
                 break;
