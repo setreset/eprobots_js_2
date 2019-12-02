@@ -1,30 +1,28 @@
 class EprobotBase{
 
     static seed(s, eprobot_config){
-        var program = [];
+        var program = s.pool_array.get_object();
         for (var pi = 0; pi < s.settings.PROGRAM_LENGTH; pi++) {
             var val = tools_random(s.settings.PROGRAM_LENGTH * 10) - s.settings.PROGRAM_LENGTH;
             program.push(val);
         }
 
-        var init_data = [];
+        var init_data = s.pool_array.get_object();
         for (var di = 0; di < s.settings.DATA_LENGTH; di++) {
             var val = tools_random2(-720, 720);
             init_data.push(val);
         }
 
-        let eprobot_class = eprobot_classes[eprobot_config.eprobot_class];
-
         // get pool
         let pool = s["pool_"+eprobot_config.eprobot_key];
-        let eo = pool.get_object(eprobot_class);
+        let eo = pool.get_object();
         //let eo = new eprobot_class();
         eo.init(s, program, init_data, s.settings.energy_start, eprobot_config);
         return eo;
     }
 
     init(s, program, init_data, energy, config) {
-        this.position = null;
+        this.position = {x: null, y:null};
 
         this.s = s;
         this.tick = 0;
@@ -77,8 +75,8 @@ class EprobotBase{
 
     clone_eprobot(){
         this.s.stats_incr("fork_clone");
-        let new_program = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program);
-        let new_data = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data);
+        let new_program = tools_mutate(this.s.pool_array, this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program);
+        let new_data = tools_mutate(this.s.pool_array, this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data);
         return [new_program, new_data];
     }
 
@@ -290,11 +288,9 @@ class EprobotBase{
 
             this.energy = this.energy - energy_for_child;
 
-            let eprobot_class = eprobot_classes[this.config.eprobot_class];
-
             // get pool
             let pool = this.s["pool_"+this.config.eprobot_key];
-            new_eprobot = pool.get_object(eprobot_class);
+            new_eprobot = pool.get_object();
             new_eprobot.init(this.s, new_program, new_data, energy_for_child, this.config);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
         }
@@ -316,6 +312,9 @@ class EprobotBase{
             t["tail_"+this.config.eprobot_key] = Math.max(t["tail_"+this.config.eprobot_key]-1, 0);
             this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
         }
+
+        this.s.pool_array.return_object(this.init_data);
+        this.s.pool_array.return_object(this.working_data);
     }
 
     set_odor_fields(){

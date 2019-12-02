@@ -8,9 +8,6 @@ class Simulation {
         this.steps = 0;
 
         sim = this;
-
-        //create a synth and connect it to the master output (your speakers)
-        this.synth = new Tone.Synth().toMaster();
     }
 
     prepare(){
@@ -38,7 +35,7 @@ class Simulation {
 
     list_eprobots_init(){
         for (let eprobot_config of this.simconfig){
-            this["list_"+eprobot_config.eprobot_key] = [];
+            this["list_"+eprobot_config.eprobot_key] = this.pool_array.get_object();
         }
     }
 
@@ -68,6 +65,8 @@ class Simulation {
 
         this.reduce_traces_tries = parseInt((this.world_width * this.world_height)/518);
         log("reduce_traces_tries: "+this.reduce_traces_tries);
+
+        this.pool_array = new ObjectPool(Array);
 
         this.list_eprobots_init();
         this.pool_eprobots_init();
@@ -155,8 +154,8 @@ class Simulation {
     }
 
     process_eprobots(list_eprobots, pool_eprobots){
-        let list_eprobots_next = [];
-        let eprobots_forkable = [];
+        let list_eprobots_next = this.pool_array.get_object();
+        let eprobots_forkable = this.pool_array.get_object();
 
         //shuffle(this.active_objects);
 
@@ -213,6 +212,9 @@ class Simulation {
 
             // fork
             this.fork_eprobots(eprobots_forkable, list_eprobots_next);
+            this.pool_array.return_object(eprobots_forkable);
+
+            this.pool_array.return_object(this["list_"+eprobot_config.eprobot_key]);
             this["list_"+eprobot_config.eprobot_key] = list_eprobots_next;
         }
 

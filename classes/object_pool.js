@@ -4,12 +4,13 @@ class ObjectPool{
         this.objectlist = [];
     }
 
-    get_object(oclass){
+    get_object(){
         if (this.objectlist.length==0){
             let o = new this.o_class();
             return o;
         }else{
             let o = this.objectlist[0];
+            o.length = 0;
             this.objectlist.shift();
             return o;
         }

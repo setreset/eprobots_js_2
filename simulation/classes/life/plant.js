@@ -5,7 +5,7 @@ class Plant{
     }
 
     constructor(s, config) {
-        this.position = null;
+        this.position = {x: null, y:null};
 
         this.s = s;
         this.tick = 0;

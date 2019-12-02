@@ -77,8 +77,8 @@ function tools_crossover(m_pos, m_strength, memory_a, memory_b) {
     return new_memory;
 }
 
-function tools_mutate(mutate_possibility, mutate_strength, memory) {
-    var new_memory = [];
+function tools_mutate(pool, mutate_possibility, mutate_strength, memory) {
+    var new_memory = pool.get_object();
     for (var i=0;i<memory.length;i++){
         if (i < (memory.length - 2)){
             var copyval = memory[i];
