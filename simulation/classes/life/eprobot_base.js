@@ -1,16 +1,16 @@
 class EprobotBase{
 
     static seed(s, eprobot_config){
-        var program = s.pool_array.get_object();
+        var program = s.pool_array_fixed.get_object();
         for (var pi = 0; pi < s.settings.PROGRAM_LENGTH; pi++) {
             var val = tools_random(s.settings.PROGRAM_LENGTH * 10) - s.settings.PROGRAM_LENGTH;
-            program.push(val);
+            program[pi] = val;
         }
 
-        var init_data = s.pool_array.get_object();
+        var init_data = s.pool_array_fixed.get_object();
         for (var di = 0; di < s.settings.DATA_LENGTH; di++) {
             var val = tools_random2(-720, 720);
-            init_data.push(val);
+            init_data[di] = val;
         }
 
         // get pool
@@ -35,7 +35,9 @@ class EprobotBase{
         this.program = program;
 
         this.init_data = init_data;
-        this.working_data = init_data.slice(0);
+        let working_data = s.pool_array_fixed.get_object();
+        tools_copy_array(init_data, working_data);
+        this.working_data = working_data;
 
         this.tail = [];
 
@@ -75,8 +77,8 @@ class EprobotBase{
 
     clone_eprobot(){
         this.s.stats_incr("fork_clone");
-        let new_program = tools_mutate(this.s.pool_array, this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program);
-        let new_data = tools_mutate(this.s.pool_array, this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data);
+        let new_program = tools_mutate(this.s.pool_array_fixed, this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program);
+        let new_data = tools_mutate(this.s.pool_array_fixed, this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data);
         return [new_program, new_data];
     }
 
@@ -275,9 +277,14 @@ class EprobotBase{
             //    new_data = r[1];
             //}
 
-            let r = this.clone_eprobot();
-            new_program = r[0];
-            new_data = r[1];
+            //let r = this.clone_eprobot();
+            //new_program = r[0];
+            //new_data = r[1];
+
+            new_program = this.s.pool_array_fixed.get_object();
+            tools_mutate(this.s.pool_array_fixed, this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program, new_program);
+            new_data = this.s.pool_array_fixed.get_object();
+            tools_mutate(this.s.pool_array_fixed, this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data, new_data);
 
             let energy_for_child = this.s.settings.energy_start;
 
@@ -313,8 +320,9 @@ class EprobotBase{
             this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
         }
 
-        this.s.pool_array.return_object(this.init_data);
-        this.s.pool_array.return_object(this.working_data);
+        this.s.pool_array_fixed.return_object(this.program);
+        this.s.pool_array_fixed.return_object(this.init_data);
+        this.s.pool_array_fixed.return_object(this.working_data);
     }
 
     set_odor_fields(){

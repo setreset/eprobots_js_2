@@ -66,7 +66,8 @@ class Simulation {
         this.reduce_traces_tries = parseInt((this.world_width * this.world_height)/518);
         log("reduce_traces_tries: "+this.reduce_traces_tries);
 
-        this.pool_array = new ObjectPool(Array);
+        this.pool_array = new ObjectPool_Array();
+        this.pool_array_fixed = new ObjectPool_Array_fixed(this.settings.PROGRAM_LENGTH);
 
         this.list_eprobots_init();
         this.pool_eprobots_init();

@@ -77,25 +77,22 @@ function tools_crossover(m_pos, m_strength, memory_a, memory_b) {
     return new_memory;
 }
 
-function tools_mutate(pool, mutate_possibility, mutate_strength, memory) {
-    var new_memory = pool.get_object();
+function tools_mutate(mutate_possibility, mutate_strength, memory, new_memory) {
     for (var i=0;i<memory.length;i++){
         if (i < (memory.length - 2)){
             var copyval = memory[i];
             if (Math.random() < mutate_possibility) {
                 copyval = copyval + tools_random(mutate_strength) - (mutate_strength / 2);
             }
-            new_memory.push(copyval);
+            new_memory[i] = copyval;
         }else{
-            new_memory.push(memory[i]);
+            new_memory[i] = memory[i];
         }
     }
 
     // control_vals
     //new_memory[memory.length-1] = tools_random(10);
     //new_memory[memory.length-2] = tools_random(2);
-
-    return new_memory;
 }
 
 function makeid(nchars){
@@ -242,5 +239,11 @@ function play_tone(synth, note, propability, sound){
     //play a middle 'C' for the duration of an 8th note
     if (sound && Math.random()<propability){
         synth.triggerAttackRelease(note, "8n");
+    }
+}
+
+function tools_copy_array(from_array, to_array){
+    for (let i = 0; i < from_array.length; i++) {
+        to_array[i] = from_array[i];
     }
 }
