@@ -64,7 +64,6 @@ class Simulation {
 
         this.list_eprobots_init();
 
-        this.list_plants = [];
         this.stats = {};
 
         this.add_borders();
