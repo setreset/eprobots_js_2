@@ -17,17 +17,17 @@ var simconfig = [
         "special_energy_consume_fields": [],
         "special_energy_no_go_fields": [],
     },
-    {
-        "eprobot_key": "eprobot_eater",
-        "eprobot_class": "eprobot_eater",
-        "base_color": 190,
-        "individuals_max": 250,
-        "tails": true,
-
-        "special_energy": false,
-        "special_energy_consume_fields": [],
-        "special_energy_no_go_fields": []
-    }
+    //{
+    //    "eprobot_key": "eprobot_eater",
+    //    "eprobot_class": "eprobot_eater",
+    //    "base_color": 190,
+    //    "individuals_max": 250,
+    //    "tails": true,
+    //
+    //    "special_energy": false,
+    //    "special_energy_consume_fields": [],
+    //    "special_energy_no_go_fields": []
+    //}
     //{
     //    "eprobot_key": "eprobot_a",
     //    "eprobot_class": "eprobot",
