@@ -89,15 +89,8 @@ class EprobotBase{
             //this.working_data[current_frame_end-7] = t.poison;
             //this.working_data[current_frame_end-6] = t.trace_eprobot;
 
-            this.working_data[current_frame_end-7] = t.odor_barrier;
-            this.working_data[current_frame_end-6] = t.odor_plant;
-
-            if (t.energy_object) {
-                this.working_data[current_frame_end - 5] = 1;
-            }else{
-                this.working_data[current_frame_end-5] = 0;
-            }
-
+            //this.working_data[current_frame_end-6] = t.odor_barrier;
+            this.working_data[current_frame_end-5] = t.odor_plant;
             this.working_data[current_frame_end-4] = this.tick;
             this.working_data[current_frame_end-3] = this.energy;
             this.working_data[current_frame_end-2] = this.position.x;
@@ -218,10 +211,20 @@ class EprobotBase{
             }
         }
 
-        if (t_new.get_slot_object() == null && !no_go_field){
-            this.move(t_new.x, t_new.y);
-            this.energy--;
+        let slot_object = t_new.get_slot_object();
+        if (slot_object){
+            if (slot_object.get_id()==OBJECTTYPES.BARRIER.id){
+                this.kill();
+                this.s.world.world_unset(this.position.x, this.position.y, this);
+            }
+        }else{
+            if (!no_go_field){
+                this.move(t_new.x, t_new.y);
+                this.energy--;
+            }
         }
+
+
     }
 
     fork(){
