@@ -45,7 +45,8 @@ class Drawer {
         this._paint_fast(this.canvas_ctx);
         //this._paint_full(this.canvas_ctx);
 
-        this.paintobj = {};
+        //this.paintobj = {};
+        for (var member in this.paintobj) delete this.paintobj[member];
         //this.paintlist = [];
     }
 
