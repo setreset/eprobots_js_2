@@ -15,7 +15,6 @@ $(document).ready(function() {
     }
 
     controls["simulation_canvas"] = $("#canvas");
-    controls["simulation_canvas2"] = $("#canvas2");
     controls["btn_reset"] = $("#btn_reset");
     controls["btn_start"] = $("#btn_start");
     controls["btn_fullscreen"] = $("#btn_fullscreen");

@@ -47,6 +47,8 @@ class Simulation {
 
         let screensize_width = window.screen.width; // * window.devicePixelRatio;
         let screensize_height = window.screen.height; // * window.devicePixelRatio;
+        this.canvas.width = screensize_width;
+        this.canvas.height = screensize_height;
         log("devicePixelRatio: "+window.devicePixelRatio);
         log("resolution: "+screensize_width+"x"+screensize_height);
         // welt + 2 wegen umrandung mit barrien
