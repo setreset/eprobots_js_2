@@ -1,7 +1,8 @@
 class Barrier {
 
     constructor(s) {
-        this.position = null;
+        this.position_x = null;
+        this.position_y = null;
 
         this.s = s;
     }
@@ -23,11 +24,11 @@ class Barrier {
     }
 
     set_odor_fields(){
-        let t = this.s.world.get_terrain(this.position.x, this.position.y);
+        let t = this.s.world.get_terrain(this.position_x, this.position_y);
         t.odor_barrier+=2;
         for (let v of DIRECTIONS) {
-            let new_pos_x = this.position.x + v.x;
-            let new_pos_y = this.position.y + v.y;
+            let new_pos_x = this.position_x + v.x;
+            let new_pos_y = this.position_y + v.y;
 
             // get terrain
             if (new_pos_x>=0 && new_pos_x<this.s.world_width && new_pos_y>=0 && new_pos_y<this.s.world_height){
@@ -38,11 +39,11 @@ class Barrier {
     }
 
     unset_odor_fields(){
-        let t = this.s.world.get_terrain(this.position.x, this.position.y);
+        let t = this.s.world.get_terrain(this.position_x, this.position_y);
         t.odor_barrier-=2;
         for (let v of DIRECTIONS) {
-            let new_pos_x = this.position.x + v.x;
-            let new_pos_y = this.position.y + v.y;
+            let new_pos_x = this.position_x + v.x;
+            let new_pos_y = this.position_y + v.y;
 
             // get terrain
             if (new_pos_x>=0 && new_pos_x<this.s.world_width && new_pos_y>=0 && new_pos_y<this.s.world_height){

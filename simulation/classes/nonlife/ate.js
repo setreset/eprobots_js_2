@@ -1,7 +1,8 @@
 class Ate {
 
     constructor(s) {
-        this.position = null;
+        this.position_x = null;
+        this.position_y = null;
 
         this.s = s;
     }

@@ -39,7 +39,8 @@ class World {
         o.unset_odor_fields();
         var t = this.get_terrain(new_pos_x, new_pos_y);
         t.set_slot_object(o);
-        o.position = {x: new_pos_x, y: new_pos_y};
+        o.position_x = new_pos_x;
+        o.position_y = new_pos_y;
         o.set_odor_fields();
 
         this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
@@ -53,7 +54,8 @@ class World {
     world_set(o, x_pos, y_pos){
         var t = this.get_terrain(x_pos, y_pos);
         t.set_slot_object(o);
-        o.position = {x: x_pos, y: y_pos};
+        o.position_x = x_pos;
+        o.position_y = y_pos;
 
         if (o.get_id()==OBJECTTYPES.EPROBOT.id || o.get_id()==OBJECTTYPES.PLANT.id){
             this["counter_"+ o.config.eprobot_key]++;

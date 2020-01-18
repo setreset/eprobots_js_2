@@ -18,7 +18,8 @@ class EprobotBase{
     }
 
     constructor(s, program, init_data, energy, config) {
-        this.position = null;
+        this.position_x = null;
+        this.position_y = null;
 
         this.s = s;
         this.tick = 0;
@@ -81,7 +82,7 @@ class EprobotBase{
         for (let i=0;i<amount;i++){
             var current_frame_end = (i+1)*this.s.settings.DATA_INOUT_INTERVAL;
 
-            let t = this.s.world.get_terrain(this.position.x, this.position.y);
+            let t = this.s.world.get_terrain(this.position_x, this.position_y);
 
             // entfernt: ob forken in hinblick auf get_individuum_max überhaupt möglich ist
             //this.working_data[current_frame_end-11] = t.odor_eprobot;
@@ -93,8 +94,8 @@ class EprobotBase{
             this.working_data[current_frame_end-5] = t.odor_plant;
             this.working_data[current_frame_end-4] = this.tick;
             this.working_data[current_frame_end-3] = this.energy;
-            this.working_data[current_frame_end-2] = this.position.x;
-            this.working_data[current_frame_end-1] = this.position.y;
+            this.working_data[current_frame_end-2] = this.position_x;
+            this.working_data[current_frame_end-1] = this.position_y;
         }
     }
 
@@ -113,10 +114,10 @@ class EprobotBase{
     }
 
     move(new_pos_x, new_pos_y){
-        let old_t = this.s.world.get_terrain(this.position.x, this.position.y);
+        let old_t = this.s.world.get_terrain(this.position_x, this.position_y);
 
-        let old_pos_x = this.position.x;
-        let old_pos_y = this.position.y;
+        let old_pos_x = this.position_x;
+        let old_pos_y = this.position_y;
 
         this.s.world.world_move(this, old_pos_x, old_pos_y, new_pos_x, new_pos_y);
 
@@ -143,8 +144,8 @@ class EprobotBase{
         // move
         if (this.energy > 0 && moveval<DIRECTIONS.length){
             let vec = DIRECTIONS[moveval];
-            let movepos_x = this.position.x + vec.x; //this.s.correct_pos_width(this.position.x + vec.x);
-            let movepos_y = this.position.y + vec.y; //this.s.correct_pos_height(this.position.y + vec.y);
+            let movepos_x = this.position_x + vec.x; //this.s.correct_pos_width(this.position.x + vec.x);
+            let movepos_y = this.position_y + vec.y; //this.s.correct_pos_height(this.position.y + vec.y);
 
             let t_new = this.s.world.get_terrain(movepos_x, movepos_y);
 
@@ -159,7 +160,7 @@ class EprobotBase{
 
         this.action_hook(output);
 
-        let t = this.s.world.get_terrain(this.position.x, this.position.y);
+        let t = this.s.world.get_terrain(this.position_x, this.position_y);
 
         if (this.s.settings.feature_poison && poisonval==1){
             t.poison++;
@@ -215,7 +216,7 @@ class EprobotBase{
         if (slot_object){
             if (slot_object.get_id()==OBJECTTYPES.BARRIER.id){
                 this.kill();
-                this.s.world.world_unset(this.position.x, this.position.y, this);
+                this.s.world.world_unset(this.position_x, this.position_y, this);
             }
         }else{
             if (!no_go_field){
@@ -232,8 +233,8 @@ class EprobotBase{
         let new_eprobot = null;
         let spreadval = tools_random(8);
         let vec = DIRECTIONS[spreadval];
-        let spreadpos_x = this.position.x + vec.x; //this.s.correct_pos_width(this.position.x + vec.x);
-        let spreadpos_y = this.position.y + vec.y; //this.s.correct_pos_height(this.position.y + vec.y);
+        let spreadpos_x = this.position_x + vec.x; //this.s.correct_pos_width(this.position.x + vec.x);
+        let spreadpos_y = this.position_y + vec.y; //this.s.correct_pos_height(this.position.y + vec.y);
         //let spreadpos_x = this.s.settings.nest_x+tools_random2(-20,20);
         //let spreadpos_y = this.s.settings.nest_y+tools_random2(-20,20);
         let spreadterrain = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
@@ -314,7 +315,7 @@ class EprobotBase{
     set_odor_fields(){
         for (let v of DIRECTIONS) {
             // get terrain
-            let t = this.s.world.get_terrain(this.position.x + v.x, this.position.y + v.y);
+            let t = this.s.world.get_terrain(this.position_x + v.x, this.position_y + v.y);
             t.odor_eprobot++;
         }
     }
@@ -322,7 +323,7 @@ class EprobotBase{
     unset_odor_fields(){
         for (let v of DIRECTIONS) {
             // get terrain
-            let t = this.s.world.get_terrain(this.position.x + v.x, this.position.y + v.y);
+            let t = this.s.world.get_terrain(this.position_x + v.x, this.position_y + v.y);
             t.odor_eprobot--;
         }
     }

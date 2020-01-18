@@ -5,7 +5,8 @@ class Plant{
     }
 
     constructor(s, config) {
-        this.position = null;
+        this.position_x = null;
+        this.position_y = null;
 
         this.s = s;
         this.tick = 0;
@@ -40,8 +41,8 @@ class Plant{
         let new_eprobot = null;
         let spreadval = tools_random(8);
         let vec = DIRECTIONS[spreadval];
-        let spreadpos_x = this.position.x + vec.x;
-        let spreadpos_y = this.position.y + vec.y;
+        let spreadpos_x = this.position_x + vec.x;
+        let spreadpos_y = this.position_y + vec.y;
         let spreadterrain = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
         if (spreadterrain.slot_object == null){
             let eprobot_class = eprobot_classes[this.config.eprobot_class];
@@ -62,7 +63,7 @@ class Plant{
     set_odor_fields(){
         for (let v of DIRECTIONS) {
             // get terrain
-            let t = this.s.world.get_terrain(this.position.x + v.x, this.position.y + v.y);
+            let t = this.s.world.get_terrain(this.position_x + v.x, this.position_y + v.y);
             t.odor_plant++;
         }
     }
@@ -70,7 +71,7 @@ class Plant{
     unset_odor_fields(){
         for (let v of DIRECTIONS) {
             // get terrain
-            let t = this.s.world.get_terrain(this.position.x + v.x, this.position.y + v.y);
+            let t = this.s.world.get_terrain(this.position_x + v.x, this.position_y + v.y);
             t.odor_plant--;
         }
     }
