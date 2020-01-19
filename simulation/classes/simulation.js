@@ -142,7 +142,7 @@ class Simulation {
             }
 
             if (reduced){
-                this.drawer.refresh_paintobj(cand_terrain.x, cand_terrain.y, cand_terrain.get_color());
+                cand_terrain.prepare_paint();
             }
         }
     }

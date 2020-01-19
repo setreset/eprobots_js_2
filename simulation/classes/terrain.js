@@ -5,6 +5,8 @@ class Terrain {
         this.x = x;
         this.y = y;
 
+        this.dirty = false;
+
         this.slot_object = null;
         this.energy_object = null;
 
@@ -57,6 +59,13 @@ class Terrain {
 
     set_trace_object_eprobot(o){
         this.trace_object_eprobot = o;
+    }
+
+    prepare_paint(){
+        if (this.dirty == false){
+            this.dirty = true;
+            this.s.drawer.paintlist.push(this);
+        }
     }
 
     get_color(){

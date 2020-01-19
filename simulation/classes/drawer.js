@@ -8,7 +8,6 @@ class Drawer {
         this.y_step = null;
 
         this.paintlist = [];
-        this.paintobj = {};
 
         this.init_canvas();
     }
@@ -32,8 +31,7 @@ class Drawer {
     }
 
     refresh_paintobj(x, y, color){
-        let coord = x.toString() + ":" + y.toString();
-        this.paintobj[coord] = {color: color, x_pos: x, y_pos: y};
+        this.paintlist.push({color: color, x_pos: x, y_pos: y});
         //this.paintlist.push({color: o.get_color(), x_pos: o.x_pos, y_pos: o.y_pos});
     }
 
@@ -45,18 +43,16 @@ class Drawer {
         this._paint_fast(this.canvas_ctx);
         //this._paint_full(this.canvas_ctx);
 
-        this.paintobj = {};
-        //this.paintlist = [];
+        this.paintlist = [];
     }
 
     _paint_fast(ctx){
-        for (var key in this.paintobj){
-            // skip loop if the property is from prototype
-            //if (!this.s.world.paintobj.hasOwnProperty(key)) continue;
-            let el = this.paintobj[key];
-            ctx.fillStyle = el.color;
+        for (let terrain of this.paintlist){
+
+            ctx.fillStyle = terrain.get_color();
             // mit positionskorrektur für zeichenbereich
-            ctx.fillRect((el.x_pos - 1) * this.x_step, (el.y_pos - 1) * this.y_step, this.x_step, this.y_step);
+            ctx.fillRect((terrain.x - 1) * this.x_step, (terrain.y - 1) * this.y_step, this.x_step, this.y_step);
+            terrain.dirty = false;
         }
     }
 

@@ -129,7 +129,7 @@ class EprobotBase{
         old_t["tail_"+this.config.eprobot_key] += 1;
         this.tail.push({"t": old_t, "rt": this.tick+this.s.settings.TAIL_LENGTH});
 
-        this.s.drawer.refresh_paintobj(old_t.x, old_t.y, old_t.get_color());
+        old_t.prepare_paint();
     }
 
     step(){
@@ -195,7 +195,7 @@ class EprobotBase{
                 let to = this.tail.shift();
                 let t = to.t;
                 t["tail_"+this.config.eprobot_key] = Math.max(t["tail_"+this.config.eprobot_key]-1, 0);
-                this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
+                t.prepare_paint();
             }
         }
 
@@ -308,7 +308,7 @@ class EprobotBase{
         for (let to of this.tail) {
             let t = to.t;
             t["tail_"+this.config.eprobot_key] = Math.max(t["tail_"+this.config.eprobot_key]-1, 0);
-            this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
+            t.prepare_paint();
         }
     }
 

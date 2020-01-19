@@ -43,7 +43,7 @@ class World {
         o.position_y = new_pos_y;
         o.set_odor_fields();
 
-        this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
+        t.prepare_paint();
 
         var t_old = this.get_terrain(old_pos_x, old_pos_y);
         t_old.set_slot_object(null);
@@ -64,7 +64,7 @@ class World {
             o.set_odor_fields();
         }
 
-        this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
+        t.prepare_paint();
     }
 
     world_unset(x,y, o){
@@ -78,7 +78,7 @@ class World {
             o.unset_odor_fields();
         }
 
-        this.s.drawer.refresh_paintobj(t.x, t.y, t.get_color());
+        t.prepare_paint();
     }
 
 }
