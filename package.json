@@ -1,0 +1,26 @@
+{
+  "name": "eprobots_js_2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main_electron.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/setreset/eprobots_js_2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/setreset/eprobots_js_2/issues"
+  },
+  "homepage": "https://github.com/setreset/eprobots_js_2#readme",
+  "devDependencies": {
+    "electron": "^7.1.10"
+  }
+}

@@ -51,6 +51,32 @@ function tools_compute(program, data, PS) {
     return step_counter;
 }
 
+function tools_crossover(m_pos, m_strength, memory_a, memory_b) {
+    // evt. swap
+    if (tools_random(2)==1){
+        let memory_c;
+        memory_c=memory_a;
+        memory_b=memory_a;
+        memory_a=memory_c;
+    }
+
+    var new_memory = [];
+    let co_index = tools_random(memory_a.length);
+    for (let i=0;i<memory_a.length;i++){
+        if (i<co_index){
+            new_memory.push(memory_a[i]);
+        }else{
+            new_memory.push(memory_b[i]);
+        }
+    }
+
+    //if (tools_random(10)<2){
+    new_memory = tools_mutate(m_pos, m_strength, new_memory);
+    //}
+
+    return new_memory;
+}
+
 function tools_mutate(mutate_possibility, mutate_strength, memory) {
     var new_memory = [];
     for (var i=0;i<memory.length;i++){
@@ -95,4 +121,126 @@ function shuffle(a) {
         a[j] = x;
     }
     return a;
+}
+
+Date.prototype.timeNow = function () {
+    return ((this.getHours() < 10)?"0":"") + this.getHours() +":"+ ((this.getMinutes() < 10)?"0":"") + this.getMinutes() +":"+ ((this.getSeconds() < 10)?"0":"") + this.getSeconds();
+};
+
+Date.prototype.today = function () {
+    let part_date = ((this.getDate() < 10)?"0":"") + this.getDate();
+    let part_month = (((this.getMonth()+1) < 10)?"0":"") + (this.getMonth()+1);
+
+    return part_date+"."+part_month+"."+this.getFullYear();
+};
+
+
+function get_current_datetime_str(){
+    var newDate = new Date();
+    return newDate.today() + " " + newDate.timeNow();
+}
+
+function log(msg){
+    console.log(get_current_datetime_str()+" " + msg);
+}
+
+function maze(x,y) {
+    var n=x*y-1;
+    if (n<0) {alert("illegal maze dimensions");return;}
+    var horiz =[];
+    for (var j= 0; j<x+1; j++) {horiz[j]= []};
+    var verti =[];
+    for (var j= 0; j<x+1; j++) {verti[j]= []};
+    var here = [Math.floor(Math.random()*x), Math.floor(Math.random()*y)];
+    var path = [here];
+    var unvisited = [];
+
+    for (var j = 0; j<x+2; j++) {
+        unvisited[j] = [];
+        for (var k= 0; k<y+1; k++){
+            unvisited[j].push(j>0 && j<x+1 && k>0 && (j != here[0]+1 || k != here[1]+1));
+        }
+    }
+
+    var next;
+    while (0 < n) {
+        var potential = [[here[0] + 1, here[1]], [here[0], here[1] + 1],
+            [here[0] - 1, here[1]], [here[0], here[1] - 1]];
+        var neighbors = [];
+        for (var j = 0; j < 4; j++){
+            if (unvisited[potential[j][0] + 1][potential[j][1] + 1]){
+                neighbors.push(potential[j]);
+            }
+        }
+
+        if (neighbors.length) {
+            n = n - 1;
+            next = neighbors[Math.floor(Math.random() * neighbors.length)];
+            unvisited[next[0] + 1][next[1] + 1] = false;
+
+            if (next[0] == here[0]){
+                horiz[next[0]][(next[1] + here[1] - 1) / 2] = true;
+            }else{
+                verti[(next[0] + here[0] - 1) / 2][next[1]] = true;
+            }
+
+            path.push(here = next);
+        } else{
+            here = path.pop();
+        }
+    }
+    return {x: x, y: y, horiz: horiz, verti: verti};
+}
+
+function maze_display(m) {
+    var text = [];
+
+    for (var j= 0; j<m.x*2+1; j++) {
+        var line= [];
+        if (j%2 == 0)
+            for (var k=0; k<m.y*4+1; k++)
+                if (0 == k%4)
+                    line[k]= '+';
+                else
+                if (j>0 && m.verti[j/2-1][Math.floor(k/4)])
+                    line[k]= ' ';
+                else
+                    line[k]= '-';
+        else
+            for (var k=0; k<m.y*4+1; k++)
+                if (0 == k%4)
+                    if (k>0 && m.horiz[(j-1)/2][k/4-1])
+                        line[k]= ' ';
+                    else
+                        line[k]= '|';
+                else
+                    line[k]= ' ';
+        if (0 == j) line[1]= line[2]= line[3]= ' ';
+        if (m.x*2-1 == j) line[4*m.y]= ' ';
+        text.push(line.join('')+'\r\n');
+    }
+    return text.join('');
+}
+
+function tools_modulo_with_wrap(number, max){
+    number = number % max;
+    if (number<0){
+        number = max + number;
+    }
+    return number;
+}
+
+function tools_negative_to_0(number){
+    if (number<0){
+        return 0;
+    }else{
+        return number;
+    }
+}
+
+function play_tone(synth, note, propability, sound){
+    //play a middle 'C' for the duration of an 8th note
+    if (sound && Math.random()<propability){
+        synth.triggerAttackRelease(note, "8n");
+    }
 }
