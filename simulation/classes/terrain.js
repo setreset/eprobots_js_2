@@ -21,12 +21,19 @@ class Terrain {
         this.trace_eprobot_expiry = null;
 
         this.tail_eprobot_init();
+        this.deadtrace_eprobot_init();
 
         this.poison = 0;
         this.poison_expiry = null;
 
         this.info = 0;
         this.info_expiry = null;
+    }
+
+    deadtrace_eprobot_init(){
+        for (let eprobot_config of this.s.simconfig){
+            this["deadtrace_" + eprobot_config.eprobot_key] = 0;
+        }
     }
 
     tail_eprobot_init(){
@@ -123,9 +130,45 @@ class Terrain {
                 if (this.info > 0){
                     let c = parseInt(tools_map_range(this.info, 0, 9, 0, 360));
                     return "hsl("+c+", 100%, 7%)";
-                }else{
-                    return this.s.settings.background_color[this.s.settings.colortheme];
                 }
+
+                let deadtrace_colors = [];
+
+                //let deadtrace_val;
+                //deadtrace_val = this["deadtrace_eprobot_a"];
+                //if (deadtrace_val > 0){
+                //    let color = 0;
+                //    let conv_val = Math.floor(tools_map_range(deadtrace_val, 0, 50, 0, 10));
+                //    // Wert soll nicht größer als 10 sein
+                //    conv_val = Math.min(conv_val, 10);
+                //    deadtrace_colors.push(chroma("hsl("+color+", 100%, "+conv_val+"%)"));
+                //}
+                //
+                //deadtrace_val = this["deadtrace_eprobot_plant"];
+                //if (deadtrace_val > 0){
+                //    let color = 120;
+                //    let conv_val = Math.floor(tools_map_range(deadtrace_val, 0, 50, 0, 10));
+                //    // Wert soll nicht größer als 10 sein
+                //    conv_val = Math.min(conv_val, 10);
+                //    deadtrace_colors.push(chroma("hsl("+color+", 100%, "+conv_val+"%)"));
+                //}
+
+                for (let eprobot_config of this.s.simconfig){
+                    let deadtrace_val = this["deadtrace_"+eprobot_config.eprobot_key];
+                    if (deadtrace_val > 0){
+                        let color = eprobot_config.base_color;
+                        let conv_val = Math.floor(tools_map_range(deadtrace_val, 0, 50, 0, 10));
+                        // Wert soll nicht größer als 10 sein
+                        conv_val = Math.min(conv_val, 10);
+                        deadtrace_colors.push(chroma("hsl("+color+", 100%, "+conv_val+"%)"));
+                    }
+                }
+
+                if (deadtrace_colors.length>0){
+                    return chroma.average(deadtrace_colors).hex();
+                }
+
+                return this.s.settings.background_color[this.s.settings.colortheme];
             }
         }
     }

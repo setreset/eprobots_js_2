@@ -310,6 +310,9 @@ class EprobotBase{
             t["tail_"+this.config.eprobot_key] = Math.max(t["tail_"+this.config.eprobot_key]-1, 0);
             t.prepare_paint();
         }
+
+        let t = this.s.world.get_terrain(this.position_x, this.position_y);
+        t["deadtrace_"+this.config.eprobot_key]++;
     }
 
     set_odor_fields(){

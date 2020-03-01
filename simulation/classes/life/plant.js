@@ -58,6 +58,9 @@ class Plant{
 
     kill(){
         this.is_dead=true;
+
+        let t = this.s.world.get_terrain(this.position_x, this.position_y);
+        t["deadtrace_"+this.config.eprobot_key]++;
     }
 
     set_odor_fields(){
