@@ -149,7 +149,6 @@ class Simulation {
 
     process_eprobots(list_eprobots){
         let list_eprobots_next = [];
-        let eprobots_forkable = [];
 
         //shuffle(this.active_objects);
 
@@ -163,11 +162,8 @@ class Simulation {
 
                 o.step();
 
-                if (o.fork_ready()){
-                    eprobots_forkable.push(o);
-                }
                 list_eprobots_next.push(o);
-
+                this.try_fork(o, list_eprobots_next);
             }else{
                 this.world.world_unset(o.position_x, o.position_y, o);
                 o.kill();
@@ -176,35 +172,21 @@ class Simulation {
             }
         }
 
-        return {
-            "list_eprobots_next": list_eprobots_next,
-            "eprobots_forkable": eprobots_forkable
-        };
+        return list_eprobots_next;
     }
 
-    fork_eprobots(eprobots_forkable, list_eprobots_next){
-        for (let o of eprobots_forkable) {
-            let new_eprobot = null;
-            if (this.world["counter_"+ o.config.eprobot_key] < o.get_individuum_max()){
-                new_eprobot = o.fork();
-                if (new_eprobot){
-                    play_tone(this.synth, o.config.note_create, 0.1, this.settings.SOUND);
-                    list_eprobots_next.push(new_eprobot);
-                }
-            }else{
-                break;
+    try_fork(o, list_eprobots_next){
+        if (this.world["counter_"+ o.config.eprobot_key] < o.get_individuum_max() && o.fork_ready()){
+            let new_eprobot = o.fork();
+            if (new_eprobot){
+                list_eprobots_next.push(new_eprobot);
             }
         }
     }
 
     simulation_step(){
         for (let eprobot_config of this.simconfig){
-            let r_eprobots = this.process_eprobots(this["list_"+eprobot_config.eprobot_key]);
-            let eprobots_forkable = r_eprobots.eprobots_forkable;
-            let list_eprobots_next = r_eprobots.list_eprobots_next;
-
-            // fork
-            this.fork_eprobots(eprobots_forkable, list_eprobots_next);
+            let list_eprobots_next = this.process_eprobots(this["list_"+eprobot_config.eprobot_key]);
             this["list_"+eprobot_config.eprobot_key] = list_eprobots_next;
         }
 
