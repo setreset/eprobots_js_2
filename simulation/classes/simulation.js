@@ -149,6 +149,7 @@ class Simulation {
 
     process_eprobots(list_eprobots){
         let list_eprobots_next = [];
+        let list_new_eprobots = [];
 
         //shuffle(this.active_objects);
 
@@ -163,13 +164,18 @@ class Simulation {
                 o.step();
 
                 list_eprobots_next.push(o);
-                this.try_fork(o, list_eprobots_next);
+                this.try_fork(o, list_new_eprobots);
             }else{
                 this.world.world_unset(o.position_x, o.position_y, o);
                 o.kill();
                 //let a = new Ate(this);
                 //this.world.world_set(a, o.t.x, o.t.y);
             }
+        }
+
+        // neue eprobots AN DAS ENDE der liste packen
+        for (let o of list_new_eprobots) {
+            list_eprobots_next.push(o);
         }
 
         return list_eprobots_next;
