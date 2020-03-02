@@ -80,7 +80,7 @@ class Plant{
     }
 
     is_living(){
-        return this.tick <= 200;
+        return this.tick <= this.config.lifetime_max;
     }
 }
 

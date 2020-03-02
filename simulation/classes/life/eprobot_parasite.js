@@ -49,13 +49,6 @@ class EprobotParasite extends EprobotBase{
                 }
             }
         }
-
-        for (let special_energy_consume_field of this.config.special_energy_consume_fields){
-            if (t_new["special_energy_"+special_energy_consume_field]>0){
-                this.energy+=this.s.settings.energy_profit_plant;
-                t_new["special_energy_"+special_energy_consume_field] = tools_negative_to_0(t_new["special_energy_"+special_energy_consume_field]-1);
-            }
-        }
     }
 
     action_hook(output){

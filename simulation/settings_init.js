@@ -11,7 +11,6 @@ var settings_init = {
     concurrency: 2,
     eprobots_max: 1000,
     SEED_EPROBOTS_NUMBER: 75,
-    eprobots_lifetime_max: 10000,
     PROGRAM_LENGTH: 500,
     DATA_LENGTH: 500,
     DATA_INOUT_INTERVAL: 50,

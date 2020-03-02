@@ -1,9 +1,4 @@
 class EprobotEater extends EprobotBase{
-    constructor(s, program, init_data, energy, config) {
-        super(s, program, init_data, energy, config);
-        this.special_energy_no_go_fields = ["eprobot_a", "eprobot_b"];
-    }
-
     get_output_OISC(){
         let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS_MAX);
 

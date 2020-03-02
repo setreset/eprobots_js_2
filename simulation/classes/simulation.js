@@ -155,9 +155,8 @@ class Simulation {
 
         for (let o of list_eprobots) {
             if (o.is_dead) continue;
-            let living = o.is_living();
 
-            if (living){
+            if (o.is_living()){
                 // INPUT
                 o.set_input();
 

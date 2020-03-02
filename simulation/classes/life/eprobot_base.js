@@ -228,14 +228,6 @@ class EprobotBase{
     }
 
     try_move(t_new){
-        let no_go_field = false;
-        for (let special_energy_no_go_field of this.config.special_energy_no_go_fields){
-            if (t_new["special_energy_"+special_energy_no_go_field] > 0){
-                no_go_field = true;
-                break;
-            }
-        }
-
         let slot_object = t_new.get_slot_object();
         if (slot_object){
             if (slot_object.get_id()==OBJECTTYPES.BARRIER.id){
@@ -243,10 +235,8 @@ class EprobotBase{
                 this.s.world.world_unset(this.position_x, this.position_y, this);
             }
         }else{
-            if (!no_go_field){
-                this.move(t_new.x, t_new.y);
-                this.energy--;
-            }
+            this.move(t_new.x, t_new.y);
+            this.energy--;
         }
 
 
@@ -356,6 +346,6 @@ class EprobotBase{
     }
 
     is_living(){
-        return this.tick <= this.s.settings.eprobots_lifetime_max && this.energy > 0;
+        return this.tick <= this.config.lifetime_max && this.energy > 0;
     }
 }
