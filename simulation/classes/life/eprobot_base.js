@@ -325,8 +325,8 @@ class EprobotBase{
             t.prepare_paint();
         }
 
-        let t = this.s.world.get_terrain(this.position_x, this.position_y);
-        t["deadtrace_"+this.config.eprobot_key]++;
+        //let t = this.s.world.get_terrain(this.position_x, this.position_y);
+        //t["deadtrace_"+this.config.eprobot_key]++;
     }
 
     set_odor_fields(){

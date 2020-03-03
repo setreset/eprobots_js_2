@@ -138,13 +138,14 @@ class Terrain {
                         let conv_val = Math.floor(tools_map_range(deadtrace_val, 0, 50, 0, 10));
                         // Wert soll nicht größer als 10 sein
                         conv_val = Math.min(conv_val, 10);
-                        deadtrace_colors.push(chroma("hsl("+color+", 100%, "+conv_val+"%)"));
+                        return "hsl("+color+", 100%, 30%)"
+						//deadtrace_colors.push(chroma("hsl("+color+", 100%, "+conv_val+"%)"));
                     }
                 }
 
-                if (deadtrace_colors.length>0){
-                    return chroma.average(deadtrace_colors).hex();
-                }
+                //if (deadtrace_colors.length>0){
+                //    return chroma.average(deadtrace_colors).hex();
+                //}
 
                 return this.s.settings.background_color[this.s.settings.colortheme];
             }
