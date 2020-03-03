@@ -7,14 +7,14 @@ var simconfig = [
         "tails": false,
         "lifetime_max": 200
     },
-    {
+    /*{
         "eprobot_key": "eprobot_a",
         "eprobot_class": "eprobot",
         "base_color": 0,
         "individuals_max": 500,
         "tails": true,
         "lifetime_max": 10000
-    },
+    },*/
     {
         "eprobot_key": "eprobot_ateeater",
         "eprobot_class": "eprobot_ateeater",

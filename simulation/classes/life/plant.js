@@ -12,6 +12,7 @@ class Plant{
         this.tick = 0;
         this.is_dead = false;
         this.config = config;
+		this.lifetime = this.config.lifetime_max+tools_random2(-20,20);
     }
 
     set_input(){
@@ -44,7 +45,7 @@ class Plant{
         let spreadpos_x = this.position_x + vec.x;
         let spreadpos_y = this.position_y + vec.y;
         let spreadterrain = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
-        if (spreadterrain.slot_object == null){
+        if (spreadterrain.slot_object == null && spreadterrain.deadtrace_eprobot_plant == 0){
             let eprobot_class = eprobot_classes[this.config.eprobot_class];
             new_eprobot = new eprobot_class(this.s, this.config);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
@@ -53,7 +54,7 @@ class Plant{
     }
 
     fork_ready(){
-        return this.tick > 100;
+        return true;//this.tick > 100;
     }
 
     kill(){
@@ -80,7 +81,7 @@ class Plant{
     }
 
     is_living(){
-        return this.tick <= this.config.lifetime_max;
+        return this.tick <= this.lifetime;
     }
 }
 
