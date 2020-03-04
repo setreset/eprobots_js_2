@@ -238,8 +238,6 @@ class EprobotBase{
             this.move(t_new.x, t_new.y);
             this.energy--;
         }
-
-
     }
 
     fork(){
