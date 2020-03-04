@@ -12,7 +12,7 @@ class Plant{
         this.tick = 0;
         this.is_dead = false;
         this.config = config;
-		this.lifetime = this.config.lifetime_max+tools_random2(-20,20);
+		this.lifetime = this.config.lifetime_max+tools_random2(-this.config.lifetime_max/4,this.config.lifetime_max/4);
     }
 
     set_input(){
