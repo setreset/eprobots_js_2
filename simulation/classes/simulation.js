@@ -95,7 +95,8 @@ class Simulation {
 
     seed_eprobots(eprobot_config){
         log("seed_eprobots "+eprobot_config["eprobot_key"]);
-        for (let i = 0; i<this.settings.SEED_EPROBOTS_NUMBER;i++){
+        let seed_number = eprobot_config.seed_number || this.settings.SEED_EPROBOTS_NUMBER;
+        for (let i = 0; i<seed_number;i++){
             let x = tools_random(this.world_width);
             let y = tools_random(this.world_height);
             if (this.world.get_terrain(x,y).slot_object==null){
