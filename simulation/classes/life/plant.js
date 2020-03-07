@@ -68,7 +68,7 @@ class Plant{
         for (let v of DIRECTIONS) {
             // get terrain
             let t = this.s.world.get_terrain(this.position_x + v.x, this.position_y + v.y);
-            t.odor_plant++;
+            t["odor_"+this.config.eprobot_key]++;
         }
     }
 
@@ -76,7 +76,7 @@ class Plant{
         for (let v of DIRECTIONS) {
             // get terrain
             let t = this.s.world.get_terrain(this.position_x + v.x, this.position_y + v.y);
-            t.odor_plant--;
+            t["odor_"+this.config.eprobot_key]--;
         }
     }
 

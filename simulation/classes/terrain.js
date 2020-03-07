@@ -10,9 +10,8 @@ class Terrain {
         this.slot_object = null;
         this.energy_object = null;
 
-        this.odor_plant = 0;
         this.odor_barrier = 0;
-        this.odor_eprobot = 0;
+        this.odor_init();
 
         this.trace_eprobot = 0;
         this.trace_eprobot_expiry = null;
@@ -38,6 +37,12 @@ class Terrain {
             if ("tails" in eprobot_config && eprobot_config["tails"] == true) {
                 this["tail_" + eprobot_config.eprobot_key] = 0;
             }
+        }
+    }
+
+    odor_init(){
+        for (let eprobot_config of this.s.simconfig){
+            this["odor_" + eprobot_config.eprobot_key] = 0;
         }
     }
 

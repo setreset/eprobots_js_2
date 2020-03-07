@@ -89,7 +89,10 @@ class EprobotBase{
             //this.working_data[current_frame_end-6] = t.trace_eprobot;
 
             //this.working_data[current_frame_end-6] = t.odor_barrier;
-            this.working_data[current_frame_end-5] = t.odor_plant;
+            //this.working_data[current_frame_end-8] = t.deadtrace_eprobot_plant;
+            this.working_data[current_frame_end-7] = t.odor_eprobot_eater;
+            this.working_data[current_frame_end-6] = t.odor_eprobot_ateeater;
+            this.working_data[current_frame_end-5] = t.odor_eprobot_plant;
             this.working_data[current_frame_end-4] = this.tick;
             this.working_data[current_frame_end-3] = this.energy;
             this.working_data[current_frame_end-2] = this.position_x;
@@ -331,7 +334,7 @@ class EprobotBase{
         for (let v of DIRECTIONS) {
             // get terrain
             let t = this.s.world.get_terrain(this.position_x + v.x, this.position_y + v.y);
-            t.odor_eprobot++;
+            t["odor_"+this.config.eprobot_key]++;
         }
     }
 
@@ -339,7 +342,7 @@ class EprobotBase{
         for (let v of DIRECTIONS) {
             // get terrain
             let t = this.s.world.get_terrain(this.position_x + v.x, this.position_y + v.y);
-            t.odor_eprobot--;
+            t["odor_"+this.config.eprobot_key]--;
         }
     }
 
