@@ -14,7 +14,7 @@ class EprobotBase{
         }
 
         let eprobot_class = eprobot_classes[eprobot_config.eprobot_class];
-        return new eprobot_class(s, program, init_data, s.settings.energy_start, eprobot_config);
+        return new eprobot_class(s, program, init_data, eprobot_config.energy_start, eprobot_config);
     }
 
     constructor(s, program, init_data, energy, config) {
@@ -24,8 +24,8 @@ class EprobotBase{
         this.s = s;
         this.tick = 0;
         this.is_dead = false;
-        this.energy = energy;
         this.config = config;
+        this.energy = energy;
 
         this.program = program;
 
@@ -90,6 +90,7 @@ class EprobotBase{
 
             //this.working_data[current_frame_end-6] = t.odor_barrier;
             //this.working_data[current_frame_end-8] = t.deadtrace_eprobot_plant;
+            this.working_data[current_frame_end-8] = t.odor_eprobot;
             this.working_data[current_frame_end-7] = t.odor_eprobot_eater;
             this.working_data[current_frame_end-6] = t.odor_eprobot_ateeater;
             this.working_data[current_frame_end-5] = t.odor_eprobot_plant;
@@ -294,10 +295,10 @@ class EprobotBase{
             new_program = r[0];
             new_data = r[1];
 
-            let energy_for_child = this.s.settings.energy_start;
+            let energy_for_child = this.config.energy_start;
 
-            if (this.energy>this.s.settings.energy_level_fork){
-                let extra_energy = parseInt((this.energy-this.s.settings.energy_level_fork)/10);
+            if (this.energy>this.config.energy_level_fork){
+                let extra_energy = parseInt((this.energy-this.config.energy_level_fork)/10);
                 energy_for_child += extra_energy;
             }
 
@@ -310,12 +311,8 @@ class EprobotBase{
         return new_eprobot
     }
 
-    get_fork_energy_level() {
-        return this.s.settings.energy_level_fork;
-    }
-
     fork_ready(){
-        return this.energy > this.get_fork_energy_level();
+        return this.energy > this.config.energy_level_fork;
     }
 
     kill(){

@@ -40,7 +40,7 @@ class EprobotParasite extends EprobotBase{
         if (energy_object){
             if (energy_object.get_id()==OBJECTTYPES.PLANT.id){
                 //slot_object.kill();
-                this.energy+=this.s.settings.energy_profit_plant;
+                this.energy+=this.config.energy_profit;
                 energy_object.energy_count--;
                 if (energy_object.energy_count==0){
                     energy_object.is_dead=true;

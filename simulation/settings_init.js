@@ -18,10 +18,6 @@ var settings_init = {
     PROGRAM_STEPS_FOR_FREE: 1000,
     MUTATE_POSSIBILITY: 0.01,
     MUTATE_STRENGTH: 400,
-    energy_start: 800,
-    energy_cost_fork: 800,
-    energy_profit_plant: 850,
-    energy_level_fork: 1200,
     TAIL_LENGTH: 20,
     SOUND: false,
 
