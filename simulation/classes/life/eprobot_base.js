@@ -90,10 +90,11 @@ class EprobotBase{
 
             //this.working_data[current_frame_end-6] = t.odor_barrier;
             //this.working_data[current_frame_end-8] = t.deadtrace_eprobot_plant;
-            this.working_data[current_frame_end-8] = t.odor_eprobot;
-            this.working_data[current_frame_end-7] = t.odor_eprobot_eater;
-            this.working_data[current_frame_end-6] = t.odor_eprobot_ateeater;
-            this.working_data[current_frame_end-5] = t.odor_eprobot_plant;
+            this.working_data[current_frame_end-9] = t.claim;
+			this.working_data[current_frame_end-8] = t.odor_eprobot_a;
+			this.working_data[current_frame_end-7] = t.odor_eprobot_b;
+            this.working_data[current_frame_end-6] = t.odor_eprobot_plant_b;
+			this.working_data[current_frame_end-5] = t.odor_eprobot_plant_a;
             this.working_data[current_frame_end-4] = this.tick;
             this.working_data[current_frame_end-3] = this.energy;
             this.working_data[current_frame_end-2] = this.position_x;
@@ -154,8 +155,10 @@ class EprobotBase{
         let moveval_raw = this.get_output_val(0);
         let moveval = this.map_output_val(moveval_raw, DIRECTIONS.length + 1);
 
+        let claimval_raw = this.get_output_val(1);
+        let claimval = this.map_output_val(claimval_raw, 2);
 
-        return [moveval];
+        return [moveval, claimval];
     }
 
     action_hook(output){

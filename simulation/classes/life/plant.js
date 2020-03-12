@@ -45,7 +45,7 @@ class Plant{
         let spreadpos_x = this.position_x + vec.x;
         let spreadpos_y = this.position_y + vec.y;
         let spreadterrain = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
-        if (spreadterrain.slot_object == null && spreadterrain.deadtrace_eprobot_plant == 0){
+        if (spreadterrain.slot_object == null && spreadterrain.claim == this.config.subtype){
             let eprobot_class = eprobot_classes[this.config.eprobot_class];
             new_eprobot = new eprobot_class(this.s, this.config);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
@@ -60,8 +60,8 @@ class Plant{
     kill(){
         this.is_dead=true;
 
-        let t = this.s.world.get_terrain(this.position_x, this.position_y);
-        t["deadtrace_"+this.config.eprobot_key]++;
+        //let t = this.s.world.get_terrain(this.position_x, this.position_y);
+        //t["deadtrace_"+this.config.eprobot_key]++;
     }
 
     set_odor_fields(){

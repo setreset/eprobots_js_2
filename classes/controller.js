@@ -104,7 +104,7 @@ class Controller {
         //this.simulation.prepare();
         //this.simulation.seed_eprobots();
 
-        this.simulation.drawer.paint_fast();
+        this.simulation.drawer.paint_full();
     }
 
     reset_simulation(){

@@ -91,6 +91,20 @@ class Simulation {
             let b2 = new Barrier(this);
             this.world.world_set(b2, this.world_width-1, y);
         }
+		
+		let z=50;
+		let width_half = this.world_width_visible/2;
+		let height_half = this.world_height_visible/2;
+		for (let x=width_half-z;x<width_half+z;x++){
+            for (let y=height_half-z;y<height_half+z;y++){
+				let t = this.world.get_terrain(x,y);
+				if (x<this.world_width/2){
+					t.claim = 1;
+				}else{
+					t.claim = -1;
+				}
+			}
+        }
     }
 
     seed_eprobots(eprobot_config){

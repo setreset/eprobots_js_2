@@ -24,6 +24,8 @@ class Terrain {
 
         this.info = 0;
         this.info_expiry = null;
+		
+		this.claim = 0;
     }
 
     deadtrace_eprobot_init(){
@@ -151,6 +153,14 @@ class Terrain {
                 //if (deadtrace_colors.length>0){
                 //    return chroma.average(deadtrace_colors).hex();
                 //}
+
+				if (this.claim){
+					if (this.claim==1){
+						return "#360c0c";
+					}else if (this.claim==-1){
+						return "#100c36";
+					}
+				}
 
                 return this.s.settings.background_color[this.s.settings.colortheme];
             }
