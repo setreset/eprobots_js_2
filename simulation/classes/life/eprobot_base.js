@@ -90,7 +90,7 @@ class EprobotBase{
 
             //this.working_data[current_frame_end-6] = t.odor_barrier;
             //this.working_data[current_frame_end-8] = t.deadtrace_eprobot_plant;
-            this.working_data[current_frame_end-8] = t.odor_eprobot;
+            this.working_data[current_frame_end-8] = t.odor_eprobot_planteater;
             this.working_data[current_frame_end-7] = t.odor_eprobot_eater;
             this.working_data[current_frame_end-6] = t.odor_eprobot_ateeater;
             this.working_data[current_frame_end-5] = t.odor_eprobot_plant;

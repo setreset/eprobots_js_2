@@ -1,4 +1,4 @@
-class Plant{
+class EprobotPlant{
     static seed(s, eprobot_config){
         let eprobot_class = eprobot_classes[eprobot_config.eprobot_class];
         return new eprobot_class(s, eprobot_config);
@@ -45,7 +45,8 @@ class Plant{
         let spreadpos_x = this.position_x + vec.x;
         let spreadpos_y = this.position_y + vec.y;
         let spreadterrain = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
-        if (spreadterrain.slot_object == null && spreadterrain.deadtrace_eprobot_plant == 0){
+        // plant wächst nicht dort, wo sich mindestens ein planteater oder ein ateeater befindet
+        if (spreadterrain.slot_object == null && spreadterrain.deadtrace_eprobot_plant == 0 && spreadterrain.odor_eprobot_planteater == 0 && spreadterrain.odor_eprobot_ateeater == 0){
             let eprobot_class = eprobot_classes[this.config.eprobot_class];
             new_eprobot = new eprobot_class(this.s, this.config);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
@@ -85,4 +86,4 @@ class Plant{
     }
 }
 
-eprobot_classes["plant"] = Plant;
+eprobot_classes["eprobot_plant"] = EprobotPlant;

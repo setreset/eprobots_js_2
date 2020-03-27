@@ -20,15 +20,15 @@ var simconfig = [
 
     {
         "eprobot_key": "eprobot_plant",
-        "eprobot_class": "plant",
+        "eprobot_class": "eprobot_plant",
         "base_color": 120,
-        "individuals_max": 3000,
+        "individuals_max": 2500,
         "tails": false,
         "lifetime_max": 400
     },
     {
-        "eprobot_key": "eprobot",
-        "eprobot_class": "eprobot",
+        "eprobot_key": "eprobot_planteater",
+        "eprobot_class": "eprobot_planteater",
         "base_color": 60,
         "individuals_max": 500,
         "tails": true,
@@ -52,7 +52,7 @@ var simconfig = [
         "eprobot_key": "eprobot_eater",
         "eprobot_class": "eprobot_eater",
         "base_color": 0,
-        "individuals_max": 500,
+        "individuals_max": 750,
         "tails": true,
         "lifetime_max": 5000,
         "energy_start": 800,

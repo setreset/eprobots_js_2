@@ -1,4 +1,4 @@
-class Eprobot extends EprobotBase{
+class EprobotPlantEater extends EprobotBase{
     try_eat(t_new){
         let energy_object = t_new.get_slot_object();
         if (energy_object && energy_object.get_id()==OBJECTTYPES.PLANT.id){
@@ -25,4 +25,4 @@ class Eprobot extends EprobotBase{
     }
 }
 
-eprobot_classes["eprobot"] = Eprobot;
+eprobot_classes["eprobot_planteater"] = EprobotPlantEater;
