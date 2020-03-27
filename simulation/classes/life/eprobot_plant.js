@@ -46,7 +46,8 @@ class EprobotPlant{
         let spreadpos_y = this.position_y + vec.y;
         let spreadterrain = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
         // plant wächst nicht dort, wo sich mindestens ein planteater oder ein ateeater befindet
-        if (spreadterrain.slot_object == null && spreadterrain.deadtrace_eprobot_plant == 0 && spreadterrain.odor_eprobot_planteater == 0 && spreadterrain.odor_eprobot_ateeater == 0){
+        // und auch nicht da wo schon mehr als eine pflanze in der nähe ist
+        if (spreadterrain.slot_object == null && spreadterrain.deadtrace_eprobot_plant == 0 && spreadterrain.odor_eprobot_planteater == 0 && spreadterrain.odor_eprobot_ateeater == 0 && spreadterrain.odor_eprobot_plant <= 1){
             let eprobot_class = eprobot_classes[this.config.eprobot_class];
             new_eprobot = new eprobot_class(this.s, this.config);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
