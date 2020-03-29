@@ -92,8 +92,8 @@ class EprobotBase{
             //this.working_data[current_frame_end-8] = t.deadtrace_eprobot_plant;
             this.working_data[current_frame_end-8] = t.odor_eprobot_planteater;
             this.working_data[current_frame_end-7] = t.odor_eprobot_eater;
-            this.working_data[current_frame_end-6] = t.odor_eprobot_ateeater;
-            this.working_data[current_frame_end-5] = t.odor_eprobot_plant;
+            //this.working_data[current_frame_end-6] = t.odor_eprobot_ateeater;
+            //this.working_data[current_frame_end-5] = t.odor_eprobot_plant;
             this.working_data[current_frame_end-4] = this.tick;
             this.working_data[current_frame_end-3] = this.energy;
             this.working_data[current_frame_end-2] = this.position_x;
@@ -302,10 +302,10 @@ class EprobotBase{
                 energy_for_child += extra_energy;
             }
 
-            this.energy = this.energy - energy_for_child;
+            this.energy = this.energy - 100;//energy_for_child;
 
             let eprobot_class = eprobot_classes[this.config.eprobot_class];
-            new_eprobot = new eprobot_class(this.s, new_program, new_data, energy_for_child, this.config);
+            new_eprobot = new eprobot_class(this.s, new_program, new_data, this.config.energy_start, this.config);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
         }
         return new_eprobot

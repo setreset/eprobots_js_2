@@ -7,12 +7,12 @@ class EprobotEater extends EprobotBase{
 
             // eater kann ateeater oder planteater nicht fressen, wenn sich zwei oder mehr von der sorte in der nähe ist
             let can_eat = true;
-            if (slot_object.config.eprobot_key=="eprobot_ateeater" && t_new.odor_eprobot_ateeater>1){
-                can_eat = false;
-            }
-            if (slot_object.config.eprobot_key=="eprobot_planteater" && t_new.odor_eprobot_planteater>1){
-                can_eat = false;
-            }
+            //if (slot_object.config.eprobot_key=="eprobot_ateeater" && t_new.odor_eprobot_ateeater>1){
+            //    can_eat = false;
+            //}
+            //if (slot_object.config.eprobot_key=="eprobot_planteater" && t_new.odor_eprobot_planteater>1){
+            //    can_eat = false;
+            //}
 
             if (can_eat){
                 this.energy+=this.config.energy_profit;
@@ -30,11 +30,8 @@ class EprobotEater extends EprobotBase{
                 this.s.world.world_unset(this.position_x, this.position_y, this);
             }
         }else{
-            // eater kann nicht auf felder mit pflanzenleichen und muss abstand zu pflanzen halten
-            if (t_new.deadtrace_eprobot_plant == 0 && t_new.odor_eprobot_plant == 0){
-                this.move(t_new.x, t_new.y);
-                this.energy--;
-            }
+            this.move(t_new.x, t_new.y);
+            this.energy--;
         }
     }
 
