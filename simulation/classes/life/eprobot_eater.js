@@ -7,10 +7,10 @@ class EprobotEater extends EprobotBase{
 
             // eater kann ateeater oder planteater nicht fressen, wenn sich zwei oder mehr von der sorte in der nähe ist
             let can_eat = true;
-            if (slot_object.config.eprobot_key=="eprobot_ateeater" && t_new.odor_eprobot_ateeater>1){
+            if (slot_object.config.eprobot_key=="eprobot_ateeater" && t_new.odor_eprobot_ateeater>2){
                 can_eat = false;
             }
-            if (slot_object.config.eprobot_key=="eprobot_planteater" && t_new.odor_eprobot_planteater>1){
+            if (slot_object.config.eprobot_key=="eprobot_planteater" && t_new.odor_eprobot_planteater>2){
                 can_eat = false;
             }
 
