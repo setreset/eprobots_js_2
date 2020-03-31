@@ -60,3 +60,19 @@ var simconfig = [
         "energy_level_fork": 1200,
     }
 ];
+
+var inputs = [
+    "position_x",
+    "position_y",
+    "energy",
+    "tick",
+
+    "odor_eprobot_plant_current",
+    "odor_eprobot_plant_next",
+    "odor_eprobot_planteater_current",
+    "odor_eprobot_planteater_next",
+    "odor_eprobot_ateeater_current",
+    "odor_eprobot_ateeater_next",
+    "odor_eprobot_eater_current",
+    "odor_eprobot_eater_next"
+];

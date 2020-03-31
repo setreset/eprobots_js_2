@@ -37,6 +37,15 @@ class EprobotBase{
         this.s.stats_incr("eprobots_created");
 
         this.direction = 0;
+
+        this.init_input_map();
+    }
+
+    init_input_map(){
+        this.input_map = [];
+        for (var i = 0; i < inputs.length; i++) {
+            this.input_map.push(false);
+        }
     }
 
     map_output_val(val, number_of_values){
@@ -145,8 +154,76 @@ class EprobotBase{
         old_t.prepare_paint();
     }
 
+    get_input_by_index(input_idx) {
+        let t, tx;
+        switch (input_idx) {
+            case 0:
+                return this.position_x;
+            case 1:
+                return this.position_y;
+            case 2:
+                return this.energy;
+            case 3:
+                return this.tick;
+
+            case 4:
+                t = this.s.world.get_terrain(this.position_x, this.position_y);
+                return t.odor_eprobot_plant;
+            case 5:
+                tx = this.s.world.get_terrain(this.position_x + DIRECTIONS[this.direction].x, this.position_y + DIRECTIONS[this.direction].y);
+                return tx.odor_eprobot_plant;
+            case 6:
+                t = this.s.world.get_terrain(this.position_x, this.position_y);
+                return t.odor_eprobot_planteater;
+            case 7:
+                tx = this.s.world.get_terrain(this.position_x + DIRECTIONS[this.direction].x, this.position_y + DIRECTIONS[this.direction].y);
+                return tx.odor_eprobot_planteater;
+            case 8:
+                t = this.s.world.get_terrain(this.position_x, this.position_y);
+                return t.odor_eprobot_ateeater;
+            case 9:
+                tx = this.s.world.get_terrain(this.position_x + DIRECTIONS[this.direction].x, this.position_y + DIRECTIONS[this.direction].y);
+                return tx.odor_eprobot_ateeater;
+            case 10:
+                t = this.s.world.get_terrain(this.position_x, this.position_y);
+                return t.odor_eprobot_eater;
+            case 11:
+                tx = this.s.world.get_terrain(this.position_x + DIRECTIONS[this.direction].x, this.position_y + DIRECTIONS[this.direction].y);
+                return tx.odor_eprobot_eater;
+        }
+    }
+
+    get_input(data_address){
+        //this.s.settings.DATA_LENGTH / this.s.settings.DATA_INOUT_INTERVAL
+
+        let length_input_range = 12;
+
+        // how many blocks?
+        var amount = this.s.settings.DATA_LENGTH / this.s.settings.DATA_INOUT_INTERVAL;
+
+        // welcher block?
+        let block_number = Math.floor(data_address / amount);
+
+        // blocklokalen index berechnen
+        let blocklocal_address = data_address - (block_number*this.s.settings.DATA_INOUT_INTERVAL)
+
+        // liegt der blocklokale index im input-bereich?
+        if (blocklocal_address >= (this.s.settings.DATA_INOUT_INTERVAL - length_input_range)){
+            // input_id berechnen
+            let input_idx = blocklocal_address - (this.s.settings.DATA_INOUT_INTERVAL - length_input_range);
+            // wenn ja: wurde der wert schon gesetzt?
+            if (this.input_map[input_idx]==false){
+                // wenn nein: wert mit index holen, input_map setzen
+                this.input_map[input_idx]=true;
+                return this.get_input_by_index(input_idx);
+            }
+        }
+
+        return this.working_data[data_address];
+    }
+
     get_output_OISC(){
-        let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS_MAX);
+        let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS_MAX, this);
 
         if (steps>=this.s.settings.PROGRAM_STEPS_MAX){
             this.s.stats_incr("high_stepcounter");
@@ -241,6 +318,8 @@ class EprobotBase{
 
         this.tick++;
         this.energy--;
+
+        this.init_input_map();
     }
 
     try_move(t_new){

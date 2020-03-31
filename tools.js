@@ -16,7 +16,7 @@ function tools_random2(min, max){
 }
 
 // subleq: https://en.wikipedia.org/wiki/One_instruction_set_computer
-function tools_compute(program, data, PS) {
+function tools_compute(program, data, PS, ep) {
     var program_counter = 0;
     var step_counter = 0;
     var a, b, c;
@@ -29,6 +29,9 @@ function tools_compute(program, data, PS) {
         a = a % data.length;
         b = b % data.length;
         c = c % program.length;
+
+        data[a] = ep.get_input(a);
+        data[b] = ep.get_input(b);
 
         //a = Math.abs(a % memory.length);
         //b = Math.abs(b % memory.length);
