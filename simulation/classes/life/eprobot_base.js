@@ -103,6 +103,15 @@ class EprobotBase{
                 // direction
                 this.working_data[current_frame_end-idx] = tx["odor_" + eprobot_config.eprobot_key];
                 idx++;
+
+                // umgebung
+                //for (let v of DIRECTIONS) {
+                //    let tx2 = this.s.world.get_terrain(this.position_x + v.x, this.position_y + v.y);
+                //    this.working_data[current_frame_end-idx] = tx2["odor_" + eprobot_config.eprobot_key];
+                //    idx++;
+                //    this.working_data[current_frame_end - idx] = tx2["deadtrace_eprobot_plant"]
+                //    idx++;
+                //}
             }
 
             this.working_data[current_frame_end-4] = this.tick;

@@ -67,6 +67,9 @@ class EprobotPlant{
     }
 
     set_odor_fields(){
+        let t_pos = this.s.world.get_terrain(this.position_x, this.position_y);
+        t_pos["odor_"+this.config.eprobot_key]+=2;
+
         for (let v of DIRECTIONS) {
             // get terrain
             let t = this.s.world.get_terrain(this.position_x + v.x, this.position_y + v.y);
@@ -75,6 +78,9 @@ class EprobotPlant{
     }
 
     unset_odor_fields(){
+        let t_pos = this.s.world.get_terrain(this.position_x, this.position_y);
+        t_pos["odor_"+this.config.eprobot_key]-=2;
+
         for (let v of DIRECTIONS) {
             // get terrain
             let t = this.s.world.get_terrain(this.position_x + v.x, this.position_y + v.y);
