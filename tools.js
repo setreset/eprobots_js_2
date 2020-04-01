@@ -38,6 +38,9 @@ function tools_compute(program, data, PS) {
             program_counter = -1;
         }else{
             data[b] = data[b] - data[a];
+            if (!isFinite(data[b])){
+                data[b] = tools_random2(-10000,10000);
+            }
             if (data[b] > 0) {
                 program_counter = program_counter + 3;
             } else {

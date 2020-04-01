@@ -40,22 +40,7 @@ class EprobotBase{
     }
 
     map_output_val(val, number_of_values){
-        if (isFinite(val)){
-            var mapped_val = Math.abs(val) % (number_of_values);
-        }else{
-            if (val==-Infinity){
-                this.s.stats_incr("infinity_negative");
-            }else if (val==Infinity){
-                this.s.stats_incr("infinity_positive");
-            }else if (isNaN(val)){
-                this.s.stats_incr("infinity_nan");
-            }else{
-                log("Infinite: "+val);
-            }
-
-            var mapped_val = tools_random(number_of_values);
-        }
-        return mapped_val;
+        return Math.abs(val) % (number_of_values);
     }
 
     get_output_val(mem_index){
