@@ -15,6 +15,123 @@ function tools_random2(min, max){
     return (delta * Math.random() << 0) + min;
 }
 
+function tools_compute2_arr(op, program_counter, program, data){
+    let a, b, c;
+    a = Math.abs(program[program_counter + 1]) % data.length;
+    b = Math.abs(program[program_counter + 2]) % data.length;
+    c = Math.abs(program[program_counter + 3]) % data.length;
+
+    if (op=="add"){
+        data[c] = data[a] + data[b];
+    }else if(op=="sub"){
+        data[c] = data[a] + data[b];
+    }else if(op=="mul"){
+        data[c] = data[a] * data[b];
+    }else if(op=="div"){
+        if (data[b]!=0) {
+            data[c] = Math.floor(data[a] / data[b]);
+        }
+    }else if(op=="and"){
+        data[c] = data[a] & data[b];
+    }else if(op=="or"){
+        data[c] = data[a] | data[b];
+    }else if(op=="xor"){
+        data[c] = data[a] ^ data[b];
+    }else if(op=="not"){
+        data[c] = ~ data[b];
+    }
+
+    if (!isFinite(data[c])){
+        data[c] = tools_random2(-10000,10000);
+    }
+}
+
+function tools_compute2(program, data, PS) {
+    var program_counter = 0;
+    var step_counter = 0;
+    var opcode;
+    var a, b, c;
+
+    while (program_counter >= 0 && step_counter < PS) {
+        opcode = program[program_counter];
+        opcode = Math.abs(opcode) % 13;
+
+        if (opcode==0){ // jmp
+            a = program[program_counter + 1] % program.length;
+
+            program_counter = a
+
+        }else if (opcode==1){ // add
+            tools_compute2_arr("add", program_counter, program, data);
+
+            program_counter += 4
+
+        }else if (opcode==2){ // sub
+            tools_compute2_arr("sub", program_counter, program, data);
+
+            program_counter += 4
+
+        }else if (opcode==3){ // mul
+            tools_compute2_arr("mul", program_counter, program, data);
+
+            program_counter += 4
+
+        }else if (opcode==4){ // div
+            tools_compute2_arr("div", program_counter, program, data);
+
+            program_counter += 4
+
+        }else if (opcode==5){
+            tools_compute2_arr("and", program_counter, program, data);
+
+            program_counter += 4
+        }else if (opcode==6){
+            tools_compute2_arr("or", program_counter, program, data);
+
+            program_counter += 4
+        }else if (opcode==7){
+            tools_compute2_arr("xor", program_counter, program, data);
+
+            program_counter += 4
+        }else if (opcode==8){
+            tools_compute2_arr("not", program_counter, program, data);
+
+            program_counter += 4
+
+        }else if (opcode==9){ // move
+            a = Math.abs(program[program_counter + 1]) % data.length;
+            b = Math.abs(program[program_counter + 2]) % data.length;
+            data[a] = data[b];
+
+            program_counter += 3
+
+        }else if (opcode==10){ // beq
+            a = Math.abs(program[program_counter + 1]) % data.length;
+            b = program[program_counter + 2] % program.length;
+
+            if (data[a]<=0){
+                program_counter = b
+            }else{
+                program_counter += 3
+            }
+        }else if (opcode==11){ // beq
+            a = Math.abs(program[program_counter + 1]) % data.length;
+            b = program[program_counter + 2] % program.length;
+
+            if (data[a]>0){
+                program_counter = b
+            }else{
+                program_counter += 3
+            }
+        }else if (opcode==12){ // quit
+            program_counter = -1
+        }
+
+        step_counter++;
+    }
+    return step_counter;
+}
+
 // subleq: https://en.wikipedia.org/wiki/One_instruction_set_computer
 function tools_compute(program, data, PS) {
     var program_counter = 0;
