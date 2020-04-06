@@ -139,7 +139,7 @@ class Terrain {
                 for (let eprobot_config of this.s.simconfig){
                     let deadtrace_val = this["deadtrace_"+eprobot_config.eprobot_key];
                     if (deadtrace_val > 0){
-                        let color = eprobot_config.base_color;
+                        let color = (eprobot_config.base_color + parseInt(this.s.steps/100))%360;
                         let conv_val = Math.floor(tools_map_range(deadtrace_val, 0, 50, 0, 10));
                         // Wert soll nicht größer als 10 sein
                         conv_val = Math.min(conv_val, 10);
