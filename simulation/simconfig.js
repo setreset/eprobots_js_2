@@ -49,8 +49,8 @@ var simconfig = [
         "energy_level_fork": 1200,
     },
     {
-        "eprobot_key": "eprobot_eater",
-        "eprobot_class": "eprobot_eater",
+        "eprobot_key": "eprobot_eproboteater",
+        "eprobot_class": "eprobot_eproboteater",
         "base_color": 0,
         "individuals_max": 650,
         "tails": true,

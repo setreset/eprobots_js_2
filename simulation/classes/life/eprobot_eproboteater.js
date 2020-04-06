@@ -1,4 +1,4 @@
-class EprobotEater extends EprobotBase{
+class EprobotEprobotEater extends EprobotBase{
 
     try_eat(t_new){
         let slot_object = t_new.get_slot_object();
@@ -42,4 +42,4 @@ class EprobotEater extends EprobotBase{
     }
 }
 
-eprobot_classes["eprobot_eater"] = EprobotEater;
+eprobot_classes["eprobot_eproboteater"] = EprobotEprobotEater;
