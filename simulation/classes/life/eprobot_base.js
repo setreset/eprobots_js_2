@@ -37,6 +37,8 @@ class EprobotBase{
         this.s.stats_incr("eprobots_created");
 
         this.direction = 0;
+
+        this.set_fork_ready = false;
     }
 
     map_output_val(val, number_of_values){
@@ -159,8 +161,10 @@ class EprobotBase{
         let moveval_raw = this.get_output_val(0);
         let moveval = this.map_output_val(moveval_raw, DIRECTIONS.length + 1);
 
+        let forkval_raw = this.get_output_val(1);
+        let forkval = this.map_output_val(forkval_raw, 2);
 
-        return [moveval];
+        return [moveval, forkval];
     }
 
     action_hook(output){
@@ -168,73 +172,81 @@ class EprobotBase{
     }
 
     step(){
-        //let moveval = this.get_move();
-        let output = this.get_output_OISC();
-        let moveval = output[0];
-        //let forkval = output[1];
-        //let poisonval = output[1];
-        //let infoval = output[2];
-        //let sfsval = output[3];
-
-        // move
-        if (this.energy > 0 && moveval<DIRECTIONS.length){
-            this.direction = moveval;
-            let vec = DIRECTIONS[moveval];
-            let movepos_x = this.position_x + vec.x; //this.s.correct_pos_width(this.position.x + vec.x);
-            let movepos_y = this.position_y + vec.y; //this.s.correct_pos_height(this.position.y + vec.y);
-
-            let t_new = this.s.world.get_terrain(movepos_x, movepos_y);
-
-            // eat
-            this.try_eat(t_new);
+        if (this.tick>=300){
+            //let moveval = this.get_move();
+            let output = this.get_output_OISC();
+            let moveval = output[0];
+            let forkval = output[1];
+            //let poisonval = output[1];
+            //let infoval = output[2];
+            //let sfsval = output[3];
 
             // move
-            this.try_move(t_new);
-        }
+            if (this.energy > 0 && moveval<DIRECTIONS.length){
+                this.direction = moveval;
+                let vec = DIRECTIONS[moveval];
+                let movepos_x = this.position_x + vec.x; //this.s.correct_pos_width(this.position.x + vec.x);
+                let movepos_y = this.position_y + vec.y; //this.s.correct_pos_height(this.position.y + vec.y);
 
-        this.action_hook(output);
+                let t_new = this.s.world.get_terrain(movepos_x, movepos_y);
 
-        let t = this.s.world.get_terrain(this.position_x, this.position_y);
+                // eat
+                this.try_eat(t_new);
 
-        if (this.s.settings.feature_poison && poisonval==1){
-            t.poison++;
-            t.poison_expiry = this.s.steps + 10000;
-            this.energy -= 20;
-        }
-
-        if (this.s.settings.feature_info && infoval < 10){
-            this.s.stats_incr("info");
-            t.info = infoval;
-            t.info_expiry = this.s.steps + 1000;
-        }
-
-        if (this.s.settings.feature_shared_food_storage && sfsval == 1){
-            this.s.stats_incr("storage_put");
-            if (this.energy>0){
-                this.s.world.shared_food_storage++;
-                this.energy--;
+                // move
+                this.try_move(t_new);
             }
-        }
 
-        if (this.s.settings.feature_shared_food_storage && sfsval == 2){
-            this.s.stats_incr("storage_get");
-            if (this.s.world.shared_food_storage>0){
-                this.energy++;
-                this.s.world.shared_food_storage--;
+            this.action_hook(output);
+
+            let t = this.s.world.get_terrain(this.position_x, this.position_y);
+
+            if (this.s.settings.feature_poison && poisonval==1){
+                t.poison++;
+                t.poison_expiry = this.s.steps + 10000;
+                this.energy -= 20;
             }
-        }
 
-        if (this.tail.length>0){
-            if (this.tail[0].rt<=this.tick){
-                let to = this.tail.shift();
-                let t = to.t;
-                t["tail_"+this.config.eprobot_key] = Math.max(t["tail_"+this.config.eprobot_key]-1, 0);
-                t.prepare_paint();
+            if (this.s.settings.feature_info && infoval < 10){
+                this.s.stats_incr("info");
+                t.info = infoval;
+                t.info_expiry = this.s.steps + 1000;
+            }
+
+            if (this.s.settings.feature_shared_food_storage && sfsval == 1){
+                this.s.stats_incr("storage_put");
+                if (this.energy>0){
+                    this.s.world.shared_food_storage++;
+                    this.energy--;
+                }
+            }
+
+            if (this.s.settings.feature_shared_food_storage && sfsval == 2){
+                this.s.stats_incr("storage_get");
+                if (this.s.world.shared_food_storage>0){
+                    this.energy++;
+                    this.s.world.shared_food_storage--;
+                }
+            }
+
+            if (this.tail.length>0){
+                if (this.tail[0].rt<=this.tick){
+                    let to = this.tail.shift();
+                    let t = to.t;
+                    t["tail_"+this.config.eprobot_key] = Math.max(t["tail_"+this.config.eprobot_key]-1, 0);
+                    t.prepare_paint();
+                }
+            }
+
+
+            this.energy--;
+
+            if (forkval){
+                this.set_fork_ready=true;
             }
         }
 
         this.tick++;
-        this.energy--;
     }
 
     try_move(t_new){
@@ -313,12 +325,13 @@ class EprobotBase{
             let eprobot_class = eprobot_classes[this.config.eprobot_class];
             new_eprobot = new eprobot_class(this.s, new_program, new_data, energy_for_child, this.config);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
+            this.set_fork_ready = false;
         }
         return new_eprobot
     }
 
     fork_ready(){
-        return this.energy > this.config.energy_level_fork;
+        return (this.energy > this.config.energy_level_fork && this.set_fork_ready);
     }
 
     kill(){
