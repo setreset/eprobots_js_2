@@ -7,8 +7,6 @@ class Simulation {
 
         this.steps = 0;
 
-        sim = this;
-
         //create a synth and connect it to the master output (your speakers)
         this.synth = new Tone.Synth().toMaster();
     }

@@ -100,6 +100,7 @@ class Controller {
         let canvas = controls["simulation_canvas"][0];
         //let canvas2 = controls["simulation_canvas2"][0];
         this.simulation = new Simulation(canvas, simconfig);
+        sim = this.simulation;
         this.simulation.init(this.settings);
         //this.simulation.prepare();
         //this.simulation.seed_eprobots();
