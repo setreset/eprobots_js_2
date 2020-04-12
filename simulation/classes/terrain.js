@@ -19,6 +19,9 @@ class Terrain {
         this.tail_eprobot_init();
         this.deadtrace_eprobot_init();
 
+        this.energy = 0;
+        this.water = 0;
+
         this.poison = 0;
         this.poison_expiry = null;
 
@@ -146,6 +149,14 @@ class Terrain {
                         return "hsl("+color+", 100%, 30%)"
 						//deadtrace_colors.push(chroma("hsl("+color+", 100%, "+conv_val+"%)"));
                     }
+                }
+
+                if (this.energy){
+                    return "#00f535";
+                }
+
+                if (this.water){
+                    return "#0021f5";
                 }
 
                 //if (deadtrace_colors.length>0){

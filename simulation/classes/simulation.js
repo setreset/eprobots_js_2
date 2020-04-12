@@ -7,7 +7,7 @@ class Simulation {
 
         this.steps = 0;
 
-        sim = this;
+        this.water_pos = 4;
 
         //create a synth and connect it to the master output (your speakers)
         this.synth = new Tone.Synth().toMaster();
@@ -69,10 +69,58 @@ class Simulation {
         this.stats = {};
 
         this.add_borders();
+
+        this.add_stuff();
     }
 
     set_settings(new_settings){
         this.settings = new_settings;
+    }
+
+    add_stuff(){
+        let mid_x = this.world_width_visible/2;
+        let mid_y = this.world_height_visible/2;
+        for (let i = -50;i < 50; i+=2){
+            let t = this.world.get_terrain(mid_x+i,mid_y);
+            t.energy = 1;
+
+            t = this.world.get_terrain(mid_x+i+1,mid_y+2);
+            t.energy = 1;
+        }
+
+        for (let i = -50;i < 50; i+=2){
+            let t = this.world.get_terrain(mid_x+i,mid_y+this.water_pos);
+            t.water = 1;
+
+            t = this.world.get_terrain(mid_x+i+1,mid_y+this.water_pos+2);
+            t.water = 1;
+        }
+    }
+
+    move_water(){
+        let mid_x = this.world_width_visible/2;
+        let mid_y = this.world_height_visible/2;
+        for (let i = -50;i < 50; i+=2){
+            let t = this.world.get_terrain(mid_x+i,mid_y+this.water_pos);
+            t.water = 0;
+            t.prepare_paint();
+
+            t = this.world.get_terrain(mid_x+i+1,mid_y+this.water_pos+2);
+            t.water = 0;
+            t.prepare_paint();
+        }
+
+        this.water_pos+=2;
+
+        for (let i = -50;i < 50; i+=2){
+            let t = this.world.get_terrain(mid_x+i,mid_y+this.water_pos);
+            t.water = 1;
+            t.prepare_paint();
+
+            t = this.world.get_terrain(mid_x+i+1,mid_y+this.water_pos+2);
+            t.water = 1;
+            t.prepare_paint();
+        }
     }
 
     add_borders(){

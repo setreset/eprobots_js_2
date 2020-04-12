@@ -66,6 +66,10 @@ class Controller {
 
             //this.control_simulation_size(st);
 
+            if (this.simulation.steps%10000==0){
+                this.simulation.move_water()
+            }
+
             //szenario
             /*if (this.simulation.steps%10000==0){
                 if (this.simulation.world.counter_eprobot_all()==0){
@@ -100,6 +104,7 @@ class Controller {
         let canvas = controls["simulation_canvas"][0];
         //let canvas2 = controls["simulation_canvas2"][0];
         this.simulation = new Simulation(canvas, simconfig);
+        sim = this.simulation;
         this.simulation.init(this.settings);
         //this.simulation.prepare();
         //this.simulation.seed_eprobots();

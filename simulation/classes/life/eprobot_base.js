@@ -39,6 +39,7 @@ class EprobotBase{
         this.direction = 0;
 
         this.set_fork_ready = false;
+        this.water_store = 0;
     }
 
     map_output_val(val, number_of_values){
@@ -313,17 +314,10 @@ class EprobotBase{
             new_program = r[0];
             new_data = r[1];
 
-            let energy_for_child = this.config.energy_start;
-
-            if (this.energy>this.config.energy_level_fork){
-                let extra_energy = parseInt((this.energy-this.config.energy_level_fork)/10);
-                energy_for_child += extra_energy;
-            }
-
-            this.energy = this.energy - energy_for_child;
+            this.energy -= this.config.energy_start;
 
             let eprobot_class = eprobot_classes[this.config.eprobot_class];
-            new_eprobot = new eprobot_class(this.s, new_program, new_data, energy_for_child, this.config);
+            new_eprobot = new eprobot_class(this.s, new_program, new_data, this.config.energy_start, this.config);
             this.s.world.world_set(new_eprobot, spreadpos_x, spreadpos_y);
             this.set_fork_ready = false;
         }
