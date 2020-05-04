@@ -154,7 +154,10 @@ function tools_compute(program, data, PS) {
         if (a < 0 || b < 0) {
             program_counter = -1;
         }else{
-            data[b] = data[b] - data[a];
+            if (b>50){
+                data[b] = data[b] - data[a];
+            }
+
             if (!isFinite(data[b])){
                 data[b] = tools_random2(-10000,10000);
             }
@@ -363,4 +366,15 @@ function play_tone(synth, note, propability, sound){
     if (sound && Math.random()<propability){
         synth.triggerAttackRelease(note, "8n");
     }
+}
+
+function send_metric(m_name, m_value){
+    $.ajax({
+        "type": "get",
+        "url": "http://localhost:3000",
+        "data": {
+            m_name: m_name,
+            m_value: m_value
+        }
+    });
 }

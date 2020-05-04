@@ -59,8 +59,19 @@ class EprobotBase{
 
     clone_eprobot(){
         this.s.stats_incr("fork_clone");
-        let new_program = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program);
-        let new_data = tools_mutate(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data);
+        let mp = this.s.settings.MUTATE_POSSIBILITY;
+        let rnd = Math.random();
+        if (rnd<0.01){
+            mp = 1.0;
+        }else if (rnd<0.05){
+            mp = 0.75;
+        }else if (rnd<0.075){
+            mp = 0.5;
+        }else if (rnd<0.1){
+            mp = 0.3;
+        }
+        let new_program = tools_mutate(mp, this.s.settings.MUTATE_STRENGTH, this.program);
+        let new_data = tools_mutate(mp, this.s.settings.MUTATE_STRENGTH, this.init_data);
         return [new_program, new_data];
     }
 
@@ -81,7 +92,7 @@ class EprobotBase{
             //this.working_data[current_frame_end-6] = t.odor_barrier;
             //this.working_data[current_frame_end-8] = t.deadtrace_eprobot_plant;
 
-            let idx = 5;
+            let idx = 6;
 
             for (let eprobot_config of this.s.simconfig){
                 this.working_data[current_frame_end-idx] = t["odor_" + eprobot_config.eprobot_key];
@@ -89,6 +100,9 @@ class EprobotBase{
 
                 // direction
                 this.working_data[current_frame_end-idx] = tx["odor_" + eprobot_config.eprobot_key];
+                idx++;
+
+                this.working_data[current_frame_end-idx] = tx.deadtrace_eprobot_plant;
                 idx++;
 
                 // umgebung
@@ -101,6 +115,7 @@ class EprobotBase{
                 //}
             }
 
+            this.working_data[current_frame_end-5] = 0;
             this.working_data[current_frame_end-4] = this.tick;
             this.working_data[current_frame_end-3] = this.energy;
             this.working_data[current_frame_end-2] = this.position_x;
@@ -144,7 +159,12 @@ class EprobotBase{
     get_output_OISC(){
         let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS_MAX);
 
-        if (steps>=this.s.settings.PROGRAM_STEPS_MAX){
+        if (Math.random()<0.00001){
+            //log(this.config.eprobot_key+" steps: "+steps);
+            send_metric("steps_"+this.config.eprobot_key, steps);
+        }
+
+        if (steps>this.s.settings.PROGRAM_STEPS_MAX){
             this.s.stats_incr("high_stepcounter");
         }
 

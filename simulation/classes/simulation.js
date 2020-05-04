@@ -204,6 +204,10 @@ class Simulation {
             // fork
             this.fork_eprobots(eprobots_forkable, list_eprobots_next);
             this["list_"+eprobot_config.eprobot_key] = list_eprobots_next;
+
+            if (this.steps % 200 == 0){
+                send_metric("counter_"+ eprobot_config.eprobot_key, this.world["counter_"+ eprobot_config.eprobot_key])
+            }
         }
 
         // traces wegräumen
