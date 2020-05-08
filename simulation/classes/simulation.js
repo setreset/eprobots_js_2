@@ -67,6 +67,8 @@ class Simulation {
         this.stats = {};
 
         this.add_borders();
+
+        this.simtools = new SimTools(this);
     }
 
     set_settings(new_settings){

@@ -3,13 +3,13 @@ class EprobotBase{
     static seed(s, eprobot_config){
         var program = [];
         for (var pi = 0; pi < s.settings.PROGRAM_LENGTH; pi++) {
-            var val = tools_get_init_val_program(s.settings.PROGRAM_LENGTH);
+            var val = s.simtools.get_init_val_program();
             program.push(val);
         }
 
         var init_data = [];
         for (var di = 0; di < s.settings.DATA_LENGTH; di++) {
-            var val = tools_get_init_val_data(s.settings.MUTATE_STRENGTH);
+            var val = s.simtools.get_init_val_data();
             init_data.push(val);
         }
 
@@ -70,8 +70,8 @@ class EprobotBase{
         }else if (rnd<0.1){
             mp = 0.3;
         }
-        let new_program = tools_mutate_program(mp, this.program);
-        let new_data = tools_mutate_data(mp, this.s.settings.MUTATE_STRENGTH, this.init_data);
+        let new_program = this.s.simtools.mutate_program(mp, this.program);
+        let new_data = this.s.simtools.mutate_data(mp, this.init_data);
         return [new_program, new_data];
     }
 

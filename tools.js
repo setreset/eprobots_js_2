@@ -2,14 +2,6 @@ function tools_map_range(value, low1, high1, low2, high2){
     return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
 }
 
-function tools_get_init_val_program(pl){
-    return tools_random(pl);
-}
-
-function tools_get_init_val_data(ms){
-    return tools_random2(-ms, ms);
-}
-
 // liefert ganzzahlen von 0 bis max-1
 function tools_random(max){
     return max * Math.random() << 0;
@@ -204,36 +196,6 @@ function tools_crossover(m_pos, m_strength, memory_a, memory_b) {
     //if (tools_random(10)<2){
     new_memory = tools_mutate(m_pos, m_strength, new_memory);
     //}
-
-    return new_memory;
-}
-
-function tools_mutate_data(mutate_possibility, mutate_strength, memory) {
-    var new_memory = [];
-    for (var i=0;i<memory.length;i++){
-        var copyval = memory[i];
-        if (Math.random() < mutate_possibility) {
-            copyval = copyval + tools_get_init_val_data(mutate_strength);
-        }
-        new_memory.push(copyval);
-    }
-
-    // control_vals
-    //new_memory[memory.length-1] = tools_random(10);
-    //new_memory[memory.length-2] = tools_random(2);
-
-    return new_memory;
-}
-
-function tools_mutate_program(mutate_possibility, memory) {
-    var new_memory = [];
-    for (var i=0;i<memory.length;i++){
-        var copyval = memory[i];
-        if (Math.random() < mutate_possibility) {
-            copyval = tools_get_init_val_program(memory.length);
-        }
-        new_memory.push(copyval);
-    }
 
     return new_memory;
 }
