@@ -57,21 +57,38 @@ class EprobotBase{
         return out_val;
     }
 
-    clone_eprobot(){
+    clone_eprobot(program, init_data){
         this.s.stats_incr("fork_clone");
-        let mp = this.s.settings.MUTATE_POSSIBILITY;
+        let mp = 0; //this.s.settings.MUTATE_POSSIBILITY;
         let rnd = Math.random();
         if (rnd<0.01){
             mp = 1.0;
-        }else if (rnd<0.05){
+        }else if (rnd<0.025){
             mp = 0.75;
-        }else if (rnd<0.075){
+        }else if (rnd<0.05){
             mp = 0.5;
-        }else if (rnd<0.1){
+        }else if (rnd<0.075){
             mp = 0.3;
+        }else if (rnd<0.1){
+            mp = this.s.settings.MUTATE_POSSIBILITY;
         }
-        let new_program = this.s.simtools.mutate_program(mp, this.program);
-        let new_data = this.s.simtools.mutate_data(mp, this.init_data);
+        let new_program = this.s.simtools.get_mutated_copy__program(mp, program);
+        let new_data = this.s.simtools.get_mutated_copy__data(mp, init_data);
+
+        // deletion
+        //this.s.simtools.mutation_deletion__program(this.s.settings.MUTATE_POSSIBILITY, new_program);
+        //this.s.simtools.mutation_deletion__data(this.s.settings.MUTATE_POSSIBILITY, new_data);
+
+        // translocation
+        //this.s.simtools.mutation_translocation(this.s.settings.MUTATE_POSSIBILITY, new_program);
+        //this.s.simtools.mutation_translocation(this.s.settings.MUTATE_POSSIBILITY, new_data);
+
+        // duplication
+        //this.s.simtools.mutation_duplication(this.s.settings.MUTATE_POSSIBILITY, new_program);
+        //this.s.simtools.mutation_duplication(this.s.settings.MUTATE_POSSIBILITY, new_data);
+
+        // inversion
+
         return [new_program, new_data];
     }
 
@@ -159,13 +176,15 @@ class EprobotBase{
     get_output_OISC(){
         let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS_MAX);
 
-        if (Math.random()<0.00001){
+        if (Math.random()<0.0001){
             //log(this.config.eprobot_key+" steps: "+steps);
-            send_metric("steps_"+this.config.eprobot_key, steps);
-        }
+            if (steps<=300){
+                send_metric("steps_"+this.config.eprobot_key, steps);
 
-        if (steps>this.s.settings.PROGRAM_STEPS_MAX){
-            this.s.stats_incr("high_stepcounter");
+                this.s.stats_incr("compute_calls");
+                this.s.stats_add("compute_steps", steps);
+                send_metric("steps_average", this.s.stats["compute_steps"]/this.s.stats["compute_calls"]);
+            }
         }
 
         /*this.s.stats_add("mean_sum", steps);
@@ -296,42 +315,45 @@ class EprobotBase{
 
             let new_program, new_data;
 
-            //if (tools_random(2)==1){
-            //    // search eprobot next to me
-            //    let co_eprobots = [];
-            //    let box = 10;
-            //    for (let co_eprobot of this.s["list_"+this.config.eprobot_key]) {
-            //        if (co_eprobot==this){
-            //            continue;
-            //        }
-            //        if (co_eprobot.position.x>this.position.x-box && co_eprobot.position.x<this.position.x+box){
-            //            if (co_eprobot.position.y>this.position.y-box && co_eprobot.position.y<this.position.y+box){
-            //                co_eprobots.push(co_eprobot);
-            //            }
-            //        }
-            //    }
-            //    if (co_eprobots.length>0){
-            //        this.s.stats_incr("fork_crossover");
-            //
-            //        let random_index = tools_random(co_eprobots.length);
-            //        // absteigend sortieren
-            //        //co_eprobots.sort(function(a, b){return b.energy - a.energy});
-            //        new_program = tools_crossover(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.program, co_eprobots[random_index].program);
-            //        new_data = tools_crossover(this.s.settings.MUTATE_POSSIBILITY, this.s.settings.MUTATE_STRENGTH, this.init_data, co_eprobots[random_index].init_data);
-            //    }else{
-            //        let r = this.clone_eprobot();
-            //        new_program = r[0];
-            //        new_data = r[1];
-            //    }
-            //}else{
-            //    let r = this.clone_eprobot();
-            //    new_program = r[0];
-            //    new_data = r[1];
-            //}
+            if (tools_random(10)==10){
+                // search eprobot next to me
+                let co_eprobots = [];
+                let box = 10;
+                for (let co_eprobot of this.s["list_"+this.config.eprobot_key]) {
+                    if (co_eprobot==this){
+                        continue;
+                    }
+                    if (co_eprobot.position_x>this.position_x-box && co_eprobot.position_x<this.position_x+box){
+                        if (co_eprobot.position_y>this.position_y-box && co_eprobot.position_y<this.position_y+box){
+                            co_eprobots.push(co_eprobot);
+                        }
+                    }
+                }
+                if (co_eprobots.length>0){
+                    this.s.stats_incr("fork_crossover");
 
-            let r = this.clone_eprobot();
-            new_program = r[0];
-            new_data = r[1];
+                    let random_index = tools_random(co_eprobots.length);
+                    // absteigend sortieren
+                    //co_eprobots.sort(function(a, b){return b.energy - a.energy});
+                    let new_program_crossed = tools_crossover(this.program, co_eprobots[random_index].program);
+                    let new_data_crossed = tools_crossover(this.init_data, co_eprobots[random_index].init_data);
+                    let r = this.clone_eprobot(new_program_crossed, new_data_crossed);
+                    new_program = r[0];
+                    new_data = r[1];
+                }else{
+                    let r = this.clone_eprobot(this.program, this.init_data);
+                    new_program = r[0];
+                    new_data = r[1];
+                }
+            }else{
+                let r = this.clone_eprobot(this.program, this.init_data);
+                new_program = r[0];
+                new_data = r[1];
+            }
+
+            //let r = this.clone_eprobot();
+            //new_program = r[0];
+            //new_data = r[1];
 
             let energy_for_child = this.config.energy_start;
 

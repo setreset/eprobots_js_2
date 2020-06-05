@@ -174,7 +174,44 @@ function tools_compute(program, data, PS) {
     return step_counter;
 }
 
-function tools_crossover(m_pos, m_strength, memory_a, memory_b) {
+// subleq: https://en.wikipedia.org/wiki/One_instruction_set_computer
+function tools_compute_new(program, data, PS) {
+    var program_counter = 0;
+    var step_counter = 0;
+    var a, b, c;
+
+    while (program_counter >= 0 && (program_counter + 2) < program.length && step_counter < PS) {
+        a = program[program_counter];
+        b = program[program_counter + 1];
+        c = program[program_counter + 2];
+
+        a = Math.abs(a) % data.length;
+        b = Math.abs(b) % data.length;
+        c = Math.abs(c) % data.length;
+
+        //a = Math.abs(a % memory.length);
+        //b = Math.abs(b % memory.length);
+        //c = Math.abs(c % memory.length);
+
+        data[b] = data[b] - data[a];
+
+        if (!isFinite(data[b])){
+            data[b] = tools_random2(-10000,10000);
+        }
+        if (data[b] > 0) {
+            program_counter = program_counter + 3;
+        } else {
+            //c = memory[program_counter + 2];
+            //c = c % memory.length;
+            program_counter = Math.abs(data[c]) % program.length;
+        }
+
+        step_counter++;
+    }
+    return step_counter;
+}
+
+function tools_crossover_classic(memory_a, memory_b) {
     // evt. swap
     if (tools_random(2)==1){
         let memory_c;
@@ -193,9 +230,29 @@ function tools_crossover(m_pos, m_strength, memory_a, memory_b) {
         }
     }
 
-    //if (tools_random(10)<2){
-    new_memory = tools_mutate(m_pos, m_strength, new_memory);
-    //}
+    return new_memory;
+}
+
+function tools_crossover(memory_a, memory_b) {
+    var new_memory = [];
+    let mswitch;
+    if (tools_random(2)==0){
+        mswitch=true;
+    }else{
+        mswitch=false;
+    }
+
+    for (let i=0;i<memory_a.length;i++){
+        if (mswitch){
+            new_memory.push(memory_a[i]);
+        }else{
+            new_memory.push(memory_b[i]);
+        }
+
+        if (Math.random<0.2){
+            mswitch = !mswitch;
+        }
+    }
 
     return new_memory;
 }
@@ -348,12 +405,13 @@ function play_tone(synth, note, propability, sound){
 }
 
 function send_metric(m_name, m_value){
-    $.ajax({
-        "type": "get",
-        "url": "http://localhost:3000",
-        "data": {
-            m_name: m_name,
-            m_value: m_value
-        }
-    });
+    log("send_metric: "+m_name+"="+m_value);
+    //$.ajax({
+    //    "type": "get",
+    //    "url": "http://localhost:3000",
+    //    "data": {
+    //        m_name: m_name,
+    //        m_value: m_value
+    //    }
+    //});
 }
