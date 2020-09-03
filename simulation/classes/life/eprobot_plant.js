@@ -42,8 +42,14 @@ class EprobotPlant{
         let new_eprobot = null;
         let spreadval = tools_random(8);
         let vec = DIRECTIONS[spreadval];
-        let spreadpos_x = this.position_x + vec.x;
-        let spreadpos_y = this.position_y + vec.y;
+        let spreadpos_x = this.position_x + tools_random2(-8,8);
+        let spreadpos_y = this.position_y + tools_random2(-8,8);
+        if (spreadpos_x<0||spreadpos_x>=this.s.world_width){
+            return new_eprobot;
+        }
+        if (spreadpos_y<0||spreadpos_y>=this.s.world_height){
+            return new_eprobot;
+        }
         let spreadterrain = this.s.world.get_terrain(spreadpos_x, spreadpos_y);
         // plant wächst nicht dort, wo sich mindestens ein planteater oder ein ateeater befindet
         // und auch nicht da wo schon mehr als eine pflanze in der nähe ist

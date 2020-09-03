@@ -50,6 +50,21 @@ class Controller {
         }
     }
 
+    control_number_of_plants(st) {
+        //szenario
+
+
+        if (this.simulation.steps % 1000 == 0) {
+            if (this.simulation.world.counter_eprobot_ateeater < simconfig[1].individuals_max - 100) {
+                simconfig[0].individuals_max += 6;
+                log("erhoehe plants:" + simconfig[0].individuals_max);
+            } else {
+                simconfig[0].individuals_max -= 6;
+                log("reduziere plants:" + simconfig[0].individuals_max);
+            }
+        }
+    }
+
     simulation_loop(){
         let steptime_start = new Date().getTime();
 
@@ -65,6 +80,7 @@ class Controller {
             let st = this.simulation.settings.frame_time - current_frame_time;
 
             //this.control_simulation_size(st);
+            //this.control_number_of_plants();
 
             //szenario
             /*if (this.simulation.steps%10000==0){

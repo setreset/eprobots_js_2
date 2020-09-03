@@ -59,17 +59,9 @@ class EprobotBase{
 
     clone_eprobot(){
         this.s.stats_incr("fork_clone");
-        let mp = this.s.settings.MUTATE_POSSIBILITY;
-        let rnd = Math.random();
-        if (rnd<0.01){
-            mp = 1.0;
-        }else if (rnd<0.05){
-            mp = 0.75;
-        }else if (rnd<0.075){
-            mp = 0.5;
-        }else if (rnd<0.1){
-            mp = 0.3;
-        }
+        let mp;
+        let rnd = tools_random(10);
+        mp = (rnd/1000)*rnd*10;
         let new_program = this.s.simtools.mutate_program(mp, this.program);
         let new_data = this.s.simtools.mutate_data(mp, this.init_data);
         return [new_program, new_data];
@@ -159,7 +151,7 @@ class EprobotBase{
     get_output_OISC(){
         let steps = tools_compute(this.program, this.working_data, this.s.settings.PROGRAM_STEPS_MAX);
 
-        if (Math.random()<0.00001){
+        if (Math.random()<0.0001){
             //log(this.config.eprobot_key+" steps: "+steps);
             send_metric("steps_"+this.config.eprobot_key, steps);
         }

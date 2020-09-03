@@ -348,12 +348,13 @@ function play_tone(synth, note, propability, sound){
 }
 
 function send_metric(m_name, m_value){
-    $.ajax({
-        "type": "get",
-        "url": "http://localhost:3000",
-        "data": {
-            m_name: m_name,
-            m_value: m_value
-        }
-    });
+    log("send_metric "+m_name+": "+m_value);
+    //$.ajax({
+    //    "type": "get",
+    //    "url": "http://localhost:3000",
+    //    "data": {
+    //        m_name: m_name,
+    //        m_value: m_value
+    //    }
+    //});
 }
